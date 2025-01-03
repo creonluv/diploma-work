@@ -1,16 +1,22 @@
-import express, { Request, Response } from "express";
+import express, { ErrorRequestHandler } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import swaggerSpec from "./swaggerConfig";
 import swaggerUi from "swagger-ui-express";
-
-const app = express();
-const PORT = process.env.PORT || 3000;
+import authRoute from "./routes/auth.route";
+import userRoute from "./routes/user.route";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
 dotenv.config();
 mongoose.set("strictQuery", true);
 
+const app = express();
+const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const connect = async () => {
@@ -26,6 +32,24 @@ const connect = async () => {
     console.log(error);
   }
 };
+
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+
+const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
+  const errorStatus = err.status || 500;
+  const errorMessage = err.message || "Something went wrong!";
+
+  if (err.errors) {
+    res.status(errorStatus).json({ message: errorMessage, errors: err.errors });
+  }
+
+  res.status(errorStatus).send(errorMessage);
+
+  next();
+};
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   connect();

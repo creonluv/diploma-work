@@ -1,0 +1,22 @@
+import { AuthData, AuthResponse } from "../types/Auth";
+import { client } from "../utils/fetchClient";
+
+export const registration = (data: AuthData): Promise<AuthResponse> => {
+  return client.post<AuthResponse>(`/auth/register`, data);
+};
+
+export const login = (data: AuthData): Promise<AuthResponse> => {
+  return client.post<AuthResponse>(`/auth/login`, data);
+};
+
+export const refresh = () => {
+  return client.post(`/auth/refresh`, null);
+};
+
+export const checkAuth = (): Promise<void> => {
+  return client.get(`/auth/checkAuth`);
+};
+
+export const logout = (): Promise<void> => {
+  return client.post(`/auth/logout`, null);
+};

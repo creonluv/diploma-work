@@ -1,0 +1,23 @@
+:root {
+  --color-primary: #1d1e20;
+  --color-accent: #266df0;
+  --color-accent-secondary: #538bf3;
+  --color-reverse: #ffffff;
+  --color-primary-grey: #edeef0;
+  --color-system-grey: #555e67;
+  --color-secondary-grey: #9098a0;
+
+  --color-background: var(--color-accent);
+  --color-background-secondary: var(--color-accent-secondary);
+  --color-background-reverse: var(--color-reverse);
+  --color-background-block: var(--color-primary-grey);
+  --color-background-edge: var(--color-primary);
+
+  --color-text: var(--color-primary);
+  --color-text-reverse: var(--color-reverse);
+  --color-text-muted: var(--color-system-grey);
+  --color-text-accent: var(--color-accent);
+
+  --color-border: var(--color-primary-grey);
+  --color-border-reverse: var(--color-reverse);
+}

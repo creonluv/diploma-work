@@ -1,0 +1,23 @@
+:root {
+  --color-primary: #2a2a2a;
+  --color-accent: #f93f04;
+  --color-accent-secondary: #ff6230;
+  --color-reverse: #ffffff;
+  --color-primary-grey: #f9f9f9;
+  --color-system-grey: #9b9b9b;
+  --color-secondary-grey: #dadada;
+
+  --color-background: var(--color-accent);
+  --color-background-secondary: var(--color-accent-secondary);
+  --color-background-reverse: var(--color-reverse);
+  --color-background-block: var(--color-primary-grey);
+  --color-background-edge: var(--color-primary);
+
+  --color-text: var(--color-primary);
+  --color-text-reverse: var(--color-reverse);
+  --color-text-muted: var(--color-system-grey);
+  --color-text-accent: var(--color-accent);
+
+  --color-border: var(--color-primary-grey);
+  --color-border-reverse: var(--color-reverse);
+}

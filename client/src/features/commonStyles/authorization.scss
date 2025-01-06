@@ -1,0 +1,37 @@
+@use "../../shared/globalStyles/global" as *;
+
+.authorization {
+  &__container {
+    max-width: 590px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  .form {
+    &__logo,
+    &__title {
+      margin-bottom: 30px;
+    }
+
+    &__checkbox {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+
+    &__agree {
+      padding-top: 20px;
+      border-top: 1px solid var(--color-system-grey);
+      margin-bottom: 10px;
+    }
+
+    &__button {
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    &__link {
+      color: var(--color-text-accent);
+    }
+  }
+}

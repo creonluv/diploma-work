@@ -1,0 +1,353 @@
+@use "./shared/globalStyles/global" as *;
+@use "../src/shared/globalStyles/fonts";
+@use "../src/shared/globalStyles/null";
+@use "../src/shared//globalStyles/colors";
+
+body {
+  &._lock {
+    overflow: hidden;
+    touch-action: none;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  > main {
+    flex: 1 1 auto;
+  }
+
+  > * {
+    min-width: 0;
+  }
+
+  &::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 102px;
+    z-index: 100;
+    background-color: var(--color-background-reverse);
+
+    @include on-tablet {
+      height: 175px;
+    }
+  }
+}
+
+.page {
+  padding-top: 102px;
+
+  @include on-tablet {
+    padding-top: 175px;
+  }
+}
+
+[class*="__container"] {
+  max-width: $maxWidthContainer + px;
+  box-sizing: content-box;
+  margin: 0 auto;
+  padding-inline: 16px;
+}
+
+section:first-child {
+  @include adaptiveValue("margin-top", 32.5, 26.5);
+}
+
+section:last-child {
+  @include adaptiveValue("margin-bottom", 108.5, 69);
+}
+
+section:not(:first-child) {
+  @include adaptiveValue("margin-top", 110, 70);
+}
+
+section:not(:last-child) {
+  @include adaptiveValue("margin-bottom", 110, 70);
+}
+
+.checkbox {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &__index {
+    position: absolute;
+    opacity: 0;
+    visibility: visible;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin: 0;
+    z-index: 1;
+
+    &:checked + .checkbox__label::before {
+      content: "\2713";
+      font-size: 10px;
+      line-height: 18px;
+      text-align: center;
+      color: #fff;
+      background-color: var(--color-accent-secondary);
+      border: 1px solid var(--color-accent-secondary);
+    }
+  }
+
+  &__label {
+    position: relative;
+    padding-left: 28px;
+    cursor: pointer;
+
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 18px;
+      height: 18px;
+      border: 1px solid var(--color-system-grey);
+      border-radius: 3px;
+      background-color: transparent;
+    }
+  }
+}
+
+// Headlines
+h1,
+.title-1 {
+  font-family: "Gilroy", sans-serif;
+  font-size: 56px;
+  line-height: 56px;
+  letter-spacing: -1.5px;
+  color: var(--color-text);
+
+  @include on-mobile-landscape {
+    font-size: 92px;
+    line-height: 88px;
+    letter-spacing: -3.6px;
+  }
+}
+
+h2,
+.title-2 {
+  font-family: "Gilroy", sans-serif;
+  font-size: 32px;
+  line-height: 38px;
+  letter-spacing: -0.5px;
+  color: var(--color-text);
+
+  @include on-mobile-landscape {
+    line-height: 58px;
+    font-size: 52px;
+    letter-spacing: -1.2px;
+  }
+}
+
+h3,
+.title-3 {
+  font-family: "Gilroy", sans-serif;
+  font-size: 24px;
+  line-height: 26px;
+  letter-spacing: -0.8px;
+  color: var(--color-text);
+
+  @include on-mobile-landscape {
+    line-height: 44px;
+    font-size: 40px;
+    letter-spacing: -0.8px;
+  }
+}
+
+h4,
+.title-4 {
+  font-family: "Inter", sans-serif;
+  font-size: 22px;
+  line-height: 32px;
+  letter-spacing: -0.3px;
+  font-weight: 400;
+  color: var(--color-text);
+}
+
+.text-light {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  color: var(--color-text);
+}
+
+.text-muted {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  color: var(--color-text-muted);
+}
+
+.title-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 42px;
+}
+
+._hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.button-wrapper {
+  display: inline-flex;
+  position: relative;
+}
+
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 400;
+  border-radius: 12px;
+  line-height: 24px;
+  letter-spacing: -0.2px;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+
+  &_full-size {
+    width: 100%;
+  }
+
+  &_lg {
+    line-height: 87%;
+    letter-spacing: percent(0.032, 16);
+    @include adaptiveValue("padding-top", 16, 14);
+    @include adaptiveValue("padding-bottom", 16, 14);
+    @include adaptiveValue("padding-right", 32, 20);
+    @include adaptiveValue("padding-left", 32, 20);
+  }
+
+  &_md {
+    @include adaptiveValue("padding-top", 16, 8);
+    @include adaptiveValue("padding-bottom", 16, 8);
+    @include adaptiveValue("padding-right", 36, 18);
+    @include adaptiveValue("padding-left", 36, 18);
+  }
+
+  &_sm {
+    padding-inline: 18px;
+    padding-block: 8px;
+  }
+
+  &_default {
+    color: var(--color-text-reverse);
+    background-color: var(--color-primary);
+
+    &.active {
+      color: var(--color-text-accent);
+      background-color: var(--color-background-reverse);
+      border: 1px solid var(--color-border);
+    }
+
+    @include hover(color, var(--color-text-reverse));
+    @include hover(background-color, var(--color-system-grey));
+  }
+
+  &_reverse {
+    color: var(--color-text-accent);
+    background-color: var(--color-background-reverse);
+
+    &:active {
+      color: var(--color-text-reverse);
+      background-color: var(--color-background);
+    }
+  }
+
+  &_transparent {
+    border: 2px solid var(--color-border-reverse);
+    color: var(--color-text-reverse);
+    background-color: transparent;
+  }
+
+  &_ghost {
+    outline: 2px solid var(--color-primary);
+    background-color: transparent;
+  }
+
+  &_light {
+    color: var(--color-text-accent);
+    background-color: var(--color-background-reverse);
+  }
+
+  &_authorization {
+    width: 100%;
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  &._disabled {
+    background-color: #d3d3d3;
+    color: #a1a1a1;
+    cursor: not-allowed;
+    border: 1px solid #ccc;
+  }
+}
+
+.input {
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  padding: 12px 16px 12px 16px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox__label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox__index {
+  margin-right: 10px;
+  accent-color: var(--color-accent);
+  transform: scale(1.38);
+}
+
+.ibg {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  & > img:first-child {
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+}

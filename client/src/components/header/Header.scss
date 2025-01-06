@@ -1,0 +1,250 @@
+@use "../../shared/globalStyles/global" as *;
+
+.header {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 101;
+
+  @include on-tablet {
+    height: initial;
+    pointer-events: initial;
+  }
+
+  &__left {
+    display: flex;
+    flex-direction: row;
+    gap: 48px;
+  }
+
+  &__top {
+    pointer-events: auto;
+    padding-block: 8px;
+    color: var(--color-text-reverse);
+    background-color: var(--color-background-edge);
+
+    &-body {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &__body {
+    pointer-events: auto;
+  }
+
+  &__main {
+    position: relative;
+    display: flex;
+    align-items: center;
+    @include adaptiveValue("gap", 80, 20);
+    padding-block: 15px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-top: 1px solid var(--color-secondary-grey);
+    }
+
+    @include on-tablet {
+      padding-block: 25px;
+    }
+  }
+
+  &__logo {
+    flex: 1 1 auto;
+  }
+
+  &__form {
+    position: relative;
+
+    @include on-tablet {
+      display: initial;
+    }
+  }
+
+  &__icons {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 24px 15px;
+    border-top: 1px solid var(--color-secondary-grey);
+    background-color: var(--color-background-reverse);
+    z-index: 10;
+
+    @include on-tablet {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: initial;
+      border-top: initial;
+      padding: initial;
+      gap: 16px;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    background-color: var(--color-background-reverse);
+    overflow: scroll;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+
+    &._menu-open {
+      opacity: 1;
+      visibility: visible;
+      left: 0;
+    }
+
+    @include on-tablet {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      left: initial;
+      height: initial;
+      background-color: initial;
+      overflow: initial;
+      opacity: 1;
+      visibility: visible;
+      padding: initial;
+      z-index: 9;
+    }
+  }
+
+  &__icon {
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+  }
+
+  &__counter {
+    position: absolute;
+    display: flex;
+    bottom: -7px;
+    left: 9px;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    color: var(--color-background-reverse);
+    background-color: var(--color-accent);
+    font-size: 12px;
+  }
+
+  &__close {
+    align-self: flex-end;
+
+    img {
+      width: 120%;
+    }
+
+    @include on-tablet {
+      display: none;
+    }
+  }
+}
+
+.select {
+  position: relative;
+  display: inline-block;
+
+  &__items {
+    display: inline-block;
+    width: 100%;
+    letter-spacing: 1px;
+    color: var(--color-text-reverse);
+    background-color: var(--color-background-edge);
+    cursor: pointer;
+  }
+}
+
+.burger {
+  position: relative;
+  width: 24px;
+  height: 20px;
+  cursor: pointer;
+
+  &__line,
+  &__line::after,
+  &__line::before {
+    height: 3px;
+    border-radius: 2px;
+    background-color: var(--color-background-edge);
+  }
+
+  &__line {
+    width: 100%;
+
+    &::after,
+    &::before {
+      content: "";
+      position: absolute;
+      right: 0;
+      width: 85%;
+    }
+
+    &::after {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &::before {
+      bottom: 0;
+    }
+  }
+
+  @include on-tablet {
+    display: none;
+  }
+}
+
+.menu-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  gap: 15px;
+  font-size: 30px;
+  font-weight: 500;
+
+  &__link {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--color-text);
+
+    @include hover(scale, 0.95);
+  }
+
+  @include on-tablet {
+    justify-content: center;
+    flex-direction: row;
+    padding-top: 0;
+    font-size: initial;
+    font-weight: initial;
+    gap: 50px;
+  }
+}

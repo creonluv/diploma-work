@@ -1,4 +1,5 @@
-import { AuthData, AuthResponse } from "../types/Auth";
+import { String } from "aws-sdk/clients/apigateway";
+import { AuthData, AuthResponse, UserDataForReset } from "../types/Auth";
 import { client } from "../utils/fetchClient";
 
 export const registration = (data: AuthData): Promise<AuthResponse> => {
@@ -19,4 +20,12 @@ export const checkAuth = (): Promise<void> => {
 
 export const logout = (): Promise<void> => {
   return client.post(`/auth/logout`, null);
+};
+
+export const requestReset = (data: { email: String }): Promise<void> => {
+  return client.post(`/auth/request-reset`, data);
+};
+
+export const resetPassword = (data: UserDataForReset): Promise<void> => {
+  return client.post(`/auth/reset-password`, data);
 };

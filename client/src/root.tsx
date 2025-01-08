@@ -7,6 +7,8 @@ import { MainPage } from "./pages/mainPage";
 import { LoginPage } from "./pages/loginPage";
 import { RegisterPage } from "./pages/registerPage";
 import { WindowSizeProvider } from "./context/WindowSizeContext";
+import { RequestPasswordReset } from "./pages/resetPassword/requestPasswordReset";
+import { ResetPassword } from "./pages/resetPassword/resetPassword";
 
 export const Root = () => {
   return (
@@ -22,6 +24,13 @@ export const Root = () => {
 
                 <Route path="login" element={<LoginPage />} />
                 <Route path="register" element={<RegisterPage />} />
+
+                <Route
+                  path="request-reset"
+                  element={<RequestPasswordReset />}
+                />
+
+                <Route path="/reset-password" element={<ResetPassword />} />
               </Route>
             </Routes>
           </Router>

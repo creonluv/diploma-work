@@ -67,7 +67,9 @@ export const LoginPage: React.FC = () => {
                 onChange={handleChange}
                 required
               />
-
+              <Link to="/request-reset" className="form__link">
+                Forgot password?
+              </Link>
               <input
                 type="password"
                 className="form__input input"
@@ -78,7 +80,6 @@ export const LoginPage: React.FC = () => {
                 required
               />
             </div>
-            {/* <ForgotPassword /> */}
             <div className="form__button">
               <div className="form__button button-wrapper">
                 <button

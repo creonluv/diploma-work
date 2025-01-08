@@ -19,3 +19,9 @@ export enum ErrorType {
   USER_NOT_AUTHENTICATED = "USER_NOT_AUTHENTICATED",
   NO_ACCESS_TOKEN_PROVIDED = "NO_ACCESS_TOKEN_PROVIDED",
 }
+
+export interface UserDataForReset {
+  email: string;
+  otp: string;
+  newPassword: string;
+}

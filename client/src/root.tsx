@@ -9,6 +9,7 @@ import { RegisterPage } from "./pages/registerPage";
 import { WindowSizeProvider } from "./context/WindowSizeContext";
 import { RequestPasswordReset } from "./pages/resetPassword/requestPasswordReset";
 import { ResetPassword } from "./pages/resetPassword/resetPassword";
+import { ProfilePage } from "./pages/profilePage";
 
 export const Root = () => {
   return (
@@ -18,8 +19,9 @@ export const Root = () => {
           <Router>
             <Routes>
               <Route path="/" element={<App />}>
+                <Route index element={<MainPage />} />
                 <Route element={<ProtectedRoute />}>
-                  <Route index element={<MainPage />} />
+                  <Route path="profile" element={<ProfilePage />} />
                 </Route>
 
                 <Route path="login" element={<LoginPage />} />

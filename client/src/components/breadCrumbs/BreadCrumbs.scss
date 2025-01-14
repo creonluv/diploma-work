@@ -1,0 +1,21 @@
+@use "../../shared/globalStyles/global" as *;
+
+.breadcrumbs {
+  &__body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    & > * {
+      display: inline-block;
+      margin-right: 8px;
+    }
+  }
+
+  &__first {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+}

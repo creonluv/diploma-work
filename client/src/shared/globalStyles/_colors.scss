@@ -4,10 +4,11 @@
   --color-accent-secondary: #538bf3;
   --color-reverse: #ffffff;
   --color-primary-grey: #edeef0;
+  --color-background-grey: #f4f5f6;
   --color-system-grey: #555e67;
   --color-secondary-grey: #9098a0;
 
-  --color-background: var(--color-accent);
+  --color-background: var(--color-background-grey);
   --color-background-secondary: var(--color-accent-secondary);
   --color-background-reverse: var(--color-reverse);
   --color-background-block: var(--color-primary-grey);

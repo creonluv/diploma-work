@@ -4,7 +4,9 @@
   &__container {
     max-width: 456px;
     margin: 0 auto;
-    padding: 0 16px;
+    padding: 48px;
+    border-radius: 16px;
+    background-color: var(--color-background-reverse);
   }
 
   .form {

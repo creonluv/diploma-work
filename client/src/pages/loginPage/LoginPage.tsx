@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { AuthData } from "../../types/Auth";
+import { AuthData, AuthResponse } from "../../types/Auth";
 import { useAuthContext } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../api/auth";
@@ -29,9 +29,9 @@ export const LoginPage: React.FC = () => {
     console.log(formData);
 
     try {
-      await login(formData);
-
-      signin();
+      const userData: AuthResponse = await login(formData);
+      signin(userData._id);
+      localStorage.setItem("userId", userData._id);
     } catch (error) {
       alert("Error!");
     }

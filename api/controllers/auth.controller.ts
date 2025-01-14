@@ -62,9 +62,14 @@ export const register = async (
 
     await newUser.save({ session });
 
+    const profileDetails = isSeller
+      ? { employerDetails: { companyName: "", employeesCount: 0 } }
+      : { freelancerDetails: { skills: [], portfolio: [] } };
+
     const newProfile = new Profile({
       profileType: profileType,
       userId: newUser._id,
+      ...profileDetails,
     });
 
     await newProfile.save({ session });

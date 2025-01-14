@@ -31,13 +31,17 @@ const profileSchema = new Schema(
       enum: ["freelancer", "employer"],
       required: true,
     },
+    profileImage: {
+      type: String,
+      default: "",
+    },
 
     // Поля для фрілансерів
     freelancerDetails: {
       skills: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Skill",
+          ref: "Tag",
         },
       ],
       portfolio: [

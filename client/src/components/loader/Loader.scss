@@ -1,0 +1,31 @@
+@use "../../shared/globalStyles/global" as *;
+@use "../../shared/globalStyles/mixins" as *;
+
+.Loader {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(var(--color-secondary-grey), 0.1);
+  backdrop-filter: blur(1px);
+
+  &__content {
+    border-radius: 50%;
+    width: 3em;
+    height: 3em;
+    margin: 2em auto;
+    border: 0.4em solid var(--color-system-grey);
+    border-left-color: var(--color-accent);
+    animation: load8 1.2s infinite linear;
+  }
+}
+
+@keyframes load8 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

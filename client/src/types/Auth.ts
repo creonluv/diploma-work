@@ -1,3 +1,5 @@
+import { User } from "./User";
+
 export interface AuthData {
   username: string;
   password: string;
@@ -6,7 +8,7 @@ export interface AuthData {
   isSeller?: boolean;
 }
 
-export interface AuthResponse {}
+export interface AuthResponse extends User {}
 
 export enum ErrorType {
   VALIDATION_FAILED = "VALIDATION_FAILED",

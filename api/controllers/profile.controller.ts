@@ -21,9 +21,6 @@ export const updateProfileImage = async (req, res) => {
     const { id } = req.params;
     const userIdFromToken = req.userId;
 
-    console.log(id);
-    console.log(userIdFromToken);
-
     if (userIdFromToken !== id) {
       return res.status(403).json({
         message: "You can only update your own profile",
@@ -39,14 +36,13 @@ export const updateProfileImage = async (req, res) => {
     const profileImagePath = `/uploads/${req.file.filename}?t=${Date.now()}`;
 
     const profile = await Profile.findOne({ userId: id });
-
     if (!profile) {
       return res.status(404).json({ message: "Profile not found" });
     }
-
     profile.profileImage = profileImagePath;
-
     await profile.save();
+
+    await User.findByIdAndUpdate(id, { profileImage: profileImagePath });
 
     res.status(200).json(profile);
   } catch (error: any) {

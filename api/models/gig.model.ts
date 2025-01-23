@@ -20,12 +20,7 @@ const GigSchema = new Schema(
       type: Number,
       default: 0,
     },
-    gigReviews: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "Review",
-      default: [],
-      required: false,
-    },
+    gigReviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
     cat: {
       type: String,
       required: true,
@@ -36,7 +31,8 @@ const GigSchema = new Schema(
     },
     cover: {
       type: String,
-      required: true,
+      default: "",
+      required: false,
     },
     images: {
       type: [String],
@@ -56,7 +52,7 @@ const GigSchema = new Schema(
     },
     revisionNumber: {
       type: Number,
-      required: true,
+      required: false,
     },
     features: {
       type: [String],

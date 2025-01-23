@@ -18,7 +18,7 @@ const generateTokens = (user: any) => {
       isSeller: user.isSeller,
     },
     process.env.JWT_KEY as string,
-    { expiresIn: "3m" }
+    { expiresIn: "1m" }
   );
 
   const refreshToken = jwt.sign(
@@ -149,7 +149,7 @@ export const refreshAccessToken = (req, res, next) => {
     const newAccessToken = jwt.sign(
       { id: decoded.id, isSeller: decoded.isSeller },
       process.env.JWT_KEY,
-      { expiresIn: "3m" }
+      { expiresIn: "1m" }
     );
 
     res
@@ -164,6 +164,10 @@ export const refreshAccessToken = (req, res, next) => {
 export const logout = async (req, res) => {
   res
     .clearCookie("accessToken", {
+      sameSite: "none",
+      secure: true,
+    })
+    .clearCookie("refreshToken", {
       sameSite: "none",
       secure: true,
     })

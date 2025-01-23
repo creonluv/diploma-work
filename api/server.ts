@@ -5,6 +5,10 @@ import swaggerSpec from "./swaggerConfig";
 import swaggerUi from "swagger-ui-express";
 import authRoute from "./routes/auth.route";
 import userRoute from "./routes/user.route";
+import profileRoute from "./routes/profile.route";
+import tagRoutes from "./routes/tag.route";
+import gigRoutes from "./routes/gig.route";
+import reviewsRoutes from "./routes/reviews.route";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -36,6 +40,11 @@ const connect = async () => {
 
 app.use("/api/auth", authRoute);
 app.use("/api/users", userRoute);
+app.use("/api/uploads", express.static("uploads"));
+app.use("/api/profiles", profileRoute);
+app.use("/api/tags", tagRoutes);
+app.use("/api/gigs", gigRoutes);
+app.use("/api/reviews", reviewsRoutes);
 
 const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
   const errorStatus = err.status || 500;

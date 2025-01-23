@@ -1,0 +1,36 @@
+@use "../../shared/globalStyles/global" as *;
+
+.gig {
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+
+  &__gigs {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    row-gap: 30px;
+    column-gap: 20px;
+
+    @include on-mobile-landscape {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include on-tablet-landscape {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}

@@ -11,7 +11,7 @@ import {
   removeSkillFromProfile,
   updateProfile,
 } from "../../api/profile";
-import { getAllSkills } from "../../api/ skills";
+import { getAllSkills } from "../../api/skills";
 import { Skill } from "../../types/Skill";
 import { Loader } from "../../components/loader";
 

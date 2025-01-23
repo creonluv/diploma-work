@@ -75,7 +75,7 @@ export const Header = () => {
                   <ul className="header__menu menu-header">
                     <li className="menu-header__item">
                       <a
-                        href="/"
+                        href="/gigs-by-user"
                         className="menu-header__link"
                         onClick={handleBurger}
                       >

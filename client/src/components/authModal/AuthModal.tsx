@@ -1,4 +1,4 @@
-import { useState, ReactNode } from "react";
+import { useState, ReactNode, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 
@@ -10,13 +10,37 @@ import { useWindowSizeContext } from "../../context/WindowSizeContext";
 import account from "../../assets/img/icons/account.svg";
 
 import "./AuthModal.scss";
+import { getProfile } from "../../api/profile";
+import { Profile } from "../../types/Profile";
 
 const DEFAULT_SIZE = 200;
 const OFFSET_INLINE = 32;
 
 export const AuthModal = () => {
+  const [profile, setProfile] = useState<Profile | undefined>();
+
   const { isAuth, signout } = useAuthContext();
   const { width } = useWindowSizeContext();
+
+  const storedUserId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!storedUserId) {
+        console.warn("User ID is not available in localStorage.");
+        return;
+      }
+
+      try {
+        const profile: Profile = await getProfile(storedUserId);
+        setProfile(profile);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchProfile();
+  }, [storedUserId]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -77,6 +101,11 @@ export const AuthModal = () => {
               <Link className="list__item" to="/profile" onClick={closeModal}>
                 Profile
               </Link>
+              {profile?.profileType === "freelancer" && (
+                <Link className="list__item" to="/addgig" onClick={closeModal}>
+                  Add new gig
+                </Link>
+              )}
               <button className="list__item" onClick={handleLogout}>
                 Logout
               </button>

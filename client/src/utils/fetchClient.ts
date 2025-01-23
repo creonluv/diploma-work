@@ -23,18 +23,21 @@ async function request<T>(
     };
   }
 
-  console.log(data);
-  console.log(options);
+  // console.log(data);
+  // console.log(options);
 
-  console.log(BASE_URL + url);
+  // console.log(BASE_URL + url);
 
   try {
     const response = await fetch(BASE_URL + url, options);
     let error;
     const responseText = await response.text();
 
+    console.log(JSON.parse(responseText));
+
     if (!response.ok) {
       error = JSON.parse(responseText);
+      console.log(error);
       console.log(error, error.error_type);
 
       if (
@@ -45,7 +48,7 @@ async function request<T>(
       }
 
       if (
-        response.status === 401 &&
+        (response.status === 401 || response.status === 403) &&
         (error?.error_type === ErrorType.TOKEN_NOT_VALID ||
           error?.error_type === "JWT_EXPIRED" ||
           error?.error_type === ErrorType.INVALID_ACCESS_TOKEN)

@@ -9,4 +9,5 @@ export interface User {
   updatedAt: string;
   __v?: number;
   profileId: string;
+  profileImage: string;
 }

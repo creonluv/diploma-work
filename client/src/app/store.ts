@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { gigsReducer } from "../features/gig";
+import { reviewsReducer } from "../features/reviews";
 
 export const store = configureStore({
   reducer: {
     gigs: gigsReducer,
+    reviews: reviewsReducer,
   },
 });
 

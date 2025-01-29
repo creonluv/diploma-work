@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Gig } from "../../types/Gig";
 import "./GigCard.scss";
 import shiny from "../../assets/img/icons/icon/outline/shiny.svg";
@@ -9,7 +10,7 @@ interface GigCardProps {
 
 export const GigCard: React.FC<GigCardProps> = ({ gig }) => {
   return (
-    <div className="gigcard">
+    <Link to={`/gig/${gig._id}`} className="gigcard">
       <img
         className="gigcard__coverImg"
         src={gig.cover ? `http://localhost:8800/api/${gig.cover}` : nophoto}
@@ -21,7 +22,7 @@ export const GigCard: React.FC<GigCardProps> = ({ gig }) => {
           <img
             className="gigcard__avatar"
             src={`http://localhost:8800/api${gig.userId.profileImage}`}
-            alt=""
+            alt={gig.userId.username}
           />
           <h4 className="text-bold">{gig.title}</h4>
         </div>
@@ -34,11 +35,11 @@ export const GigCard: React.FC<GigCardProps> = ({ gig }) => {
 
       <div className="gigcard__bottom">
         <div className="gigcard__rating">
-          <img src={shiny} alt="" />
+          <img src={shiny} alt="rating" />
           <p className="text-light">{gig.rating}</p>
         </div>
         <div className="gigcard__price text-bold">${gig.price}</div>
       </div>
-    </div>
+    </Link>
   );
 };

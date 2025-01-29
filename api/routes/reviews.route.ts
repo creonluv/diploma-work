@@ -9,7 +9,7 @@ import { createReviewValidationRules } from "../validators/createReviewValidatio
 
 const router = express.Router();
 
-router.post("/", createReviewValidationRules, createReview);
+router.post("/", createReviewValidationRules, verifyToken, createReview);
 router.get("/", getReviews);
 router.delete("/:id", verifyToken, deleteReview);
 

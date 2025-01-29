@@ -25,7 +25,7 @@ export const getGigs = (filters: any): Promise<Gig[]> => {
   return client.get(`/gigs?${params}`);
 };
 
-export const getGig = (id: string): Promise<Gig> => {
+export const getGig = (id: string | undefined): Promise<Gig> => {
   return client.get(`/gigs/${id}`);
 };
 

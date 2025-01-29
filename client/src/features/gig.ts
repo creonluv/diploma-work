@@ -1,10 +1,11 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { FileUploadData, Gig, GigInput } from "../types/Gig";
+import { Gig, GigInput } from "../types/Gig";
 import {
   addPhotosToGig,
   createGig,
   deleteGig,
   getGig,
+  getGigByUser,
   getGigs,
   updateGig,
 } from "../api/gigs";
@@ -12,6 +13,7 @@ import {
 export type GigState = {
   gigs: Gig[] | null;
   gig: Gig | null;
+  gigsByUser: Gig[] | null;
   loading: boolean;
   error: string;
 };
@@ -19,6 +21,7 @@ export type GigState = {
 const initialState: GigState = {
   gigs: null,
   gig: null,
+  gigsByUser: null,
   loading: false,
   error: "",
 };
@@ -84,10 +87,7 @@ export const deleteGigAsync = createAsyncThunk(
 
 export const addPhotosToGigAsync = createAsyncThunk(
   "gigs/addPhotosToGig",
-  async (
-    { id, data }: { id: string; data: FileUploadData },
-    { rejectWithValue }
-  ) => {
+  async ({ id, data }: { id: string; data: FormData }, { rejectWithValue }) => {
     try {
       const response = await addPhotosToGig(id, data);
 
@@ -95,6 +95,15 @@ export const addPhotosToGigAsync = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.response.data);
     }
+  }
+);
+
+export const fetchGigsByUser = createAsyncThunk(
+  "gigs/fetchGigsByUser",
+  async () => {
+    const data = await getGigByUser();
+
+    return data;
   }
 );
 
@@ -204,6 +213,21 @@ export const GigsSlice = createSlice({
       .addCase(addPhotosToGigAsync.rejected, (state) => {
         state.loading = false;
         state.error = "Failed to add photos";
+      })
+      .addCase(fetchGigsByUser.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(
+        fetchGigsByUser.fulfilled,
+        (state, action: PayloadAction<Gig[]>) => {
+          state.gigsByUser = action.payload;
+          state.loading = false;
+        }
+      )
+      .addCase(fetchGigsByUser.rejected, (state) => {
+        state.loading = false;
+        state.error = "Failed to load gigs by user";
       });
   },
 });

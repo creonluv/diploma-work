@@ -1,0 +1,23 @@
+.reviews {
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__addForm {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__button {
+    align-self: end;
+  }
+}

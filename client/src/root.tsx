@@ -15,6 +15,7 @@ import { store } from "./app/store";
 import { GigPage } from "./pages/gigPage";
 import { AddGigPage } from "./pages/addGigPage";
 import { GigsByUserPage } from "./pages/gigsByUserPage";
+import { GigOnePage } from "./pages/gigOnePage";
 
 export const Root = () => {
   return (
@@ -31,6 +32,7 @@ export const Root = () => {
                     <Route path="gigs" element={<GigPage />} />
                     <Route path="addgig" element={<AddGigPage />} />
                     <Route path="gigs-by-user" element={<GigsByUserPage />} />
+                    <Route path="gig/:gigId" element={<GigOnePage />} />
                   </Route>
 
                   <Route path="login" element={<LoginPage />} />

@@ -1,0 +1,54 @@
+.review {
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+  }
+
+  &__user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &_top {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+
+    &_info {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__avatar {
+    display: block;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__rate {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__star {
+    width: 16px;
+    height: 16px;
+  }
+
+  &__rating {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}

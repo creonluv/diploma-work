@@ -1,0 +1,106 @@
+@use "../../shared/globalStyles/global" as *;
+
+.gigonepage {
+  &__body {
+    @include page-grid;
+    align-items: flex-start;
+  }
+
+  &__left {
+    grid-column: 1 / 9;
+  }
+
+  &__right {
+    grid-column: 9 / -1;
+  }
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__rating {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+  }
+
+  &__line {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-border);
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  &__shortInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__days {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__icon {
+    height: 16px;
+  }
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 48px;
+  border-radius: 16px;
+  background-color: var(--color-background-reverse);
+  margin-bottom: 16px;
+  border: 1px solid var(--color-border);
+}
+
+.right {
+  gap: 24px;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &__item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__greencheck {
+    height: 16px;
+  }
+}

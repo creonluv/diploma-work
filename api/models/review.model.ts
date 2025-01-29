@@ -14,8 +14,10 @@ const reviewSchema = new Schema(
     },
     raterUserId: {
       type: mongoose.Schema.Types.ObjectId,
+      required: true,
       ref: "User",
     },
+
     star: {
       type: Number,
       required: true,

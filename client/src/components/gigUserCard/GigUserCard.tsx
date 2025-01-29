@@ -3,13 +3,19 @@ import { Gig } from "../../types/Gig";
 import "./GigUserCard.scss";
 import nophoto from "../../assets/img/no-image-icon.png";
 import shiny from "../../assets/img/icons/icon/outline/shiny.svg";
-import { updateGig } from "../../api/gigs";
+import { useAppDispatch } from "../../app/hooks";
+import {
+  deleteGigAsync,
+  fetchGigsByUser,
+  updateGigAsync,
+} from "../../features/gig";
 
 interface GigCardProps {
   gig: Gig;
 }
 
 export const GigUserCard: React.FC<GigCardProps> = ({ gig }) => {
+  const dispatch = useAppDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [updatedGig, setUpdatedGig] = useState<Gig>(gig);
 
@@ -17,7 +23,6 @@ export const GigUserCard: React.FC<GigCardProps> = ({ gig }) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-
     setUpdatedGig((prev) => ({
       ...prev,
       [name]: value,
@@ -25,21 +30,25 @@ export const GigUserCard: React.FC<GigCardProps> = ({ gig }) => {
   };
 
   const handleSave = async () => {
-    const updated = await updateGig(gig._id, updatedGig);
+    dispatch(updateGigAsync({ id: gig._id, dataToUpdate: updatedGig }));
 
-    console.log(updated);
+    dispatch(fetchGigsByUser());
+  };
 
-    setUpdatedGig(updated);
+  const handleDelete = async (id: string) => {
+    dispatch(deleteGigAsync(id)).then(() => dispatch(fetchGigsByUser()));
   };
 
   return (
     <div className="gigusercard">
       <div className="gigusercard__body">
-        <img
-          className="gigusercard__coverImg"
-          src={gig.cover ? `http://localhost:8800/api/${gig.cover}` : nophoto}
-          alt={gig.shortTitle}
-        />
+        <div className="gigusercard__cover">
+          <img
+            className="gigusercard__coverImg"
+            src={gig.cover ? `http://localhost:8800/api/${gig.cover}` : nophoto}
+            alt={gig.shortTitle}
+          />
+        </div>
 
         <div className="gigusercard__main">
           <div className="gigusercard__info">
@@ -115,7 +124,7 @@ export const GigUserCard: React.FC<GigCardProps> = ({ gig }) => {
                   Edit
                 </button>
                 <button
-                  // onClick={() => onDelete(gig._id)}
+                  onClick={() => handleDelete(gig._id)}
                   className="button button_lg button_default button_full-size"
                 >
                   Delete

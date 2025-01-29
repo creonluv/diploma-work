@@ -109,7 +109,7 @@ export const updateGig = async (req, res, next) => {
 export const getGig = async (req, res, next) => {
   try {
     const gig = await Gig.findById(req.params.id)
-      .populate("userId", "username email")
+      .populate("userId")
       .populate({
         path: "gigReviews",
         select: "raterUserId star review createdAt",
@@ -159,8 +159,6 @@ export const getGigs = async (req, res, next) => {
         populate: { path: "raterUserId", select: "username" },
       })
       .sort(sortOption);
-
-    console.log("Found gigs:", gigs);
 
     if (!gigs.length) {
       return res.status(404).json({ message: "No gigs found" });

@@ -7,6 +7,7 @@ import { z } from "zod";
 import "./AddGigPage.scss";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { addPhotosToGig } from "../../api/gigs";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -24,6 +25,8 @@ type FormData = z.infer<typeof formSchema>;
 export const AddGigPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const storedUserId = localStorage.getItem("userId");
+
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState<FormData>({
     title: "",
@@ -144,19 +147,15 @@ export const AddGigPage: React.FC = () => {
       return;
     }
 
-    console.log(selectedCoverFile);
-    console.log(selectedImageFiles);
-
     const formData = new FormData();
+
     formData.append("cover", selectedCoverFile);
     selectedImageFiles.forEach((file) => formData.append("images", file));
 
-    console.log("Cover file:", formData.get("cover"));
-    console.log("Image files:", formData.getAll("images"));
-
     try {
-      const updatedGig = await addPhotosToGig(idOfGig, formData);
-      console.log(updatedGig);
+      await addPhotosToGig(idOfGig, formData);
+
+      navigate("/gigs-by-user");
     } catch (error) {
       console.error("Error uploading photos", error);
     }

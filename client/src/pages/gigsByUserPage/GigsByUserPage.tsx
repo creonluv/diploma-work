@@ -1,26 +1,23 @@
-import { useEffect, useState } from "react";
-import { getGigByUser } from "../../api/gigs";
-import { Gig } from "../../types/Gig";
+import { useEffect } from "react";
 import { GigUserCard } from "../../components/gigUserCard";
+import { RootState } from "../../app/store";
 
 import "./GigsByUserPage.scss";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { fetchGigsByUser } from "../../features/gig";
 
 export const GigsByUserPage: React.FC = () => {
-  const [gigs, setGigs] = useState<Gig[] | undefined>();
+  const gigsByUser = useAppSelector(
+    (state: RootState) => state.gigs.gigsByUser
+  );
+
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    const fetchGigs = async () => {
-      try {
-        const gigs = await getGigByUser();
+    dispatch(fetchGigsByUser());
+  }, [dispatch]);
 
-        setGigs(gigs);
-      } catch (error) {
-        console.error("Error fetching skills:", error);
-      }
-    };
-
-    fetchGigs();
-  }, []);
+  console.log(gigsByUser);
 
   return (
     <section className="gigsbyuser">
@@ -29,12 +26,12 @@ export const GigsByUserPage: React.FC = () => {
           <div className="gigsbyuser__top">
             <h2 className="gigsbyuser__title">My all gigs!</h2>
             <p className="gigsbyuser__info">{`${
-              gigs?.length || 0
+              gigsByUser?.length || 0
             } projects`}</p>
           </div>
 
           <div className="gigsbyuser__gigs">
-            {gigs?.map((gig) => (
+            {gigsByUser?.map((gig) => (
               <div key={gig._id}>
                 <GigUserCard gig={gig} />
               </div>

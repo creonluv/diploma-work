@@ -7,6 +7,7 @@ import { fetchGigs } from "../../features/gig";
 import { GigCard } from "../../components/gigCard";
 import { GigsHeader } from "../../components/gigsHeader/GigsHeader";
 import { useLocation } from "react-router-dom";
+import { Gig } from "../../types/Gig";
 
 export const GigPage: React.FC = () => {
   const { gigs } = useAppSelector((state: RootState) => state.gigs);
@@ -14,6 +15,8 @@ export const GigPage: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const location = useLocation();
+
+  console.log(gigs);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -38,7 +41,7 @@ export const GigPage: React.FC = () => {
           <GigsHeader gigs={gigs} category={"Explore all gigs!"} />
 
           <div className="gig__gigs">
-            {gigs?.map((gig) => (
+            {gigs?.map((gig: Gig) => (
               <div className="gig__card" key={gig._id}>
                 <GigCard gig={gig} />
               </div>

@@ -150,6 +150,10 @@ export const getGigs = async (req, res, next) => {
     sortOption["createdAt"] = -1;
   }
 
+  const page = Number(q.page) || 1;
+  const limit = Number(q.limit) || 2;
+  const skip = (page - 1) * limit;
+
   try {
     const gigs = await Gig.find(filters)
       .populate("userId")
@@ -158,13 +162,18 @@ export const getGigs = async (req, res, next) => {
         select: "raterUserId star review",
         populate: { path: "raterUserId", select: "username" },
       })
-      .sort(sortOption);
+      .sort(sortOption)
+      .skip(skip)
+      .limit(limit);
 
-    if (!gigs.length) {
-      return res.status(404).json({ message: "No gigs found" });
-    }
+    const totalCount = await Gig.countDocuments(filters);
 
-    res.status(200).json(gigs);
+    res.status(200).json({
+      gigs,
+      totalCount,
+      totalPages: Math.ceil(totalCount / limit),
+      currentPage: page,
+    });
   } catch (err) {
     next(err);
   }

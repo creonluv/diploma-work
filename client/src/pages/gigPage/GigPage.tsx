@@ -3,20 +3,21 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import "./GigPage.scss";
 import { useAuthContext } from "../../context/AuthContext";
 import { useEffect } from "react";
-import { fetchGigs } from "../../features/gig";
+import { fetchGigs, setCurrentPage } from "../../features/gig";
 import { GigCard } from "../../components/gigCard";
 import { GigsHeader } from "../../components/gigsHeader/GigsHeader";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Gig } from "../../types/Gig";
 
 export const GigPage: React.FC = () => {
-  const { gigs } = useAppSelector((state: RootState) => state.gigs);
+  const { gigs, totalPages, currentPage } = useAppSelector(
+    (state: RootState) => state.gigs
+  );
   const { isAuth } = useAuthContext();
 
   const dispatch = useAppDispatch();
   const location = useLocation();
-
-  console.log(gigs);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -25,14 +26,23 @@ export const GigPage: React.FC = () => {
       sort: queryParams.get("sort") || "",
       min: queryParams.get("min") || "",
       max: queryParams.get("max") || "",
+      page: currentPage.toString(),
     };
 
     if (isAuth) {
       dispatch(fetchGigs(filters));
     }
-  }, [location.search, dispatch, isAuth]);
+  }, [location.search, dispatch, isAuth, currentPage]);
 
-  console.log(gigs);
+  const handlePageChange = (page: number) => {
+    const queryParams = new URLSearchParams(location.search);
+
+    dispatch(setCurrentPage(page));
+
+    queryParams.set("page", page.toString());
+
+    navigate({ search: queryParams.toString() });
+  };
 
   return (
     <section className="gig">
@@ -46,6 +56,22 @@ export const GigPage: React.FC = () => {
                 <GigCard gig={gig} />
               </div>
             ))}
+          </div>
+
+          <div className="pagination">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span>{currentPage}</span>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>

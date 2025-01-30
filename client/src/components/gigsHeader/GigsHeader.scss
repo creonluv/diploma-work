@@ -43,6 +43,16 @@
       flex-direction: row;
     }
   }
+
+  &__filterToggle {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    @include on-tablet {
+      flex-direction: row;
+    }
+  }
 }
 
 .catalogHeader__filter input[type="number"],

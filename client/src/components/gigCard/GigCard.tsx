@@ -11,11 +11,13 @@ interface GigCardProps {
 export const GigCard: React.FC<GigCardProps> = ({ gig }) => {
   return (
     <Link to={`/gig/${gig._id}`} className="gigcard">
-      <img
-        className="gigcard__coverImg"
-        src={gig.cover ? `http://localhost:8800/api/${gig.cover}` : nophoto}
-        alt={gig.shortTitle}
-      />
+      <div className="gigcard__coverImgWrapper">
+        <img
+          className="gigcard__coverImg"
+          src={gig.cover ? `http://localhost:8800/api/${gig.cover}` : nophoto}
+          alt={gig.shortTitle}
+        />
+      </div>
 
       <div className="gigcard__main">
         <div className="gigcard__user">
@@ -24,10 +26,10 @@ export const GigCard: React.FC<GigCardProps> = ({ gig }) => {
             src={`http://localhost:8800/api${gig.userId.profileImage}`}
             alt={gig.userId.username}
           />
-          <h4 className="text-bold">{gig.title}</h4>
+          <h4 className="gigcard__title text-bold">{gig.title}</h4>
         </div>
         <div className="gigcard__information">
-          <p>{gig.desc}</p>
+          <p>{gig.shortDesc}</p>
         </div>
       </div>
 
@@ -36,7 +38,7 @@ export const GigCard: React.FC<GigCardProps> = ({ gig }) => {
       <div className="gigcard__bottom">
         <div className="gigcard__rating">
           <img src={shiny} alt="rating" />
-          <p className="text-light">{gig.rating}</p>
+          <p className="text-light">{gig.rating.toFixed(1)}</p>
         </div>
         <div className="gigcard__price text-bold">${gig.price}</div>
       </div>

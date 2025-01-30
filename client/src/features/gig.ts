@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Gig, GigInput } from "../types/Gig";
+import { Gig, GigInput, ResponseGig } from "../types/Gig";
 import {
   addPhotosToGig,
   createGig,
@@ -14,6 +14,9 @@ export type GigState = {
   gigs: Gig[] | null;
   gig: Gig | null;
   gigsByUser: Gig[] | null;
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
   loading: boolean;
   error: string;
 };
@@ -22,6 +25,9 @@ const initialState: GigState = {
   gigs: null,
   gig: null,
   gigsByUser: null,
+  totalCount: 0,
+  totalPages: 0,
+  currentPage: 1,
   loading: false,
   error: "",
 };
@@ -110,17 +116,24 @@ export const fetchGigsByUser = createAsyncThunk(
 export const GigsSlice = createSlice({
   name: "gigs",
   initialState,
-  reducers: {},
+  reducers: {
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchGigs.pending, (state) => {
         state.loading = true;
         state.error = "";
       })
-      .addCase(fetchGigs.fulfilled, (state, action: PayloadAction<Gig[]>) => {
-        state.gigs = action.payload;
-        state.loading = false;
-      })
+      .addCase(
+        fetchGigs.fulfilled,
+        (state, action: PayloadAction<ResponseGig>) => {
+          state.gigs = action.payload.gigs;
+          state.loading = false;
+        }
+      )
       .addCase(fetchGigs.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to load gigs";
@@ -233,3 +246,4 @@ export const GigsSlice = createSlice({
 });
 
 export const { reducer: gigsReducer } = GigsSlice;
+export const { setCurrentPage } = GigsSlice.actions;

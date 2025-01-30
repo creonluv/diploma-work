@@ -44,3 +44,10 @@ export type Gig = {
   updatedAt: string;
   __v: number;
 };
+
+export interface ResponseGig {
+  gigs: Gig[];
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+}

@@ -1,4 +1,4 @@
-import { Gig, GigInput } from "../types/Gig";
+import { Gig, GigInput, ResponseGig } from "../types/Gig";
 import { client } from "../utils/fetchClient";
 
 export const createGig = (data: GigInput): Promise<Gig> => {
@@ -19,7 +19,7 @@ export const addPhotosToGig = async (id: string, formData: FormData) => {
   return response.json();
 };
 
-export const getGigs = (filters: any): Promise<Gig[]> => {
+export const getGigs = (filters: any): Promise<ResponseGig> => {
   const params = new URLSearchParams(filters).toString();
 
   return client.get(`/gigs?${params}`);

@@ -7,11 +7,19 @@
   }
 
   &__left {
-    grid-column: 1 / 9;
+    grid-column: 1 / -1;
+
+    @include on-tablet {
+      grid-column: 1 / 9;
+    }
   }
 
   &__right {
-    grid-column: 9 / -1;
+    grid-column: 1 / -1;
+
+    @include on-tablet {
+      grid-column: 9 / -1;
+    }
   }
 
   &__top {
@@ -57,8 +65,8 @@
 
   &__shortInfo {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 16px;
   }
 
   &__days {
@@ -80,7 +88,6 @@
   padding: 48px;
   border-radius: 16px;
   background-color: var(--color-background-reverse);
-  margin-bottom: 16px;
   border: 1px solid var(--color-border);
 }
 
@@ -90,8 +97,9 @@
 
 .features {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-direction: row;
+  flex-wrap: wrap-reverse;
+  gap: 8px;
 
   &__item {
     display: flex;

@@ -63,7 +63,7 @@ export const Reviews: React.FC<ReviewsProps> = ({ gigId }) => {
         </div>
         <form className="reviews__addForm" onSubmit={handleSubmit}>
           <input
-            ref={reviewInputRef} // Прив'язуємо реф до інпуту
+            ref={reviewInputRef}
             type="text"
             name="review"
             placeholder="Write your review"

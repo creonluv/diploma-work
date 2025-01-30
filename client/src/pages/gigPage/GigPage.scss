@@ -13,11 +13,11 @@
     row-gap: 30px;
     column-gap: 20px;
 
-    @include on-mobile-landscape {
+    @include on-tablet {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @include on-tablet-landscape {
+    @include on-desktop {
       grid-template-columns: repeat(4, 1fr);
     }
   }
@@ -33,4 +33,11 @@
     flex-direction: column;
     gap: 4px;
   }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }

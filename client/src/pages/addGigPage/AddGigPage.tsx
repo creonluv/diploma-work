@@ -272,9 +272,21 @@ export const AddGigPage: React.FC = () => {
                     >
                       <option value="">Choose a category</option>
                       <option value="design">Design</option>
-                      <option value="JS">JS</option>
+                      <option value="js">JavaScript</option>
                       <option value="webdev">Web Development</option>
+                      <option value="frontend">Front-End Development</option>
+                      <option value="backend">Back-End Development</option>
+                      <option value="fullstack">Full-Stack Development</option>
+                      <option value="uiux">UI/UX Design</option>
+                      <option value="mobile">Mobile Development</option>
+                      <option value="devops">DevOps</option>
+                      <option value="ml">Machine Learning</option>
+                      <option value="cybersecurity">Cybersecurity</option>
+                      <option value="datascience">Data Science</option>
+                      <option value="gamedev">Game Development</option>
+                      <option value="seo">SEO & Digital Marketing</option>
                     </select>
+
                     {errors.cat && <span className="error">{errors.cat}</span>}
 
                     <input

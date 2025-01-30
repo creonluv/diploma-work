@@ -77,16 +77,11 @@ export const GigOnePage: React.FC = () => {
           <div className="gigonepage__right item right">
             <div className="gigonepage__shortInfo">
               <h4 className="text-bold">{gig?.shortTitle}</h4>
-              <h4 className="title-4">${gig?.price}</h4>
+              <h3 className="title-3">${gig?.price}</h3>
             </div>
 
             <div className="gigonepage__shortMiddle">
               <p className="text-light">{gig?.shortDesc}</p>
-            </div>
-
-            <div className="gigonepage__days">
-              <img className="gigonepage__icon" src={clock} alt="" />
-              <span>{gig?.deliveryTime} Days Delivery</span>
             </div>
 
             <div className="features">
@@ -96,6 +91,11 @@ export const GigOnePage: React.FC = () => {
                   <span className="text-muted">{feature}</span>
                 </div>
               ))}
+            </div>
+
+            <div className="gigonepage__days">
+              <img className="gigonepage__icon" src={clock} alt="" />
+              <span>{gig?.deliveryTime} Days Delivery</span>
             </div>
 
             <div className="profile__button button-wrapper">

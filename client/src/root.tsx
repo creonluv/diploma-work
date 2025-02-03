@@ -16,38 +16,41 @@ import { GigPage } from "./pages/gigPage";
 import { AddGigPage } from "./pages/addGigPage";
 import { GigsByUserPage } from "./pages/gigsByUserPage";
 import { GigOnePage } from "./pages/gigOnePage";
+import { Success } from "./pages/success/Success";
+import { PayPage } from "./pages/payPage";
 
 export const Root = () => {
   return (
     <Provider store={store}>
       <WindowSizeProvider>
         <AuthProvider>
-          <StrictMode>
-            <Router>
-              <Routes>
-                <Route path="/" element={<App />}>
-                  <Route index element={<MainPage />} />
-                  <Route element={<ProtectedRoute />}>
-                    <Route path="profile" element={<ProfilePage />} />
-                    <Route path="gigs" element={<GigPage />} />
-                    <Route path="addgig" element={<AddGigPage />} />
-                    <Route path="gigs-by-user" element={<GigsByUserPage />} />
-                    <Route path="gig/:gigId" element={<GigOnePage />} />
-                  </Route>
+          <Router>
+            <Routes>
+              <Route path="/" element={<App />}>
+                <Route index element={<MainPage />} />
 
-                  <Route path="login" element={<LoginPage />} />
-                  <Route path="register" element={<RegisterPage />} />
-
-                  <Route
-                    path="request-reset"
-                    element={<RequestPasswordReset />}
-                  />
-
-                  <Route path="/reset-password" element={<ResetPassword />} />
+                <Route element={<ProtectedRoute />}>
+                  <Route path="profile" element={<ProfilePage />} />
+                  <Route path="gigs" element={<GigPage />} />
+                  <Route path="addgig" element={<AddGigPage />} />
+                  <Route path="gigs-by-user" element={<GigsByUserPage />} />
+                  <Route path="gig/:gigId" element={<GigOnePage />} />
+                  <Route path="pay/:gigId" element={<PayPage />} />
+                  <Route path="success" element={<Success />} />
                 </Route>
-              </Routes>
-            </Router>
-          </StrictMode>
+
+                <Route path="login" element={<LoginPage />} />
+                <Route path="register" element={<RegisterPage />} />
+
+                <Route
+                  path="request-reset"
+                  element={<RequestPasswordReset />}
+                />
+
+                <Route path="/reset-password" element={<ResetPassword />} />
+              </Route>
+            </Routes>
+          </Router>
         </AuthProvider>
       </WindowSizeProvider>
     </Provider>

@@ -7,7 +7,6 @@ import "./BreadCrumbs.scss";
 
 export const BreadСrumbs: React.FC = () => {
   const location = useLocation();
-
   let currentLink = "";
 
   const crumbs = location.pathname
@@ -15,16 +14,19 @@ export const BreadСrumbs: React.FC = () => {
     .filter((crumb) => crumb !== "")
     .map((crumb, index, array) => {
       currentLink += `/${crumb}`;
-
-      const crumbText = crumb.charAt(0).toUpperCase() + crumb.slice(1);
       const isLast = index === array.length - 1;
+
+      const isID = /^[a-f0-9]{10,}$/i.test(crumb);
+
+      const crumbText = isID
+        ? "Details"
+        : crumb.charAt(0).toUpperCase() + crumb.slice(1);
 
       return (
         <React.Fragment key={crumb}>
           {index === 0 && (
             <div className="breadcrumbs__first">
               <Link to="/">Home</Link>
-
               <img src={btnBred} alt="" />
             </div>
           )}

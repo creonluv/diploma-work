@@ -9,6 +9,8 @@ import profileRoute from "./routes/profile.route";
 import tagRoutes from "./routes/tag.route";
 import gigRoutes from "./routes/gig.route";
 import reviewsRoutes from "./routes/reviews.route";
+import ordersGigRoutes from "./routes/orderGig.route";
+
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
@@ -45,6 +47,7 @@ app.use("/api/profiles", profileRoute);
 app.use("/api/tags", tagRoutes);
 app.use("/api/gigs", gigRoutes);
 app.use("/api/reviews", reviewsRoutes);
+app.use("/api/orderGig", ordersGigRoutes);
 
 const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
   const errorStatus = err.status || 500;

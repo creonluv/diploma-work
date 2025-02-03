@@ -13,7 +13,8 @@ function App() {
     location.pathname !== "/login" &&
     location.pathname !== "/register" &&
     location.pathname !== "/request-reset" &&
-    location.pathname !== "/reset-password";
+    location.pathname !== "/reset-password" &&
+    !location.pathname.startsWith("/pay/");
 
   return (
     <div className="wrapper">

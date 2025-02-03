@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { Gig } from "../../types/Gig";
 import { getGig } from "../../api/gigs";
@@ -98,11 +98,14 @@ export const GigOnePage: React.FC = () => {
               <span>{gig?.deliveryTime} Days Delivery</span>
             </div>
 
-            <div className="profile__button button-wrapper">
+            <Link
+              to={`http://localhost:5173/pay/${gigId}`}
+              className="profile__button button-wrapper"
+            >
               <button className="button button_lg button_default button_full-size">
                 <span>Continue</span>
               </button>
-            </div>
+            </Link>
           </div>
         </div>
       </div>

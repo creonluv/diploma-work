@@ -1,0 +1,9 @@
+@use "../../shared/globalStyles/global" as *;
+
+.checkoutForm {
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}

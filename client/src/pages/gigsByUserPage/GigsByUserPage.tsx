@@ -17,8 +17,6 @@ export const GigsByUserPage: React.FC = () => {
     dispatch(fetchGigsByUser());
   }, [dispatch]);
 
-  console.log(gigsByUser);
-
   return (
     <section className="gigsbyuser">
       <div className="gigsbyuser__container">

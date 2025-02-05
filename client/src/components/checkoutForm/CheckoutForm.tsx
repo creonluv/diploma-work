@@ -16,7 +16,7 @@ export const CheckoutForm: React.FC = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [email, setEmail] = useState("");
+  const [_, setEmail] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 

@@ -1,3 +1,4 @@
+import { Order } from "../types/Order";
 import { client } from "../utils/fetchClient";
 
 interface CreateOrderGigResponse {
@@ -13,4 +14,8 @@ export const createOrderGig = (
 
 export const updateOrderGig = (dataToUpdate: any) => {
   return client.put(`/orderGig/confirm`, dataToUpdate);
+};
+
+export const getOrders = (): Promise<Order[]> => {
+  return client.get(`/orderGig/`);
 };

@@ -8,7 +8,7 @@ import { CheckoutForm } from "../../components/checkoutForm/CheckoutForm";
 
 export const PayPage: React.FC = () => {
   const [clientSecret, setClientSecret] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [_, setIsLoading] = useState<boolean>(false);
 
   const { gigId } = useParams();
 

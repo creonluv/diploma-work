@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
@@ -18,6 +17,7 @@ import { GigsByUserPage } from "./pages/gigsByUserPage";
 import { GigOnePage } from "./pages/gigOnePage";
 import { Success } from "./pages/success/Success";
 import { PayPage } from "./pages/payPage";
+import { OrdersPage } from "./pages/ordersPage/OrdersPage";
 
 export const Root = () => {
   return (
@@ -37,6 +37,7 @@ export const Root = () => {
                   <Route path="gig/:gigId" element={<GigOnePage />} />
                   <Route path="pay/:gigId" element={<PayPage />} />
                   <Route path="success" element={<Success />} />
+                  <Route path="orders" element={<OrdersPage />} />
                 </Route>
 
                 <Route path="login" element={<LoginPage />} />

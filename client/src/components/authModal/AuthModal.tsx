@@ -102,9 +102,22 @@ export const AuthModal = () => {
                 Profile
               </Link>
               {profile?.profileType === "freelancer" && (
-                <Link className="list__item" to="/addgig" onClick={closeModal}>
-                  Add new gig
-                </Link>
+                <>
+                  <Link
+                    className="list__item"
+                    to="/addgig"
+                    onClick={closeModal}
+                  >
+                    Add new gig
+                  </Link>
+                  <Link
+                    className="list__item"
+                    to="/orders"
+                    onClick={closeModal}
+                  >
+                    My gig orders
+                  </Link>
+                </>
               )}
               <button className="list__item" onClick={handleLogout}>
                 Logout

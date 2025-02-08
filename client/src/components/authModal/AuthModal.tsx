@@ -119,6 +119,9 @@ export const AuthModal = () => {
                   </Link>
                 </>
               )}
+              <Link className="list__item" to="/messages" onClick={closeModal}>
+                Messages
+              </Link>
               <button className="list__item" onClick={handleLogout}>
                 Logout
               </button>

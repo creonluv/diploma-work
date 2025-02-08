@@ -45,13 +45,15 @@ export const intent = async (req, res, next) => {
 };
 
 export const getOrders = async (req, res, next) => {
-  console.log(req.userId);
-
   try {
     const orders = await orderGigModel.find({
-      ...(req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }),
+      ...(req.isSeller ? { buyerId: req.userId } : { sellerId: req.userId }),
       isCompleted: true,
     });
+
+    console.log(
+      req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }
+    );
 
     res.status(200).send(orders);
   } catch (err) {

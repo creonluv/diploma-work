@@ -1,11 +1,18 @@
 @use "../../shared/globalStyles/global" as *;
 
-.orders {
+.messages {
   display: flex;
   color: var(--color-system-grey);
 
   &__container {
     @include page-grid;
+  }
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
   }
 
   &__body {
@@ -22,20 +29,13 @@
     width: 100%;
   }
 
-  &__top {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    width: 100%;
-  }
-
   table {
     width: 100%;
     border-collapse: collapse;
     border-radius: 12px;
 
     tr {
-      height: 48px;
+      height: 72px;
 
       th {
         text-align: left;
@@ -58,8 +58,8 @@
         }
       }
 
-      &:nth-child(even) {
-        background-color: var(--color-background-grey);
+      &.active {
+        background-color: var(--color-accent-secondary);
       }
     }
   }

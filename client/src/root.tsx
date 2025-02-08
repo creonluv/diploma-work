@@ -18,6 +18,8 @@ import { GigOnePage } from "./pages/gigOnePage";
 import { Success } from "./pages/success/Success";
 import { PayPage } from "./pages/payPage";
 import { OrdersPage } from "./pages/ordersPage/OrdersPage";
+import { MessagesPage } from "./pages/messagesPage/MessagesPage";
+import { ChatPage } from "./pages/chatPage/ChatPage";
 
 export const Root = () => {
   return (
@@ -28,7 +30,6 @@ export const Root = () => {
             <Routes>
               <Route path="/" element={<App />}>
                 <Route index element={<MainPage />} />
-
                 <Route element={<ProtectedRoute />}>
                   <Route path="profile" element={<ProfilePage />} />
                   <Route path="gigs" element={<GigPage />} />
@@ -38,16 +39,16 @@ export const Root = () => {
                   <Route path="pay/:gigId" element={<PayPage />} />
                   <Route path="success" element={<Success />} />
                   <Route path="orders" element={<OrdersPage />} />
+                  <Route path="messages" element={<MessagesPage />} />
+                  <Route path="message/:chatId" element={<ChatPage />} />
                 </Route>
 
                 <Route path="login" element={<LoginPage />} />
                 <Route path="register" element={<RegisterPage />} />
-
                 <Route
                   path="request-reset"
                   element={<RequestPasswordReset />}
                 />
-
                 <Route path="/reset-password" element={<ResetPassword />} />
               </Route>
             </Routes>

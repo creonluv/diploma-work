@@ -1,0 +1,110 @@
+import { useEffect, useState } from "react";
+import { User } from "../../types/User";
+import "./MessagesPage.scss";
+import { getUser } from "../../api/user";
+import { Conversation } from "../../types/Messages";
+import { getMessages, updateMessages } from "../../api/messages";
+import { Link } from "react-router-dom";
+import moment from "moment";
+
+export const MessagesPage: React.FC = () => {
+  const [user, setUser] = useState<User | undefined>();
+  const [messages, setMessages] = useState<Conversation[] | undefined>();
+
+  const storedUserId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getUser(storedUserId);
+
+        setUser(user);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const messages = await getMessages();
+
+        setMessages(messages);
+      } catch (error) {
+        console.error("Error fetching messages:", error);
+      }
+    };
+
+    fetchMessages();
+  }, []);
+
+  const handleRead = async (id: string) => {
+    const data = {
+      id,
+    };
+
+    try {
+      await updateMessages(id, data);
+    } catch (error) {
+      console.error("Error update messages:", error);
+    }
+  };
+
+  return (
+    <section className="messages">
+      <div className="messages__container">
+        <div className="messages__top">
+          <h2 className="messages__title">Messages</h2>
+        </div>
+        <div className="messages__body">
+          <table>
+            <thead>
+              <tr>
+                <th>{user?.isSeller ? "Buyer" : "Seller"}</th>
+                <th>Last Message</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {messages?.map((c) => (
+                <tr
+                  className={
+                    (user?.isSeller && !c.readBySeller) ||
+                    (!user?.isSeller && !c.readByBuyer)
+                      ? "active"
+                      : undefined
+                  }
+                  key={c._id}
+                >
+                  <td>{user?.isSeller ? c.buyerId.email : c.sellerId.email}</td>
+                  <td>
+                    <Link to={`/message/${c._id}`} className="link">
+                      {c?.lastMessage?.desc.substring(0, 100)}...
+                    </Link>
+                  </td>
+                  <td>{moment(c.updatedAt).fromNow()}</td>
+                  <td>
+                    {((user?.isSeller && !c.readBySeller) ||
+                      (!user?.isSeller && !c.readByBuyer)) && (
+                      <button
+                        className="button button_lg button__transparent"
+                        onClick={() => handleRead(c._id)}
+                      >
+                        Mark as Read
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  );
+};

@@ -131,6 +131,8 @@ export const GigsSlice = createSlice({
         fetchGigs.fulfilled,
         (state, action: PayloadAction<ResponseGig>) => {
           state.gigs = action.payload.gigs;
+          state.totalPages = action.payload.totalPages;
+          state.currentPage = action.payload.currentPage;
           state.loading = false;
         }
       )
@@ -138,6 +140,7 @@ export const GigsSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to load gigs";
       })
+
       .addCase(fetchGig.pending, (state) => {
         state.loading = true;
         state.error = "";
@@ -150,6 +153,7 @@ export const GigsSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to load gigs";
       })
+
       .addCase(createGigAsync.pending, (state) => {
         state.loading = true;
         state.error = "";
@@ -171,6 +175,7 @@ export const GigsSlice = createSlice({
         state.loading = true;
         state.error = "";
       })
+
       .addCase(
         updateGigAsync.fulfilled,
         (state, action: PayloadAction<Gig>) => {
@@ -191,6 +196,7 @@ export const GigsSlice = createSlice({
         state.loading = true;
         state.error = "";
       })
+
       .addCase(
         deleteGigAsync.fulfilled,
         (state, action: PayloadAction<string>) => {
@@ -208,6 +214,7 @@ export const GigsSlice = createSlice({
         state.loading = true;
         state.error = "";
       })
+
       .addCase(
         addPhotosToGigAsync.fulfilled,
         (state, action: PayloadAction<Gig>) => {
@@ -231,6 +238,7 @@ export const GigsSlice = createSlice({
         state.loading = true;
         state.error = "";
       })
+
       .addCase(
         fetchGigsByUser.fulfilled,
         (state, action: PayloadAction<Gig[]>) => {

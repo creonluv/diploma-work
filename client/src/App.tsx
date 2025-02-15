@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import "./App.scss";
 import { Header } from "./components/header";
 import { BreadСrumbs } from "./components/breadCrumbs/BreadCrumbs";
+import { Footer } from "./components/footer/Footer";
 
 function App() {
   const location = useLocation();
@@ -15,7 +16,8 @@ function App() {
     location.pathname !== "/request-reset" &&
     location.pathname !== "/reset-password" &&
     !location.pathname.startsWith("/pay/") &&
-    !location.pathname.startsWith("/message/");
+    !location.pathname.startsWith("/message/") &&
+    !location.pathname.startsWith("/success");
 
   return (
     <div className="wrapper">
@@ -25,6 +27,7 @@ function App() {
 
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }

@@ -36,36 +36,38 @@ export const GigOnePage: React.FC = () => {
     <section className="gigonepage">
       <div className="gigonepage__container">
         <div className="gigonepage__body">
-          <div className="gigonepage__left item">
-            <div className="gigonepage__top">
-              <h2 className="gigonepage__title">{gig?.title}</h2>
+          <div className="gigonepage__left">
+            <div className="gigonepage__section item">
+              <div className="gigonepage__top">
+                <h2 className="gigonepage__title">{gig?.title}</h2>
 
-              <div className="gigonepage__user">
-                <img
-                  className="gigonepage__avatar"
-                  src={`http://localhost:8800/api${gig?.userId.profileImage}`}
-                  alt={gig?.userId.username}
-                />
-                <h4 className="text-bold">{gig?.userId.username}</h4>
-                <div className="gigonepage__rating">
-                  <img src={shiny} alt="rating" />
-                  <p className="text-light">{gig?.rating?.toFixed(1)}</p>
+                <div className="gigonepage__user">
+                  <img
+                    className="gigonepage__avatar"
+                    src={`http://localhost:8800/api${gig?.userId.profileImage}`}
+                    alt={gig?.userId.username}
+                  />
+                  <h4 className="text-bold">{gig?.userId.username}</h4>
+                  <div className="gigonepage__rating">
+                    <img src={shiny} alt="rating" />
+                    <p className="text-light">{gig?.rating?.toFixed(1)}</p>
+                  </div>
                 </div>
+              </div>
+
+              <div className="gigonepage__slider">
+                <ImageSlider images={gig?.images} />
               </div>
             </div>
 
-            <div className="gigonepage__slider">
-              <ImageSlider images={gig?.images} />
-            </div>
-
-            <div className="gigonepage__section">
+            <div className="gigonepage__section item">
               <div className="gigonepage__title">
                 <h4 className="text-bold">About this gig</h4>
               </div>
               <div className="gigonepage__group">{gig?.desc}</div>
             </div>
 
-            <div className="gigonepage__section">
+            <div className="gigonepage__section item">
               <div className="gigonepage__title">
                 <h4 className="text-bold">Reviews</h4>
               </div>

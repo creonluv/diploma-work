@@ -172,15 +172,21 @@ export const ProfilePage: React.FC = () => {
     }));
   };
 
+  console.log(profile?.profileImage);
+
   return (
     <section className="profile">
       <div className="profile__container">
         <div className="profile__body">
           <div className="profile__top">
-            <ProfileAvatar
-              initialImage={`http://localhost:8800/api${profile?.profileImage}`}
-              userId={storedUserId}
-            />
+            {profile?.profileImage ? (
+              <ProfileAvatar
+                initialImage={`http://localhost:8800/api${profile?.profileImage}`}
+                userId={storedUserId}
+              />
+            ) : (
+              <div>Loading...</div>
+            )}
 
             <div className="profile__fullname">
               <img className="profile__shiny" src={shiny} alt="menu" />

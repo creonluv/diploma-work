@@ -17,7 +17,7 @@ export const Reviews: React.FC<ReviewsProps> = ({ gigId }) => {
     (state: RootState) => state.reviews
   );
 
-  const reviewInputRef = useRef<HTMLInputElement>(null);
+  const reviewInputRef = useRef<HTMLTextAreaElement>(null);
   const starSelectRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
@@ -61,24 +61,35 @@ export const Reviews: React.FC<ReviewsProps> = ({ gigId }) => {
             ))
           )}
         </div>
-        <form className="reviews__addForm" onSubmit={handleSubmit}>
-          <input
-            ref={reviewInputRef}
-            type="text"
-            name="review"
-            placeholder="Write your review"
-            className="form__input input reviews__input"
-            required
-          />
 
-          <select ref={starSelectRef} name="star" required>
-            <option value="">Choose rating</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
+        <hr className="reviews__line" />
+
+        <form className="reviews__addForm" onSubmit={handleSubmit}>
+          <div className="reviews__inputs">
+            <textarea
+              ref={reviewInputRef}
+              name="review"
+              placeholder="Write your review"
+              className="form__input input reviews__input"
+              required
+            />
+
+            <div className="select-container">
+              <select
+                className="rating-select"
+                ref={starSelectRef}
+                name="star"
+                required
+              >
+                <option value="">Choose rating</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+          </div>
 
           <div className="reviews__button button-wrapper">
             <button className="button button_lg button_default" type="submit">

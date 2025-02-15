@@ -65,18 +65,17 @@ export const confirm = async (req, res, next) => {
   console.log(req.body.payment_intent);
 
   try {
-    const orders = await orderGigModel.findOneAndUpdate(
-      {
-        payment_intent: req.body.payment_intent,
-      },
-      {
-        $set: {
-          isCompleted: true,
-        },
-      }
+    const order = await orderGigModel.findOneAndUpdate(
+      { payment_intent: req.body.payment_intent },
+      { $set: { isCompleted: true } },
+      { new: true }
     );
 
-    res.status(200).send("Order has been confirmed.");
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    res.status(200).json({ message: "Order has been confirmed", order });
   } catch (err) {
     next(err);
   }

@@ -106,6 +106,7 @@ export const Header = () => {
                 </nav>
               )}
             </div>
+
             <div className="header__left">
               <div className="header__icons">
                 {isAuth && (
@@ -138,6 +139,7 @@ export const Header = () => {
                 )}
               </div>
             </div>
+
             <div
               className={`header__burger burger${burger ? " _menu-open" : ""}`}
               onClick={handleBurger}

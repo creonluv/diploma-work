@@ -1,0 +1,33 @@
+@use "../../shared/globalStyles/global" as *;
+
+.footer {
+  width: 100%;
+  height: initial;
+  pointer-events: none;
+  background-color: var(--color-background-reverse);
+  margin-top: 48px;
+
+  @include on-tablet {
+    height: initial;
+    background-color: var(--color-background-reverse);
+  }
+
+  &__top {
+    pointer-events: auto;
+    padding-block: 16px;
+    color: var(--color-text-reverse);
+    background-color: var(--color-background-edge);
+  }
+
+  &__body {
+    pointer-events: auto;
+  }
+
+  &__main {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 16px;
+  }
+}

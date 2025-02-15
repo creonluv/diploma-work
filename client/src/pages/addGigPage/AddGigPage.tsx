@@ -164,10 +164,10 @@ export const AddGigPage: React.FC = () => {
   return (
     <section className="addgig">
       <div className="addgig__container">
-        <div className="addgig__body">
-          {created ? (
-            <form className="addgig__form form" onSubmit={handleAddPhotosToGig}>
-              <div className="addgig__form-section">
+        {created ? (
+          <form className="addgig__form form" onSubmit={handleAddPhotosToGig}>
+            <div className="addgig__form-section">
+              <div className="addgig__background">
                 <div className="addgig__top">
                   <h2 className="addgig__title">Adding photos to a gig</h2>
                   <p className="addgig__info">
@@ -175,43 +175,53 @@ export const AddGigPage: React.FC = () => {
                     selecting images to processing uploads efficiently.
                   </p>
                 </div>
-
-                <label htmlFor="cover" className="addgig__label">
-                  Choose cover image
-                </label>
-                <input
-                  type="file"
-                  id="cover"
-                  className="form__input input"
-                  onChange={handleCoverFileChange}
-                />
-
-                <label htmlFor="images" className="addgig__label">
-                  Choose additional images (optional)
-                </label>
-                <input
-                  type="file"
-                  id="images"
-                  className="form__input input"
-                  multiple
-                  onChange={handleImageFilesChange}
-                />
               </div>
 
-              <div className="profile__buttons">
-                <div className="profile__button button-wrapper">
-                  <button
-                    className="button button_lg button_default button_full-size"
-                    type="submit"
-                  >
-                    <span>Next step</span>
-                  </button>
+              <div className="addgig__background">
+                <div className="addgig__form-section-top">
+                  <div className="group">
+                    <label htmlFor="cover" className="addgig__label">
+                      Choose cover image
+                    </label>
+                    <input
+                      type="file"
+                      id="cover"
+                      className="form__input input"
+                      onChange={handleCoverFileChange}
+                    />
+                  </div>
+
+                  <div className="group">
+                    <label htmlFor="images" className="addgig__label">
+                      Choose additional images (optional)
+                    </label>
+                    <input
+                      type="file"
+                      id="images"
+                      className="form__input input"
+                      multiple
+                      onChange={handleImageFilesChange}
+                    />
+                  </div>
                 </div>
               </div>
-            </form>
-          ) : (
-            <form className="addgig__form form" onSubmit={handleCreateGig}>
-              <div className="addgig__form-section">
+            </div>
+
+            <div className="profile__buttons">
+              <div className="profile__button button-wrapper">
+                <button
+                  className="button button_lg button_default button_full-size"
+                  type="submit"
+                >
+                  <span>Next step</span>
+                </button>
+              </div>
+            </div>
+          </form>
+        ) : (
+          <form className="addgig__form form" onSubmit={handleCreateGig}>
+            <div className="addgig__form-section">
+              <div className="addgig__background">
                 <div className="addgig__top">
                   <h2 className="addgig__title">Creating a new gig</h2>
                   <p className="addgig__info">
@@ -219,8 +229,9 @@ export const AddGigPage: React.FC = () => {
                     and setting your price.
                   </p>
                 </div>
-
-                <div className="addgig__group">
+              </div>
+              <div className="addgig__form-section-top">
+                <div className="addgig__background">
                   <div className="group">
                     <input
                       id="title"
@@ -262,7 +273,11 @@ export const AddGigPage: React.FC = () => {
                       onChange={handleInputChange}
                       placeholder="Enter short description"
                     ></textarea>
+                  </div>
+                </div>
 
+                <div className="addgig__background">
+                  <div className="group">
                     <select
                       id="cat"
                       name="cat"
@@ -294,7 +309,7 @@ export const AddGigPage: React.FC = () => {
                       name="price"
                       className="form__input input"
                       type="number"
-                      value={formData.price}
+                      value={formData.price || ""}
                       onChange={handleInputChange}
                       placeholder="Enter price"
                     />
@@ -307,7 +322,7 @@ export const AddGigPage: React.FC = () => {
                       name="deliveryTime"
                       className="form__input input"
                       type="number"
-                      value={formData.deliveryTime}
+                      value={formData.deliveryTime || ""}
                       onChange={handleInputChange}
                       placeholder="Enter delivery time (days)"
                     />
@@ -328,31 +343,31 @@ export const AddGigPage: React.FC = () => {
                       <span className="error">{errors.features}</span>
                     )}
                   </div>
-                </div>
-              </div>
 
-              <div className="profile__buttons">
-                <div className="profile__button button-wrapper">
-                  <button
-                    className="button button_lg button__transparent"
-                    type="reset"
-                    onClick={handleCancel}
-                  >
-                    <span>Cancel</span>
-                  </button>
-                </div>
-                <div className="profile__button button-wrapper">
-                  <button
-                    className="button button_lg button_default button_full-size"
-                    type="submit"
-                  >
-                    <span>Next step</span>
-                  </button>
+                  <div className="profile__buttons">
+                    <div className="profile__button button-wrapper">
+                      <button
+                        className="button button_lg button__transparent"
+                        type="reset"
+                        onClick={handleCancel}
+                      >
+                        <span>Cancel</span>
+                      </button>
+                    </div>
+                    <div className="profile__button button-wrapper">
+                      <button
+                        className="button button_lg button_default button_full-size"
+                        type="submit"
+                      >
+                        <span>Next step</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </form>
-          )}
-        </div>
+            </div>
+          </form>
+        )}
       </div>
     </section>
   );

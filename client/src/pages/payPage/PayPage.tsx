@@ -50,7 +50,7 @@ export const PayPage: React.FC = () => {
   return (
     <section className="paypage">
       <div className="paypage__container">
-        <div className="paypage__body">
+        <div className="paypage__background">
           <div className="paypage__top">
             <h2 className="paypage__title">Secure Payment</h2>
             <p className="paypager__info">
@@ -60,7 +60,8 @@ export const PayPage: React.FC = () => {
               experience.
             </p>
           </div>
-
+        </div>
+        <div className="paypage__background">
           {clientSecret && (
             <Elements options={options} stripe={stripePromise}>
               <CheckoutForm />

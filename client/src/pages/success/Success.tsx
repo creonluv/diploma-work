@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { updateOrderGig } from "../../api/orderGig";
 
+import "./Success.scss";
+
 export const Success: React.FC = () => {
   const { search } = useLocation();
   const navigate = useNavigate();
@@ -18,9 +20,11 @@ export const Success: React.FC = () => {
 
         await updateOrderGig({ payment_intent });
 
-        setTimeout(() => {
-          navigate("/orders");
-        }, 5000);
+        console.log("ff");
+
+        navigate("/orders");
+
+        console.log("ffff");
       } catch (err) {
         console.log(err);
       }
@@ -32,8 +36,16 @@ export const Success: React.FC = () => {
   return (
     <div className="success">
       <div className="success__container">
-        Payment successful. You are being redirected to the orders page. Please
-        do not close the page
+        <div className="success__body">
+          <div className="success__top">
+            <h2 className="success__title">Success!</h2>
+
+            <p>
+              Payment successful. You are being redirected to the orders page.
+              Please do not close the page.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

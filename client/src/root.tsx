@@ -20,6 +20,7 @@ import { PayPage } from "./pages/payPage";
 import { OrdersPage } from "./pages/ordersPage/OrdersPage";
 import { MessagesPage } from "./pages/messagesPage/MessagesPage";
 import { ChatPage } from "./pages/chatPage/ChatPage";
+import { SignContact } from "./pages/signContract/SignContact";
 
 export const Root = () => {
   return (
@@ -41,6 +42,7 @@ export const Root = () => {
                   <Route path="orders" element={<OrdersPage />} />
                   <Route path="messages" element={<MessagesPage />} />
                   <Route path="message/:chatId" element={<ChatPage />} />
+                  <Route path="contract" element={<SignContact />} />
                 </Route>
 
                 <Route path="login" element={<LoginPage />} />

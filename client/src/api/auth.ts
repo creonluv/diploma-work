@@ -2,7 +2,13 @@ import { String } from "aws-sdk/clients/apigateway";
 import { AuthData, AuthResponse, UserDataForReset } from "../types/Auth";
 import { client } from "../utils/fetchClient";
 
-export const registration = (data: AuthData): Promise<AuthResponse> => {
+export const registration = (
+  data: AuthData
+  // publicKey: string,
+  // encryptedPrivateKey: string
+): Promise<AuthResponse> => {
+  // const registrationData = { ...data, publicKey, encryptedPrivateKey };
+
   return client.post<AuthResponse>(`/auth/register`, data);
 };
 

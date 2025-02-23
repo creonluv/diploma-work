@@ -3,6 +3,8 @@ import { useAuthContext } from "../../context/AuthContext";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { AuthData } from "../../types/Auth";
 import { registration } from "../../api/auth";
+import { generateKeyPair } from "../../helpers/generateRsaKeys";
+import { encryptPrivateKey } from "../../helpers/encryptPrivateKey";
 
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
@@ -30,9 +32,20 @@ export const RegisterPage: React.FC = () => {
     e.preventDefault();
 
     try {
+      // const { publicKey, privateKey } = await generateKeyPair();
+
+      // const password = "17032004";
+
+      // const encryptedPrivateKey = await encryptPrivateKey(privateKey, password);
+
+      // const userId = crypto.randomUUID();
+
+      // localStorage.setItem(`privateKey_${userId}`, encryptedPrivateKey);
+
       await registration(formData);
       signin();
-    } catch {
+    } catch (error) {
+      console.error("Error in registration:", error);
       alert("Error reg!");
     }
   };

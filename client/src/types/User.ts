@@ -7,6 +7,8 @@ export interface User {
   isSeller: boolean;
   createdAt: string;
   updatedAt: string;
+  publicKey: string;
+  encryptedPrivateKey: string;
   __v?: number;
   profileId: string;
   profileImage: string;

@@ -10,14 +10,12 @@ export const createReview = async (req, res, next) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { type, targetId, star } = req.body;
+  const { type, targetId } = req.body;
 
   try {
     if (!req.userId) {
       return res.status(401).json({ message: "User ID not provided!" });
     }
-
-    console.log("Creating review by user:", req.userId);
 
     let target;
 
@@ -44,6 +42,7 @@ export const createReview = async (req, res, next) => {
 
     if (type === "gig") {
       target.gigReviews.push(savedReview._id);
+
       await target.save();
 
       const allReviews = await Review.find({ targetId: target._id });
@@ -54,6 +53,7 @@ export const createReview = async (req, res, next) => {
       const avgRating = totalStars / allReviews.length;
 
       target.rating = avgRating;
+
       await target.save();
     }
 

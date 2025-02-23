@@ -1,9 +1,6 @@
 import multer from "multer";
-
 import { validationResult } from "express-validator";
-
 import createError from "../utils/createError";
-
 import Gig from "../models/gig.model";
 import reviewModel from "../models/review.model";
 

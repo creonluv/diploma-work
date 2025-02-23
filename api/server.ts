@@ -12,6 +12,9 @@ import reviewsRoutes from "./routes/reviews.route";
 import ordersGigRoutes from "./routes/orderGig.route";
 import messageRoutes from "./routes/message.route";
 import conversationRoutes from "./routes/conversation.route";
+import jobRoutes from "./routes/job.route";
+import bidRoutes from "./routes/bid.route";
+import contactRoutes from "./routes/contract.route";
 
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -52,6 +55,9 @@ app.use("/api/reviews", reviewsRoutes);
 app.use("/api/orderGig", ordersGigRoutes);
 app.use("/api/message", messageRoutes);
 app.use("/api/conversation", conversationRoutes);
+app.use("/api/job", jobRoutes);
+app.use("/api/bid", bidRoutes);
+app.use("/api/contract", contactRoutes);
 
 const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
   const errorStatus = err.status || 500;

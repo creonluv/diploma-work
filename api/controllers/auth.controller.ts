@@ -32,11 +32,22 @@ const generateTokens = (user: any) => {
   return { accessToken, refreshToken };
 };
 
-export const register = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
+const generateKeyPair = () => {
+  const { publicKey, privateKey } = crypto.generateKeyPairSync("rsa", {
+    modulusLength: 2048,
+    publicKeyEncoding: {
+      type: "spki",
+      format: "pem",
+    },
+    privateKeyEncoding: {
+      type: "pkcs8",
+      format: "pem",
+    },
+  });
+  return { publicKey, privateKey };
+};
+
+export const register = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -51,12 +62,16 @@ export const register = async (
   try {
     const { password, isSeller, ...userData } = req.body;
 
+    const { publicKey, privateKey } = generateKeyPair();
+
     const hash = bcrypt.hashSync(password, 5);
     const profileType = isSeller ? "employer" : "freelancer";
 
     const newUser = new User({
       ...userData,
       password: hash,
+      publicKey,
+      privateKey,
       isSeller,
     });
 
@@ -87,6 +102,7 @@ export const register = async (
         email: newUser.email,
         username: newUser.username,
         profileId: newUser.profileId,
+        publicKey,
       },
     });
   } catch (err: any) {

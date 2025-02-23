@@ -8,33 +8,41 @@ const contractSchema = new Schema(
       ref: "Job",
       required: true,
     },
+    freelancerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Profile",
+      required: true,
+    },
+    employerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Profile",
+      required: true,
+    },
     bidId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Bid",
       required: true,
     },
-    freelancerId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    employerId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    agreedBudget: {
+    totalAmount: {
       type: Number,
       required: true,
     },
-    deliveryDate: {
+    agreedDeadline: {
       type: Date,
       required: true,
     },
+    freelancerSignature: {
+      type: String,
+      default: null,
+    },
+    employerSignature: {
+      type: String,
+      default: null,
+    },
     status: {
       type: String,
-      enum: ["active", "completed", "cancelled"],
-      default: "active",
+      enum: ["pending", "signed", "completed"],
+      default: "pending",
     },
   },
   {

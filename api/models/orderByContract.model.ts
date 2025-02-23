@@ -3,48 +3,57 @@ const { Schema } = mongoose;
 
 const orderByContractSchema = new Schema(
   {
-    contractId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Contract",
-    },
     jobId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Job",
       required: true,
     },
+    contractId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Contract",
+      required: true,
+    },
     freelancerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Profile",
       required: true,
     },
     employerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    amount: {
-      type: Number,
-      required: true,
-    },
-    deadline: {
-      type: Date,
+      ref: "Profile",
       required: true,
     },
     status: {
       type: String,
-      enum: ["in progress", "completed", "cancelled"],
-      default: "in progress",
+      enum: ["in-progress", "completed", "closed"],
+      default: "in-progress",
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["pending", "paid", "failed"],
+      default: "pending",
     },
     payment_intent: {
       type: String,
       required: true,
     },
-    subtasks: [
-      {
-        title: { type: String, required: true },
-        completed: { type: Boolean, default: false },
-      },
-    ],
+    totalAmount: {
+      type: Number,
+      required: true,
+    },
+    startDate: {
+      type: Date,
+      required: true,
+    },
+    endDate: {
+      type: Date,
+      default: null,
+    },
+    reviewId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Review",
+      default: null,
+    },
   },
   {
     timestamps: true,

@@ -31,6 +31,14 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    publicKey: {
+      type: String,
+      required: true,
+    },
+    privateKey: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

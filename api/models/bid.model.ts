@@ -10,20 +10,20 @@ const bidSchema = new Schema(
     },
     freelancerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Profile",
       required: true,
     },
-    proposedBudget: {
-      type: Number,
-      required: true,
-    },
-    deliveryTime: {
-      type: Number,
-      required: true,
-    },
-    comment: {
+    proposal: {
       type: String,
-      default: "",
+      required: true,
+    },
+    bidAmount: {
+      type: Number,
+      required: true,
+    },
+    estimatedTime: {
+      type: String,
+      required: true,
     },
     status: {
       type: String,
@@ -31,9 +31,7 @@ const bidSchema = new Schema(
       default: "pending",
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 export default mongoose.model("Bid", bidSchema);

@@ -1,7 +1,9 @@
 import crypto from "crypto";
+import nodemailer from "nodemailer";
 
 import Contract from "../models/contract.model";
 import User from "../models/user.model";
+import { decryptPrivateKey } from "../utils/encryptPrivateKey";
 
 export const createContract = async (req, res) => {
   try {
@@ -32,6 +34,50 @@ export const createContract = async (req, res) => {
     });
 
     await newContract.save();
+
+    const freelancer = await User.findById(freelancerId);
+    if (!freelancer || !freelancer.email) {
+      return res
+        .status(400)
+        .json({ message: "Freelancer not found or email missing" });
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: freelancer.email,
+      subject: "You have been selected for a contract!",
+      text: `
+        Hello ${freelancer.username},
+        
+        Congratulations! You have been selected for the contract related to job #${jobId}.
+        
+        Details:
+        - Job ID: ${jobId}
+        - Total Amount: ${totalAmount}
+        - Agreed Deadline: ${agreedDeadline}
+        
+        Please review the contract and confirm.
+        
+        Best regards,
+        Your team
+      `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
 
     res.status(201).json({
       message: "Contract created successfully",
@@ -64,7 +110,10 @@ export const signContract = async (req, res) => {
     sign.update(contractText);
     sign.end();
 
-    const digitalSignature = sign.sign(user.privateKey, "base64");
+    const digitalSignature = sign.sign(
+      decryptPrivateKey(user.encryptedPrivateKey),
+      "base64"
+    );
 
     const verifier = crypto.createVerify("RSA-SHA256");
     verifier.update(contractText);

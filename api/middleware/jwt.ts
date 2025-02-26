@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-import createError from "../utils/createError";
 
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.accessToken;
@@ -15,6 +14,13 @@ export const verifyToken = (req, res, next) => {
 
     req.userId = payload.id;
     req.isSeller = payload.isSeller;
+
+    if (!req.userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    // console.log("req.userId: " + req.userId);
+    // console.log("payload.isSeller: " + payload.isSeller);
 
     next();
   });

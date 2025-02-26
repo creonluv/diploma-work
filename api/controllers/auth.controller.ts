@@ -6,6 +6,8 @@ import mongoose from "mongoose";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 
+import { encryptPrivateKey } from "../utils/encryptPrivateKey";
+
 import User from "../models/user.model";
 import Profile from "../models/profile.model";
 import createError from "../utils/createError";
@@ -18,7 +20,7 @@ const generateTokens = (user: any) => {
       isSeller: user.isSeller,
     },
     process.env.JWT_KEY as string,
-    { expiresIn: "1m" }
+    { expiresIn: "3m" }
   );
 
   const refreshToken = jwt.sign(
@@ -64,6 +66,8 @@ export const register = async (req, res, next) => {
 
     const { publicKey, privateKey } = generateKeyPair();
 
+    const encryptedPrivateKey = encryptPrivateKey(privateKey);
+
     const hash = bcrypt.hashSync(password, 5);
     const profileType = isSeller ? "employer" : "freelancer";
 
@@ -71,7 +75,7 @@ export const register = async (req, res, next) => {
       ...userData,
       password: hash,
       publicKey,
-      privateKey,
+      encryptedPrivateKey,
       isSeller,
     });
 
@@ -96,14 +100,11 @@ export const register = async (req, res, next) => {
     await session.commitTransaction();
 
     res.status(201).json({
-      message: "User has been created successfully.",
-      user: {
-        id: newUser._id,
-        email: newUser.email,
-        username: newUser.username,
-        profileId: newUser.profileId,
-        publicKey,
-      },
+      id: newUser._id,
+      email: newUser.email,
+      username: newUser.username,
+      profileId: newUser.profileId,
+      publicKey,
     });
   } catch (err: any) {
     await session.abortTransaction();

@@ -35,7 +35,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    privateKey: {
+    encryptedPrivateKey: {
       type: String,
       required: true,
     },

@@ -15,6 +15,8 @@ import conversationRoutes from "./routes/conversation.route";
 import jobRoutes from "./routes/job.route";
 import bidRoutes from "./routes/bid.route";
 import contactRoutes from "./routes/contract.route";
+import ordersByContractRoutes from "./routes/orderByContract.route";
+import "./utils/cronJobs";
 
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -24,7 +26,6 @@ mongoose.set("strictQuery", true);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
@@ -58,6 +59,7 @@ app.use("/api/conversation", conversationRoutes);
 app.use("/api/job", jobRoutes);
 app.use("/api/bid", bidRoutes);
 app.use("/api/contract", contactRoutes);
+app.use("/api/order-by-contract", ordersByContractRoutes);
 
 const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
   const errorStatus = err.status || 500;

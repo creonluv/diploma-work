@@ -12,7 +12,6 @@ export const createJob = async (req, res) => {
 
   try {
     const userId = req.userId;
-
     const user = await User.findById(userId);
 
     if (!user || !user.isSeller) {
@@ -30,6 +29,7 @@ export const createJob = async (req, res) => {
       budget,
       deadline,
       tags,
+      expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
     });
 
     await newJob.save();
@@ -65,7 +65,15 @@ export const getJobById = async (req, res) => {
       return res.status(404).json({ message: "Job not found" });
     }
 
-    res.status(200).json(job);
+    job.views += 1;
+    await job.save();
+
+    const timeLeft = new Date(job.expiresAt).getTime() - Date.now();
+    const daysLeft = Math.ceil(timeLeft / (1000 * 60 * 60 * 24));
+
+    res
+      .status(200)
+      .json({ ...job.toObject(), daysLeft: daysLeft > 0 ? daysLeft : 0 });
   } catch (error) {
     res.status(500).json({ message: "Error fetching job", error });
   }

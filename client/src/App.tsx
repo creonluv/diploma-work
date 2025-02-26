@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import "./App.scss";
 import { Header } from "./components/header";
 import { BreadСrumbs } from "./components/breadCrumbs/BreadCrumbs";
-import { Footer } from "./components/footer/Footer";
+// import { Footer } from "./components/footer/Footer";
 
 function App() {
   const location = useLocation();
@@ -27,7 +27,7 @@ function App() {
 
         <Outlet />
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

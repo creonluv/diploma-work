@@ -6,6 +6,8 @@ export type Order = {
   price: number;
   sellerId: string;
   buyerId: string;
+  sellerName: string;
+  buyerName: string;
   isCompleted: boolean;
   payment_intent: string;
   createdAt: string;

@@ -5,12 +5,13 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { createOrderGig } from "../../api/orderGig";
 import { CheckoutForm } from "../../components/checkoutForm/CheckoutForm";
+import { createOrder } from "../../api/orderByContact";
 
 export const PayPage: React.FC = () => {
   const [clientSecret, setClientSecret] = useState<string>("");
   const [_, setIsLoading] = useState<boolean>(false);
 
-  const { gigId } = useParams();
+  const { gigId, contractId } = useParams();
 
   const stripePromise = useMemo(
     () =>
@@ -26,8 +27,15 @@ export const PayPage: React.FC = () => {
     const makeRequest = async () => {
       setIsLoading(true);
       try {
-        const res = await createOrderGig(gigId);
-        setClientSecret(res.clientSecret);
+        let res;
+        if (gigId) {
+          res = await createOrderGig(gigId);
+        } else if (contractId) {
+          res = await createOrder(contractId);
+        }
+        if (res?.clientSecret) {
+          setClientSecret(res.clientSecret);
+        }
       } catch (err) {
         console.log(err);
       } finally {
@@ -36,7 +44,7 @@ export const PayPage: React.FC = () => {
     };
 
     makeRequest();
-  }, [gigId, clientSecret]);
+  }, [gigId, contractId, clientSecret]);
 
   const appearance = {
     theme: "stripe" as "stripe",

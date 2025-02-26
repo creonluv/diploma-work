@@ -32,6 +32,7 @@ export const LoginPage: React.FC = () => {
       const userData: AuthResponse = await login(formData);
       signin(userData._id);
       localStorage.setItem("userId", userData._id);
+      localStorage.setItem("isSeller", userData.isSeller.toString());
     } catch (error) {
       alert("Error!");
     }

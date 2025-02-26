@@ -6,6 +6,10 @@ import {
 } from "../types/Messages";
 import { client } from "../utils/fetchClient";
 
+export const createConversation = (data: any): Promise<Conversation> => {
+  return client.post(`/conversation/`, data);
+};
+
 export const getMessages = (): Promise<Conversation[]> => {
   return client.get(`/conversation/`);
 };

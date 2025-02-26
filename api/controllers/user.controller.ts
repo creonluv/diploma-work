@@ -22,14 +22,24 @@ export const deleteUser = async (req, res, next) => {
 };
 
 export const getUser = async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  try {
+    const user = await User.findById(req.params.id).select(
+      "-publicKey -encryptedPrivateKey"
+    );
 
-  res.status(200).send(user);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
+
+    res.status(200).send(user);
+  } catch (err) {
+    next(createError(500, "Could not fetch user!"));
+  }
 };
 
 export const getAllUsers = async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find().select("-publicKey -encryptedPrivateKey");
 
     res.status(200).send(users);
   } catch (err) {

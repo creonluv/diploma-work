@@ -2,10 +2,20 @@ import Conversation from "../models/conversation.model";
 import createError from "../utils/createError";
 
 export const createConversation = async (req, res, next) => {
+  console.log("req: " + req.isSeller);
   const sellerId = req.isSeller ? req.userId : req.body.to;
   const buyerId = req.isSeller ? req.body.to : req.userId;
 
   try {
+    const existingConversation = await Conversation.findOne({
+      sellerId,
+      buyerId,
+    });
+
+    if (existingConversation) {
+      return res.status(200).send(existingConversation);
+    }
+
     const newConversation = new Conversation({
       sellerId,
       buyerId,
@@ -22,9 +32,9 @@ export const createConversation = async (req, res, next) => {
 
 export const getConversations = async (req, res, next) => {
   try {
-    const conversations = await Conversation.find(
-      req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }
-    )
+    const conversations = await Conversation.find({
+      $or: [{ sellerId: req.userId }, { buyerId: req.userId }],
+    })
       .sort({ updatedAt: -1 })
       .populate("lastMessage", "desc")
       .populate("sellerId", "name email")

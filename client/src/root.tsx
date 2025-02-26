@@ -38,6 +38,10 @@ export const Root = () => {
                   <Route path="gigs-by-user" element={<GigsByUserPage />} />
                   <Route path="gig/:gigId" element={<GigOnePage />} />
                   <Route path="pay/:gigId" element={<PayPage />} />
+                  <Route
+                    path="pay/contract/:contractId"
+                    element={<PayPage />}
+                  />
                   <Route path="success" element={<Success />} />
                   <Route path="orders" element={<OrdersPage />} />
                   <Route path="messages" element={<MessagesPage />} />

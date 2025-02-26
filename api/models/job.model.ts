@@ -41,6 +41,14 @@ const jobSchema = new Schema(
       enum: ["open", "closed"],
       default: "open",
     },
+    views: {
+      type: Number,
+      default: 0,
+    },
+    expiresAt: {
+      type: Date,
+      required: true,
+    },
   },
   {
     timestamps: true,

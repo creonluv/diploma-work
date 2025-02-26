@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import gigModel from "../models/gig.model";
 import orderGigModel from "../models/orderGig.model";
+import userModel from "../models/user.model";
 
 export const intent = async (req, res, next) => {
   const stripe = new Stripe(process.env.STRIPE || "");
@@ -47,23 +48,44 @@ export const intent = async (req, res, next) => {
 export const getOrders = async (req, res, next) => {
   try {
     const orders = await orderGigModel.find({
-      ...(req.isSeller ? { buyerId: req.userId } : { sellerId: req.userId }),
+      $or: [{ sellerId: req.userId }, { buyerId: req.userId }],
       isCompleted: true,
     });
 
-    console.log(
-      req.isSeller ? { sellerId: req.userId } : { buyerId: req.userId }
+    const sellerIds = orders.map((order) => order.sellerId);
+    const buyerIds = orders.map((order) => order.buyerId);
+
+    const sellers = await userModel.find({ _id: { $in: sellerIds } });
+    const buyers = await userModel.find({ _id: { $in: buyerIds } });
+
+    const sellerNames: Record<string, string> = sellers.reduce(
+      (acc, seller) => {
+        acc[seller._id.toString()] = seller.username; // Перетворюємо ObjectId в string
+        return acc;
+      },
+      {}
     );
 
-    res.status(200).send(orders);
+    const buyerNames: Record<string, string> = buyers.reduce((acc, buyer) => {
+      acc[buyer._id.toString()] = buyer.username;
+      return acc;
+    }, {});
+
+    const ordersWithNames = orders.map((order) => {
+      return {
+        ...order.toObject(),
+        sellerName: sellerNames[order.sellerId.toString()] || null,
+        buyerName: buyerNames[order.buyerId.toString()] || null,
+      };
+    });
+
+    res.status(200).send(ordersWithNames);
   } catch (err) {
     next(err);
   }
 };
 
 export const confirm = async (req, res, next) => {
-  console.log(req.body.payment_intent);
-
   try {
     const order = await orderGigModel.findOneAndUpdate(
       { payment_intent: req.body.payment_intent },

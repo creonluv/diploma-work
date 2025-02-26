@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { User } from "../../types/User";
 import "./SignContact.scss";
 import { getUser } from "../../api/user";
-import { decryptPrivateKey } from "../../helpers/decryptPrivateKey";
 
 const contract = {
   contract: {
@@ -45,7 +44,7 @@ export const SignContact: React.FC = () => {
       const contractText = JSON.stringify(contract);
 
       const response = await fetch(
-        "http://localhost:8800/api/contract/sign/67b8cf51a33dcaa954840ffa",
+        "http://localhost:8800/api/contract/sign/67bb0d5b7f41f2dee3116d5a",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -57,7 +56,6 @@ export const SignContact: React.FC = () => {
         }
       );
 
-      // Визначення результату відповіді
       const result = await response.json();
       console.log(result);
     } catch (error) {

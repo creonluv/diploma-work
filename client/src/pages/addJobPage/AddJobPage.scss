@@ -1,0 +1,63 @@
+@use "../../shared/globalStyles/global" as *;
+
+.addjob {
+  &__background {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 0 auto;
+    padding: 48px;
+    border-radius: 16px;
+    background-color: var(--color-background-reverse);
+    border: 1px solid var(--color-border);
+    width: 100%;
+    height: fit-content;
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    gap: 16px;
+
+    @include on-tablet {
+      flex-direction: row;
+    }
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  &__form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &-top {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+    }
+  }
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 16px;
+  }
+}
+
+.tags {
+  margin-block: 8px;
+}

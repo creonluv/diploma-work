@@ -64,6 +64,10 @@ section:not(:last-child) {
   @include adaptiveValue("margin-bottom", 64, 48);
 }
 
+.error {
+  color: red;
+}
+
 // .checkbox {
 //   position: relative;
 //   display: flex;

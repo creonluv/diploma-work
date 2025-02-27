@@ -119,6 +119,9 @@ export const AuthModal = () => {
                   </Link>
                 </>
               )}
+              <Link className="list__item" to="/addjob" onClick={closeModal}>
+                Add new job
+              </Link>
               <Link className="list__item" to="/messages" onClick={closeModal}>
                 Messages
               </Link>

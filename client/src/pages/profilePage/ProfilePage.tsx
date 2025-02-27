@@ -172,8 +172,6 @@ export const ProfilePage: React.FC = () => {
     }));
   };
 
-  console.log(profile?.profileImage);
-
   return (
     <section className="profile">
       <div className="profile__container">

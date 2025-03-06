@@ -18,9 +18,7 @@ export const createJob = async (req, res) => {
       return res.status(403).json({ message: "Only sellers can create jobs." });
     }
 
-    console.log(req.body);
-
-    const { title, description, budget, deadline, tags } = req.body;
+    const { title, description, budget, deadline, tags, cat } = req.body;
 
     const newJob = new Job({
       employerId: userId,
@@ -29,6 +27,7 @@ export const createJob = async (req, res) => {
       budget,
       deadline,
       tags,
+      cat,
       expiresAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
     });
 
@@ -44,7 +43,10 @@ export const createJob = async (req, res) => {
 
 export const getAllJobs = async (req, res) => {
   try {
-    const jobs = await Job.find().populate("tags");
+    const jobs = await Job.find()
+      .populate("tags")
+      .populate({ path: "employerId", populate: { path: "profileId" } });
+
     res.status(200).json(jobs);
   } catch (error) {
     res.status(500).json({ message: "Error fetching jobs", error });
@@ -59,7 +61,9 @@ export const getJobById = async (req, res) => {
       return res.status(400).json({ message: "Invalid job ID" });
     }
 
-    const job = await Job.findById(jobId).populate("tags");
+    const job = await Job.findById(jobId)
+      .populate("tags")
+      .populate({ path: "employerId", populate: { path: "profileId" } });
 
     if (!job) {
       return res.status(404).json({ message: "Job not found" });

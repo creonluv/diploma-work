@@ -83,7 +83,7 @@ export const MessagesPage: React.FC = () => {
                 >
                   <td>{user?.isSeller ? c.buyerId.email : c.sellerId.email}</td>
                   <td>
-                    <Link to={`/message/${c._id}`} className="link">
+                    <Link to={`/messages/${c._id}`} className="link">
                       {c?.lastMessage?.desc.substring(0, 100)}...
                     </Link>
                   </td>

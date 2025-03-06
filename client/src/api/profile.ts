@@ -24,9 +24,7 @@ export const updateProfileImage = async (
   );
 
   if (!response.ok) {
-    throw new Error(
-      `Не вдалося оновити зображення профілю: ${response.statusText}`
-    );
+    throw new Error(`Failed to update image profile: ${response.statusText}`);
   }
 
   return response.json();

@@ -56,12 +56,13 @@ export const getBidsForJob = async (req, res) => {
   try {
     const { jobId } = req.params;
 
-    const job = await Job.findById(jobId).populate("bids");
-    if (!job) {
-      return res.status(404).json({ message: "Job not found" });
+    const bids = await Bid.find({ jobId }).populate("freelancerId");
+
+    if (!bids.length) {
+      return res.status(404).json({ message: "No bids found for this job" });
     }
 
-    res.status(200).json(job.bids);
+    res.status(200).json(bids);
   } catch (error) {
     res.status(500).json({ message: "Error fetching bids", error });
   }

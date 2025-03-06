@@ -1,6 +1,7 @@
 import { useState, ReactNode, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
+import { useAppDispatch } from "../../app/hooks";
 
 import { logout } from "../../api/auth";
 
@@ -10,13 +11,15 @@ import { useWindowSizeContext } from "../../context/WindowSizeContext";
 import account from "../../assets/img/icons/account.svg";
 
 import "./AuthModal.scss";
-import { getProfile } from "../../api/profile";
 import { Profile } from "../../types/Profile";
+import { fetchProfileAsync } from "../../features/profile";
 
 const DEFAULT_SIZE = 200;
 const OFFSET_INLINE = 32;
 
 export const AuthModal = () => {
+  const dispatch = useAppDispatch();
+
   const [profile, setProfile] = useState<Profile | undefined>();
 
   const { isAuth, signout } = useAuthContext();
@@ -32,8 +35,9 @@ export const AuthModal = () => {
       }
 
       try {
-        const profile: Profile = await getProfile(storedUserId);
-        setProfile(profile);
+        const result = await dispatch(fetchProfileAsync(storedUserId)).unwrap();
+
+        setProfile(result);
       } catch (error) {
         console.error("Error fetching user:", error);
       }
@@ -105,7 +109,7 @@ export const AuthModal = () => {
                 <>
                   <Link
                     className="list__item"
-                    to="/addgig"
+                    to="gigs/add"
                     onClick={closeModal}
                   >
                     Add new gig
@@ -119,7 +123,7 @@ export const AuthModal = () => {
                   </Link>
                 </>
               )}
-              <Link className="list__item" to="/addjob" onClick={closeModal}>
+              <Link className="list__item" to="/job/add" onClick={closeModal}>
                 Add new job
               </Link>
               <Link className="list__item" to="/messages" onClick={closeModal}>

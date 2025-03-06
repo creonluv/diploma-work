@@ -36,6 +36,10 @@ const jobSchema = new Schema(
         ref: "Bid",
       },
     ],
+    cat: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       enum: ["open", "closed"],

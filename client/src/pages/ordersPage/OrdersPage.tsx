@@ -147,7 +147,7 @@ export const OrdersPage: React.FC = () => {
                             Create Conversation
                           </button>
                         ) : (
-                          <Link to={`http://localhost:5173/message/${chatId}`}>
+                          <Link to={`http://localhost:5173/messages/${chatId}`}>
                             <img className="message" src={message} alt="" />
                           </Link>
                         )}

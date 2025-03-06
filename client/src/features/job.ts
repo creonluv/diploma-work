@@ -29,13 +29,16 @@ export const createJobAsync = createAsyncThunk<Job, JobInput>(
   }
 );
 
-export const fetchJobs = createAsyncThunk("products/fetchGigs", async () => {
-  const data = await getJobs();
-  return data;
-});
+export const fetchJobsAsync = createAsyncThunk(
+  "products/fetchJobs",
+  async () => {
+    const data = await getJobs();
+    return data;
+  }
+);
 
-export const fetchJob = createAsyncThunk(
-  "products/fetchGig",
+export const fetchJobAsync = createAsyncThunk(
+  "products/fetchJob",
   async (id: string) => {
     const data = await getJob(id);
 
@@ -49,28 +52,31 @@ export const JobsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchJobs.pending, (state) => {
+      .addCase(fetchJobsAsync.pending, (state) => {
         state.loading = true;
         state.error = "";
       })
-      .addCase(fetchJobs.fulfilled, (state, action: PayloadAction<Job[]>) => {
-        state.jobs = action.payload;
-        state.loading = false;
-      })
-      .addCase(fetchJobs.rejected, (state, action) => {
+      .addCase(
+        fetchJobsAsync.fulfilled,
+        (state, action: PayloadAction<Job[]>) => {
+          state.jobs = action.payload;
+          state.loading = false;
+        }
+      )
+      .addCase(fetchJobsAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to load gigs";
       })
 
-      .addCase(fetchJob.pending, (state) => {
+      .addCase(fetchJobAsync.pending, (state) => {
         state.loading = true;
         state.error = "";
       })
-      .addCase(fetchJob.fulfilled, (state, action: PayloadAction<Job>) => {
+      .addCase(fetchJobAsync.fulfilled, (state, action: PayloadAction<Job>) => {
         state.job = action.payload;
         state.loading = false;
       })
-      .addCase(fetchJob.rejected, (state, action) => {
+      .addCase(fetchJobAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to load gigs";
       })

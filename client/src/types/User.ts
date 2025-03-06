@@ -8,7 +8,7 @@ export interface User {
   createdAt: string;
   updatedAt: string;
   publicKey: string;
-  encryptedPrivateKey: string;
+  userRating: number;
   __v?: number;
   profileId: string;
   profileImage: string;

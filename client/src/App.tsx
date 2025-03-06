@@ -16,7 +16,7 @@ function App() {
     location.pathname !== "/request-reset" &&
     location.pathname !== "/reset-password" &&
     !location.pathname.startsWith("/pay/") &&
-    !location.pathname.startsWith("/message/") &&
+    !location.pathname.startsWith("/messages/") &&
     !location.pathname.startsWith("/success");
 
   return (

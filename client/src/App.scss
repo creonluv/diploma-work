@@ -152,6 +152,7 @@ h3,
   font-family: "Gilroy", sans-serif;
   font-size: 24px;
   line-height: 26px;
+  font-weight: 700;
   letter-spacing: -0.8px;
   color: var(--color-text);
 
@@ -170,6 +171,21 @@ h4,
   letter-spacing: -0.3px;
   font-weight: 400;
   color: var(--color-text);
+}
+
+.text-price {
+  font-family: "Gilroy", sans-serif;
+  font-size: 24px;
+  line-height: 26px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  color: var(--color-accent);
+
+  @include on-mobile-landscape {
+    line-height: 44px;
+    font-size: 32px;
+    letter-spacing: -0.8px;
+  }
 }
 
 .text-light {

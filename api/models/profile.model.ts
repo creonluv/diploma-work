@@ -16,10 +16,6 @@ const profileSchema = new Schema(
       type: String,
       default: "",
     },
-    userRating: {
-      type: Number,
-      default: 0,
-    },
     userReviews: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -1,0 +1,96 @@
+@use "../../shared/globalStyles/global" as *;
+
+.bid {
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+  }
+
+  &__user {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: space-between;
+
+    @include on-tablet {
+      flex-direction: row;
+    }
+
+    &_top {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 8px;
+
+      @include on-mobile-landscape {
+        flex-direction: row;
+        align-items: center;
+      }
+    }
+
+    &-info {
+      display: flex;
+      flex-direction: row;
+      gap: 4px;
+    }
+
+    &-label {
+      display: flex;
+      padding: 8px;
+      border-radius: 6px;
+      height: 24px;
+      background-color: var(--color-accent);
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      color: white;
+
+      &--price {
+        font-weight: bold;
+        background: rgb(79, 205, 119);
+      }
+    }
+  }
+
+  &__avatar {
+    display: block;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__rate {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__star {
+    width: 16px;
+    height: 16px;
+  }
+
+  &__rating {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__rating {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+  }
+}

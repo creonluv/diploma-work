@@ -22,6 +22,33 @@ import { MessagesPage } from "./pages/messagesPage/MessagesPage";
 import { ChatPage } from "./pages/chatPage/ChatPage";
 import { SignContact } from "./pages/signContract/SignContact";
 import { AddJobPage } from "./pages/addJobPage/AddJobPage";
+import { JobOnePage } from "./pages/JobOnePage/JobOnePage";
+
+const gigRoutes = [
+  { path: "", element: <GigPage /> },
+  { path: "add", element: <AddGigPage /> },
+  { path: "by-user", element: <GigsByUserPage /> },
+  { path: ":gigId", element: <GigOnePage /> },
+];
+
+const messageRoutes = [
+  { path: "", element: <MessagesPage /> },
+  { path: ":chatId", element: <ChatPage /> },
+];
+
+const jobRoutes = [
+  { path: "add", element: <AddJobPage /> },
+  { path: ":jobId", element: <JobOnePage /> },
+];
+
+const protectedRoutes = [
+  { path: "profile", element: <ProfilePage /> },
+  { path: "pay/:gigId", element: <PayPage /> },
+  { path: "pay/contract/:contractId", element: <PayPage /> },
+  { path: "success", element: <Success /> },
+  { path: "orders", element: <OrdersPage /> },
+  { path: "contract", element: <SignContact /> },
+];
 
 export const Root = () => {
   return (
@@ -32,23 +59,45 @@ export const Root = () => {
             <Routes>
               <Route path="/" element={<App />}>
                 <Route index element={<MainPage />} />
+
                 <Route element={<ProtectedRoute />}>
-                  <Route path="profile" element={<ProfilePage />} />
-                  <Route path="gigs" element={<GigPage />} />
-                  <Route path="addgig" element={<AddGigPage />} />
-                  <Route path="gigs-by-user" element={<GigsByUserPage />} />
-                  <Route path="gig/:gigId" element={<GigOnePage />} />
-                  <Route path="pay/:gigId" element={<PayPage />} />
-                  <Route
-                    path="pay/contract/:contractId"
-                    element={<PayPage />}
-                  />
-                  <Route path="success" element={<Success />} />
-                  <Route path="orders" element={<OrdersPage />} />
-                  <Route path="messages" element={<MessagesPage />} />
-                  <Route path="message/:chatId" element={<ChatPage />} />
-                  <Route path="contract" element={<SignContact />} />
-                  <Route path="addjob" element={<AddJobPage />} />
+                  {protectedRoutes.map((route) => (
+                    <Route
+                      key={route.path}
+                      path={route.path}
+                      element={route.element}
+                    />
+                  ))}
+
+                  <Route path="gigs">
+                    {gigRoutes.map((route) => (
+                      <Route
+                        key={route.path}
+                        path={route.path}
+                        element={route.element}
+                      />
+                    ))}
+                  </Route>
+
+                  <Route path="messages">
+                    {messageRoutes.map((route) => (
+                      <Route
+                        key={route.path}
+                        path={route.path}
+                        element={route.element}
+                      />
+                    ))}
+                  </Route>
+
+                  <Route path="job">
+                    {jobRoutes.map((route) => (
+                      <Route
+                        key={route.path}
+                        path={route.path}
+                        element={route.element}
+                      />
+                    ))}
+                  </Route>
                 </Route>
 
                 <Route path="login" element={<LoginPage />} />

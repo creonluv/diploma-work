@@ -148,7 +148,7 @@ export const getGigs = async (req, res, next) => {
   }
 
   const page = Number(q.page) || 1;
-  const limit = Number(q.limit) || 2;
+  const limit = Number(q.limit) || 4;
   const skip = (page - 1) * limit;
 
   try {

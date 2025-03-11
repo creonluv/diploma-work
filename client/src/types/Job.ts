@@ -56,3 +56,10 @@ export type Job = {
   updatedAt: string;
   daysLeft: number;
 };
+
+export interface ResponseJob {
+  jobs: Job[];
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
+}

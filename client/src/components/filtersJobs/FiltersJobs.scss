@@ -1,0 +1,15 @@
+@use "../../shared/globalStyles/global" as *;
+
+.filterJobs {
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+  }
+}

@@ -1,12 +1,12 @@
-import { Job, JobInput } from "../types/Job";
+import { Job, JobInput, ResponseJob } from "../types/Job";
 import { client } from "../utils/fetchClient";
 
 export const createJob = (data: JobInput): Promise<Job> => {
   return client.post(`/job/`, data);
 };
 
-export const getJobs = (): Promise<Job[]> => {
-  return client.get(`/job/`);
+export const getJobs = (queryString: string): Promise<ResponseJob> => {
+  return client.get(`/job?${queryString}`);
 };
 
 export const getJob = (id: string | undefined): Promise<Job> => {

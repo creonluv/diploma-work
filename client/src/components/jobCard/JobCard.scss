@@ -1,0 +1,44 @@
+@use "../../shared/globalStyles/global" as *;
+
+.jobcard {
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 0 auto;
+    padding: 48px;
+    border-radius: 16px;
+    background-color: var(--color-background-reverse);
+    border: 1px solid var(--color-border);
+    width: 100%;
+    height: fit-content;
+  }
+
+  &__user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__bottom {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 4px;
+  }
+}

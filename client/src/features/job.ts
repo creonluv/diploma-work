@@ -1,10 +1,14 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { Job, JobInput } from "../types/Job";
+import { Job, JobInput, ResponseJob } from "../types/Job";
 import { createJob, getJob, getJobs } from "../api/jobs";
+import { Params } from "../utils/getSearchParams";
 
 export type JobState = {
   jobs: Job[] | null;
   job: Job | null;
+  totalCount: number;
+  totalPages: number;
+  currentPage: number;
   loading: boolean;
   error: string;
 };
@@ -12,6 +16,9 @@ export type JobState = {
 const initialState: JobState = {
   jobs: null,
   job: null,
+  totalCount: 0,
+  totalPages: 0,
+  currentPage: 1,
   loading: false,
   error: "",
 };
@@ -31,8 +38,9 @@ export const createJobAsync = createAsyncThunk<Job, JobInput>(
 
 export const fetchJobsAsync = createAsyncThunk(
   "products/fetchJobs",
-  async () => {
-    const data = await getJobs();
+  async (filters: string) => {
+    const data = await getJobs(filters);
+
     return data;
   }
 );
@@ -58,8 +66,10 @@ export const JobsSlice = createSlice({
       })
       .addCase(
         fetchJobsAsync.fulfilled,
-        (state, action: PayloadAction<Job[]>) => {
-          state.jobs = action.payload;
+        (state, action: PayloadAction<ResponseJob>) => {
+          state.jobs = action.payload.jobs;
+          state.totalPages = action.payload.totalPages;
+          state.currentPage = action.payload.currentPage;
           state.loading = false;
         }
       )

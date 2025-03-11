@@ -103,7 +103,7 @@ export const Header = () => {
                     {profile?.profileType === "freelancer" ? (
                       <li className="menu-header__item">
                         <a
-                          href="/gigs-by-user"
+                          href="gigs/by-user"
                           className="menu-header__link"
                           onClick={handleBurger}
                         >
@@ -113,7 +113,7 @@ export const Header = () => {
                     ) : (
                       <li className="menu-header__item">
                         <a
-                          href="/jobs-by-user"
+                          href="jobs/by-user"
                           className="menu-header__link"
                           onClick={handleBurger}
                         >

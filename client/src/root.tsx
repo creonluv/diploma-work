@@ -23,6 +23,7 @@ import { ChatPage } from "./pages/chatPage/ChatPage";
 import { SignContact } from "./pages/signContract/SignContact";
 import { AddJobPage } from "./pages/addJobPage/AddJobPage";
 import { JobOnePage } from "./pages/JobOnePage/JobOnePage";
+import { JobsCatalogPage } from "./pages/jobsCatalogPage/JobsCatalogPage";
 
 const gigRoutes = [
   { path: "", element: <GigPage /> },
@@ -39,6 +40,7 @@ const messageRoutes = [
 const jobRoutes = [
   { path: "add", element: <AddJobPage /> },
   { path: ":jobId", element: <JobOnePage /> },
+  { path: "", element: <JobsCatalogPage /> },
 ];
 
 const protectedRoutes = [
@@ -89,7 +91,7 @@ export const Root = () => {
                     ))}
                   </Route>
 
-                  <Route path="job">
+                  <Route path="jobs">
                     {jobRoutes.map((route) => (
                       <Route
                         key={route.path}

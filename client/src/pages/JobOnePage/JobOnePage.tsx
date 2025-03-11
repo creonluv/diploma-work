@@ -32,8 +32,6 @@ export const JobOnePage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { jobId } = useParams<{ jobId: string }>();
 
-  console.log("ddd");
-
   const { job } = useAppSelector((state: RootState) => state.jobs);
   const { bids, loading } = useAppSelector((state: RootState) => state.bids);
 
@@ -43,8 +41,6 @@ export const JobOnePage: React.FC = () => {
     bidAmount: "",
     estimatedTime: "",
   });
-
-  console.log(bids);
 
   useEffect(() => {
     if (jobId) {

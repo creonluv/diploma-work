@@ -10,7 +10,7 @@ interface GigCardProps {
 
 export const GigCard: React.FC<GigCardProps> = ({ gig }) => {
   return (
-    <Link to={`/gig/${gig._id}`} className="gigcard">
+    <Link to={`/gigs/${gig._id}`} className="gigcard">
       <div className="gigcard__coverImgWrapper">
         <img
           className="gigcard__coverImg"

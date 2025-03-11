@@ -41,15 +41,47 @@ export const createJob = async (req, res) => {
   }
 };
 
-export const getAllJobs = async (req, res) => {
-  try {
-    const jobs = await Job.find()
-      .populate("tags")
-      .populate({ path: "employerId", populate: { path: "profileId" } });
+export const getAllJobs = async (req, res, next) => {
+  const q = req.query;
 
-    res.status(200).json(jobs);
+  const filters = {
+    ...(q.search && { title: { $regex: q.search, $options: "i" } }),
+    ...(q.cat && { cat: q.cat }),
+    ...(q.tags && { tags: { $in: q.tags.split(",") } }),
+    ...(q.minBids && { bids: { $size: { $lte: Number(q.minBids) } } }),
+  };
+
+  const allowedSortFields = ["budget", "createdAt", "views", "deadline"];
+  const sortOption = {};
+
+  if (q.sort && allowedSortFields.includes(q.sort)) {
+    sortOption[q.sort] = -1;
+  } else {
+    sortOption["createdAt"] = -1;
+  }
+
+  const page = Number(q.page) || 1;
+  const limit = Number(q.limit) || 3;
+  const skip = (page - 1) * limit;
+
+  try {
+    const jobs = await Job.find(filters)
+      .populate("tags")
+      .populate({ path: "employerId", populate: { path: "profileId" } })
+      .sort(sortOption)
+      .skip(skip)
+      .limit(limit);
+
+    const totalCount = await Job.countDocuments(filters);
+
+    res.status(200).json({
+      jobs,
+      totalCount,
+      totalPages: Math.ceil(totalCount / limit),
+      currentPage: page,
+    });
   } catch (error) {
-    res.status(500).json({ message: "Error fetching jobs", error });
+    next(error);
   }
 };
 

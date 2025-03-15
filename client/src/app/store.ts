@@ -4,6 +4,8 @@ import { reviewsReducer } from "../features/reviews";
 import { jobsReducer } from "../features/job";
 import { profileReducer } from "../features/profile";
 import { bidsReducer } from "../features/bids";
+import contractProgress from "../features/contractProgress";
+import { contractReducer } from "../features/contract";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ export const store = configureStore({
     jobs: jobsReducer,
     profile: profileReducer,
     bids: bidsReducer,
+    contractProgress: contractProgress,
+    contract: contractReducer,
   },
 });
 

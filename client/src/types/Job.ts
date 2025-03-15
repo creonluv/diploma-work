@@ -55,6 +55,7 @@ export type Job = {
   createdAt: string;
   updatedAt: string;
   daysLeft: number;
+  step: number;
 };
 
 export interface ResponseJob {

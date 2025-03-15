@@ -53,6 +53,7 @@ const jobSchema = new Schema(
       type: Date,
       required: true,
     },
+    step: { type: Number, default: 1 },
   },
   {
     timestamps: true,

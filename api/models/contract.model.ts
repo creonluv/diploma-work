@@ -10,12 +10,12 @@ const contractSchema = new Schema(
     },
     freelancerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Profile",
+      ref: "User",
       required: true,
     },
     employerId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Profile",
+      ref: "User",
       required: true,
     },
     bidId: {

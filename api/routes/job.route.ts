@@ -7,6 +7,7 @@ import {
   getAllJobs,
   getJobById,
   updateJob,
+  updateJobStep,
 } from "../controllers/job.controller";
 import { jobValidationRules } from "../validators/jobValidationRules";
 
@@ -18,5 +19,6 @@ router.get("/:jobId", verifyToken, getJobById);
 router.put("/:jobId", verifyToken, updateJob);
 router.delete("/:jobId", verifyToken, deleteJob);
 router.patch("/:jobId/close", verifyToken, closeJob);
+router.patch("/:jobId/step", verifyToken, updateJobStep);
 
 export default router;

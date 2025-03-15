@@ -1,22 +1,15 @@
-import React from "react";
 import "./ProgressBarMini.scss";
+import React from "react";
+import "./ProgressBar.scss";
+import { steps } from "../../helpers/steps";
 
-const steps = [
-  { label: "Publication", completed: true },
-  { label: "Bidding", completed: true },
-  { label: "Agreement Approval", completed: false },
-  { label: "Reservation", completed: false },
-  { label: "Project Execution", completed: false },
-  { label: "Feedback Exchange", completed: false },
-];
+type ProgressBarMiniProps = {
+  step: number;
+};
 
-interface ProgressBarProps {
-  currentStep: number;
-}
-
-const ProgressBarMini: React.FC<ProgressBarProps> = ({ currentStep }) => {
+const ProgressBarMini: React.FC<ProgressBarMiniProps> = ({ step }) => {
   const totalSteps = steps.length;
-  const progress = (currentStep / totalSteps) * 100;
+  const progress = (step / totalSteps) * 100;
   const radius = 28;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
@@ -45,14 +38,13 @@ const ProgressBarMini: React.FC<ProgressBarProps> = ({ currentStep }) => {
           transform="rotate(-90 32 32)"
         />
         <text x="50%" y="50%" textAnchor="middle" dy="0.4em" fontSize="14">
-          {currentStep + 1} з {totalSteps}
+          {step + 1} з {totalSteps}
         </text>
       </svg>
       <div className="progress-mini-text">
-        <strong>{steps[currentStep].label}</strong>
+        <strong>{steps[step].label}</strong>
         <p>
-          Next step:{" "}
-          {steps[currentStep + 1] ? steps[currentStep + 1].label : "Завершено"}
+          Next step: {steps[step + 1] ? steps[step + 1].label : "Завершено"}
         </p>
       </div>
     </div>

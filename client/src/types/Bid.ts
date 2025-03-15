@@ -8,9 +8,15 @@ export interface BidInput {
   estimatedTime: number;
 }
 
+interface jobId {
+  _id: string;
+  employerId: string;
+  title: string;
+}
+
 export interface Bid {
   _id: string;
-  jobId: string;
+  jobId: jobId;
   freelancerId: User;
   proposal: string;
   bidAmount: number;

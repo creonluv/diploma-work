@@ -20,6 +20,19 @@ export const createJob = async (req, res) => {
 
     const { title, description, budget, deadline, tags, cat } = req.body;
 
+    const existingJob = await Job.findOne({
+      employerId: userId,
+      title,
+      description,
+    });
+
+    if (existingJob) {
+      return res.status(400).json({
+        message:
+          "You have already created a job with the same title and description.",
+      });
+    }
+
     const newJob = new Job({
       employerId: userId,
       title,
@@ -32,7 +45,6 @@ export const createJob = async (req, res) => {
     });
 
     await newJob.save();
-
     const savedJob = await Job.findById(newJob._id).populate("tags");
 
     res.status(201).json(savedJob);
@@ -211,5 +223,33 @@ export const closeJob = async (req, res) => {
     res.status(200).json({ message: "Job successfully closed" });
   } catch (error) {
     res.status(500).json({ message: "Error closing job", error });
+  }
+};
+
+export const updateJobStep = async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const { step } = req.body;
+    const userId = req.userId;
+
+    if (!Number.isInteger(step) || step < 1) {
+      return res.status(400).json({ message: "Invalid step value" });
+    }
+
+    const job = await Job.findById(jobId);
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    if (job.employerId.toString() !== userId) {
+      return res.status(403).json({ message: "Unauthorized to update step" });
+    }
+
+    job.step = step;
+    await job.save();
+
+    res.status(200).json({ message: "Step updated successfully", job });
+  } catch (error) {
+    res.status(500).json({ message: "Error updating job step", error });
   }
 };

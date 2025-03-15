@@ -2,29 +2,29 @@ import React from "react";
 import "./ProgressBar.scss";
 
 const steps = [
-  { label: "Publication", completed: true },
-  { label: "Bidding", completed: true },
-  { label: "Agreement Approval", completed: false },
-  { label: "Reservation", completed: false },
-  { label: "Project Execution", completed: false },
-  { label: "Feedback Exchange", completed: false },
+  { label: "Publication" },
+  { label: "Bidding" },
+  { label: "Agreement Approval" },
+  { label: "Reservation" },
+  { label: "Project Execution" },
+  { label: "Feedback Exchange" },
 ];
 
-interface ProgressBarProps {
-  currentStep: number;
-}
+type ProgressBarProps = {
+  step: number;
+};
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ currentStep }) => {
+const ProgressBar: React.FC<ProgressBarProps> = ({ step }) => {
   return (
     <div className="progress-bar">
-      {steps.map((step, index) => (
+      {steps.map((stepItem, index) => (
         <div
           key={index}
-          className={`step ${index < currentStep ? "completed" : ""} ${
-            index === currentStep ? "active" : ""
+          className={`step ${index < step ? "completed" : ""} ${
+            index === step ? "active" : ""
           }`}
         >
-          {step.label}
+          {stepItem.label}
         </div>
       ))}
     </div>

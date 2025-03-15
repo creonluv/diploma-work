@@ -17,6 +17,10 @@ export const updateJob = (id: string, dataToUpdate: any): Promise<Job> => {
   return client.patch(`/job/${id}`, dataToUpdate);
 };
 
+export const updateJobStep = (id: string, step: number) => {
+  return client.patch(`/job/${id}/step`, { step });
+};
+
 export const deleteJob = (id: string) => {
   return client.delete(`/job/${id}`);
 };

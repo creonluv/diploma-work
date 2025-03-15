@@ -56,7 +56,10 @@ export const getBidsForJob = async (req, res) => {
   try {
     const { jobId } = req.params;
 
-    const bids = await Bid.find({ jobId }).populate("freelancerId");
+    const bids = await Bid.find({ jobId }).populate("freelancerId").populate({
+      path: "jobId",
+      select: "employerId title",
+    });
 
     if (!bids.length) {
       return res.status(404).json({ message: "No bids found for this job" });
@@ -114,7 +117,9 @@ export const deleteBid = async (req, res) => {
 
     await Bid.findByIdAndDelete(bidId);
 
-    res.status(200).json({ message: "Bid deleted successfully" });
+    await Job.updateMany({ bids: bidId }, { $pull: { bids: bidId } });
+
+    res.status(200).json({ message: "Bid deleted successfully from all jobs" });
   } catch (error) {
     res.status(500).json({ message: "Error deleting bid", error });
   }

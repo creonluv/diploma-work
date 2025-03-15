@@ -24,6 +24,8 @@ import { SignContact } from "./pages/signContract/SignContact";
 import { AddJobPage } from "./pages/addJobPage/AddJobPage";
 import { JobOnePage } from "./pages/JobOnePage/JobOnePage";
 import { JobsCatalogPage } from "./pages/jobsCatalogPage/JobsCatalogPage";
+import { ContractDetailsPage } from "./pages/сontractDetailsPage/ContractDetailsPage";
+import ContractLayout from "./pages/contractLayout/ContractLayout";
 
 const gigRoutes = [
   { path: "", element: <GigPage /> },
@@ -41,6 +43,13 @@ const jobRoutes = [
   { path: "add", element: <AddJobPage /> },
   { path: ":jobId", element: <JobOnePage /> },
   { path: "", element: <JobsCatalogPage /> },
+];
+
+const contractRoutes = [
+  { path: ":contractId/details", element: <ContractDetailsPage /> },
+  // { path: ":contractId/payments", element: <ContractPayments /> },
+  // { path: ":contractId/work", element: <ContractWork /> },
+  // { path: ":contractId/reviews", element: <ContractReviews /> },
 ];
 
 const protectedRoutes = [
@@ -93,6 +102,16 @@ export const Root = () => {
 
                   <Route path="jobs">
                     {jobRoutes.map((route) => (
+                      <Route
+                        key={route.path}
+                        path={route.path}
+                        element={route.element}
+                      />
+                    ))}
+                  </Route>
+
+                  <Route path="contracts" element={<ContractLayout />}>
+                    {contractRoutes.map((route) => (
                       <Route
                         key={route.path}
                         path={route.path}

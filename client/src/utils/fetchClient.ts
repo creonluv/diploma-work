@@ -23,17 +23,10 @@ async function request<T>(
     };
   }
 
-  // console.log(data);
-  // console.log(options);
-
-  // console.log(BASE_URL + url);
-
   try {
     const response = await fetch(BASE_URL + url, options);
     let error;
     const responseText = await response.text();
-
-    console.log(JSON.parse(responseText));
 
     if (!response.ok) {
       error = JSON.parse(responseText);

@@ -2,14 +2,63 @@ import "./Bid.scss";
 import { formatDistanceToNow } from "date-fns";
 import { Bid } from "../../types/Bid";
 import shiny from "../../assets/img/icons/icon/outline/shiny.svg";
+import { useAppDispatch } from "../../app/hooks";
+import { ContractInput } from "../../types/Contact";
+import { createContractAsync } from "../../features/contract";
+import { useEffect, useState } from "react";
+import { getUser } from "../../api/user";
+import { User } from "../../types/User";
+import { updateJobStepAsync } from "../../features/job";
+import { useNavigate } from "react-router-dom";
 
 interface ReviewProps {
   bid: Bid;
 }
 
 export const BidCard: React.FC<ReviewProps> = ({ bid }) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const storedUserId = localStorage.getItem("userId");
+  const [user, setUser] = useState<User | undefined>();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getUser(storedUserId);
+        setUser(user);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+
+    fetchUser();
+  }, [storedUserId]);
+
+  const createContact = async () => {
+    const data: ContractInput = {
+      jobId: bid.jobId._id,
+      freelancerId: bid.freelancerId._id,
+      employerId: storedUserId,
+      bidId: bid._id,
+      totalAmount: bid.bidAmount,
+      agreedDeadline: new Date(
+        Date.now() + +bid.estimatedTime * 24 * 60 * 60 * 1000
+      ).toISOString(),
+    };
+
+    try {
+      const contract = await dispatch(createContractAsync(data)).unwrap();
+      await dispatch(updateJobStepAsync({ id: bid._id, step: 2 })).unwrap();
+
+      navigate(`/contracts/${contract.contract._id}/details`);
+    } catch (error) {
+      console.error("Error creating contract:", error);
+    }
+  };
+
   return (
-    <div className="bid">
+    <div className={`bid ${bid.status === "rejected" ? "disable" : ""}`}>
       <div className="bid__body">
         <div className="bid__user">
           <div className="bid__user_top">
@@ -25,6 +74,11 @@ export const BidCard: React.FC<ReviewProps> = ({ bid }) => {
           </div>
 
           <div className="bid__user-info">
+            {user?.isSeller && user?._id === bid.jobId.employerId && (
+              <button className="bid__user-button" onClick={createContact}>
+                Accept the bid
+              </button>
+            )}
             <div className="bid__user-label">{bid.estimatedTime} days</div>
             <div className="bid__user-label bid__user-label--price">
               {bid.bidAmount} USD

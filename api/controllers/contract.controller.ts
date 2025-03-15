@@ -4,6 +4,7 @@ import nodemailer from "nodemailer";
 import Contract from "../models/contract.model";
 import User from "../models/user.model";
 import { decryptPrivateKey } from "../utils/encryptPrivateKey";
+import bidModel from "../models/bid.model";
 
 export const createContract = async (req, res) => {
   try {
@@ -22,6 +23,21 @@ export const createContract = async (req, res) => {
       return res
         .status(403)
         .json({ message: "Only sellers can create contracts" });
+    }
+
+    await bidModel.updateMany(
+      { jobId, _id: { $ne: bidId } },
+      { status: "rejected" }
+    );
+
+    const selectedBid = await bidModel.findByIdAndUpdate(
+      bidId,
+      { status: "accepted" },
+      { new: true }
+    );
+
+    if (!selectedBid) {
+      return res.status(400).json({ message: "Selected bid not found" });
     }
 
     const newContract = new Contract({
@@ -83,10 +99,16 @@ export const createContract = async (req, res) => {
       message: "Contract created successfully",
       contract: newContract,
     });
-  } catch (error: any) {
-    res
-      .status(500)
-      .json({ message: "Error creating contract", error: error.message });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res
+        .status(500)
+        .json({ message: "Error creating contract", error: error.message });
+    } else {
+      res
+        .status(500)
+        .json({ message: "Unknown error occurred", error: "Unknown error" });
+    }
   }
 };
 
@@ -105,6 +127,8 @@ export const signContract = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    console.log(user);
 
     const sign = crypto.createSign("RSA-SHA256");
     sign.update(contractText);
@@ -148,5 +172,53 @@ export const signContract = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error signing contract", error: error.message });
+  }
+};
+
+export const getAllContracts = async (req, res) => {
+  try {
+    const contracts = await Contract.find();
+    res
+      .status(200)
+      .json({ message: "Contracts fetched successfully", contracts });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res
+        .status(500)
+        .json({ message: "Error fetching contracts", error: error.message });
+    } else {
+      res
+        .status(500)
+        .json({ message: "Unknown error occurred", error: "Unknown error" });
+    }
+  }
+};
+
+export const getContractById = async (req, res) => {
+  try {
+    const { contractId } = req.params;
+
+    const contract = await Contract.findById(contractId)
+      .populate("jobId")
+      .populate("freelancerId")
+      .populate("employerId");
+
+    if (!contract) {
+      return res.status(404).json({ message: "Contract not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Contract fetched successfully", contract });
+  } catch (error) {
+    if (error instanceof Error) {
+      res
+        .status(500)
+        .json({ message: "Error fetching contract", error: error.message });
+    } else {
+      res
+        .status(500)
+        .json({ message: "Unknown error occurred", error: "Unknown error" });
+    }
   }
 };

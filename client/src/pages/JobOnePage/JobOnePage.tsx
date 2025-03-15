@@ -4,10 +4,6 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { fetchJobAsync } from "../../features/job";
 import { addBidToJob, fetchBidsForJob } from "../../features/bids";
-import { useMediaQuery } from "react-responsive";
-
-import ProgressBar from "../../components/progressBar/ProgressBar";
-import ProgressBarMini from "../../components/progressBar/ProgressBarMini";
 
 import shiny from "../../assets/img/icons/icon/outline/shiny.svg";
 import clock from "../../assets/img/icons/clock.svg";
@@ -18,15 +14,7 @@ import "./JobOnePage.scss";
 import { BidCard } from "../../components/bid/Bid";
 import { Loader } from "../../components/loader";
 import { formatDistanceToNow } from "date-fns";
-
-const ResponsiveComponent = () => {
-  const isMobile = useMediaQuery({ maxWidth: 1024 });
-  return !isMobile ? (
-    <ProgressBar currentStep={1} />
-  ) : (
-    <ProgressBarMini currentStep={1} />
-  );
-};
+import ContractLayout from "../contractLayout/ContractLayout";
 
 export const JobOnePage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -98,16 +86,10 @@ export const JobOnePage: React.FC = () => {
 
   return (
     <section className="jobonepage">
+      <ContractLayout />
+
       <div className="jobonepage__container">
         <div className="jobonepage__body">
-          <div className="jobonepage__background jobonepage__top">
-            <div className="jobonepage__background--top">
-              <h3 className="jobonepage__title">{job?.title}</h3>
-              <p className="jobonepage__price text-price">{job?.budget} USD</p>
-            </div>
-            <ResponsiveComponent />
-          </div>
-
           <div className="jobonepage__left">
             <div className="jobonepage__background">
               <h4 className="text-bold">About this job</h4>
@@ -117,11 +99,13 @@ export const JobOnePage: React.FC = () => {
             <div className="jobonepage__background">
               <h4 className="text-bold">Bids</h4>
 
+              {!bids?.length && <p>No bids!</p>}
+
               <div className="jobonepage__bids">
                 {loading ? (
                   <Loader />
                 ) : (
-                  bids?.map((bid) => <BidCard bid={bid} />)
+                  bids?.map((bid) => <BidCard key={bid._id} bid={bid} />)
                 )}
               </div>
 

@@ -1,6 +1,10 @@
 @use "../../shared/globalStyles/global" as *;
 
 .jobonepage {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
   &__background {
     display: flex;
     flex-direction: column;

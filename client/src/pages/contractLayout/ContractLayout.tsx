@@ -43,7 +43,8 @@ const ContractLayout = () => {
               {contractJob?.title || job?.title || "Untitled"}
             </h3>
             <p className="contractLayout__price text-price">
-              {contractJob?.budget || job?.budget || "Not specified"} USD
+              {contract?.contract.totalAmount || job?.budget || "Not specified"}
+              USD
             </p>
           </div>
 

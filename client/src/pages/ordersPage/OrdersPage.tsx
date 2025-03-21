@@ -64,8 +64,6 @@ export const OrdersPage: React.FC = () => {
 
       const to = userId1 === userId ? userId2 : userId1;
 
-      console.log("to: " + to);
-
       await createConversation({ to });
     } catch (error) {
       console.log("Error!");

@@ -1,0 +1,51 @@
+@use "../../shared/globalStyles/global" as *;
+
+.contractWorkPage {
+  &__body {
+    @include page-grid;
+  }
+
+  &__chat {
+    grid-column: 1 / -1;
+
+    @include on-tablet {
+      grid-column: 1 / 9;
+    }
+  }
+
+  &__information {
+    grid-column: 1 / -1;
+
+    @include on-tablet {
+      grid-column: 9 / -1;
+    }
+  }
+
+  &__background {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin: 0 auto;
+    padding: 48px;
+    border-radius: 16px;
+    background-color: var(--color-background-reverse);
+    border: 1px solid var(--color-border);
+    width: 100%;
+    height: fit-content;
+    margin-top: 16px;
+  }
+}
+
+.write {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+
+  textarea {
+    width: 100%;
+    height: 48px;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+  }
+}

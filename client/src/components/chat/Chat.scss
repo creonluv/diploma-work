@@ -1,0 +1,105 @@
+@use "../../shared/globalStyles/global" as *;
+
+.chatComponent {
+  color: var(--color-system-grey);
+  max-height: 80vh;
+  margin-top: 16px;
+
+  &__container {
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline: 16px;
+  }
+
+  &__body {
+    border: 2px solid red;
+    box-sizing: border-box;
+    padding: 36px;
+    border-radius: 16px;
+    background-color: var(--color-background-reverse);
+    border: 1px solid var(--color-border);
+
+    height: calc(100vh - 192px);
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+    height: 100%;
+  }
+
+  &__messages {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 32px 0px;
+    width: 100%;
+    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    .messageChat {
+      display: flex;
+      gap: 16px;
+      font-size: 18px;
+      max-width: 500px;
+      border-radius: 0px 20px 20px 20px;
+      padding: 16px;
+      background-color: var(--color-background-grey);
+      color: var(--color-text);
+      font-weight: 300;
+      align-self: flex-start;
+
+      &.owner {
+        flex-direction: row-reverse;
+        align-self: flex-end;
+        max-width: 500px;
+        border-radius: 20px 0px 20px 20px;
+        background-color: var(--color-accent);
+        color: white;
+      }
+
+      &__content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+        gap: 4px;
+      }
+
+      &__info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      &__read {
+        font-size: 12px;
+        color: white;
+      }
+
+      &__time {
+        font-size: 12px;
+      }
+
+      img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+  }
+
+  &__line {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-border);
+  }
+}

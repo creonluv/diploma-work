@@ -19,7 +19,7 @@ export const BidCard: React.FC<ReviewProps> = ({ bid }) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const storedUserId = localStorage.getItem("userId");
+  const storedUserId = localStorage.getItem("userId") ?? "";
   const [user, setUser] = useState<User | undefined>();
 
   useEffect(() => {
@@ -49,7 +49,10 @@ export const BidCard: React.FC<ReviewProps> = ({ bid }) => {
 
     try {
       const contract = await dispatch(createContractAsync(data)).unwrap();
-      await dispatch(updateJobStepAsync({ id: bid._id, step: 2 })).unwrap();
+
+      await dispatch(
+        updateJobStepAsync({ id: bid.jobId._id, step: 2 })
+      ).unwrap();
 
       navigate(`/contracts/${contract.contract._id}/details`);
     } catch (error) {

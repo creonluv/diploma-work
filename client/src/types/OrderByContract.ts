@@ -1,7 +1,7 @@
 type OrderStatus = "in-progress" | "completed" | "cancelled";
-type PaymentStatus = "pending" | "completed" | "failed";
+type PaymentStatus = "pending" | "paid" | "failed";
 
-interface NewOrder {
+export interface OrderByContract {
   jobId: string;
   contractId: string;
   freelancerId: string;
@@ -18,5 +18,10 @@ interface NewOrder {
 
 export interface OrderByContractResponse {
   clientSecret: string;
-  newOrder: NewOrder;
+  newOrder: OrderByContract;
+}
+
+export interface OrderAction {
+  orderId: string;
+  action: "confirm" | "cancel";
 }

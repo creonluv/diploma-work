@@ -18,8 +18,12 @@ export const updateMessages = (id: string, data: MessageId) => {
   return client.put(`/conversation/${id}`, data);
 };
 
+export const markAsReadMessage = (id: string | null) => {
+  return client.put(`/message/read/${id}`, null);
+};
+
 export const getMessagesChat = (
-  id: string | undefined
+  id: string | null | undefined
 ): Promise<MessageChat[]> => {
   return client.get(`/message/${id}`);
 };

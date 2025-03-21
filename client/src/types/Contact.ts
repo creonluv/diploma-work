@@ -17,7 +17,7 @@ export interface SignContractInput {
 }
 
 export interface Contract {
-  jobId: Job;
+  jobId: string;
   freelancerId: User;
   employerId: User;
   bidId: string;
@@ -51,5 +51,5 @@ export interface SignedContract {
   totalAmount: number;
   agreedDeadline: string;
   freelancerSignature: string;
-  status: "pending" | "completed" | "rejected";
+  status: "pending" | "signed" | "rejected";
 }

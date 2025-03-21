@@ -1,24 +1,28 @@
 import { useEffect, useState } from "react";
 import { RootState } from "../../app/store";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getContractAsync, signContractAsync } from "../../features/contract";
 
 import "./ContractDetailsPage.scss";
 import { User } from "../../types/User";
 import { getUser } from "../../api/user";
+import { updateJobStepAsync } from "../../features/job";
 
 export const ContractDetailsPage: React.FC = () => {
   const [user, setUser] = useState<User | undefined>();
-  const { contract, signedContract, loading } = useAppSelector(
+
+  const { contract, signedContract } = useAppSelector(
     (state: RootState) => state.contract
   );
+
   const { contractId } = useParams();
+  const navigate = useNavigate();
 
   const storedUserId = localStorage.getItem("userId");
 
   if (!contractId) {
-    return <p>Контракт не знайдено</p>;
+    return <p>Contract not found</p>;
   }
 
   const dispatch = useAppDispatch();
@@ -42,17 +46,32 @@ export const ContractDetailsPage: React.FC = () => {
   }, []);
 
   const signContract = async () => {
-    const contractText = JSON.stringify(contract);
+    console.log(contract);
 
-    const data = {
-      contractText,
-      role: user?.isSeller ? "employer" : "freelancer",
-      userId: storedUserId,
-    };
+    try {
+      const contractText = JSON.stringify(contract);
 
-    const response = await dispatch(
-      signContractAsync({ data, contractId })
-    ).unwrap();
+      const data = {
+        contractText,
+        role: user?.isSeller ? "employer" : "freelancer",
+        userId: storedUserId,
+      };
+
+      await dispatch(signContractAsync({ data, contractId }));
+
+      if (!contract?.contract.jobId) {
+        console.error("jobId._id is undefined");
+        return;
+      }
+
+      await dispatch(
+        updateJobStepAsync({ id: contract?.contract.jobId, step: 3 })
+      ).unwrap();
+
+      navigate(`/contracts/${contractId}/payments`);
+    } catch (error) {
+      console.error("Error signing contract:", error);
+    }
   };
 
   return (
@@ -72,7 +91,7 @@ export const ContractDetailsPage: React.FC = () => {
                   id="jobTitle"
                   className="form__input input"
                   name="jobTitle"
-                  value={contract?.contract.jobId.title}
+                  // value={contract?.contract.jobId.title}
                   readOnly
                 />
               </div>
@@ -86,7 +105,7 @@ export const ContractDetailsPage: React.FC = () => {
                   id="jobDescription"
                   className="form__input input"
                   name="jobDescription"
-                  value={contract?.contract.jobId.description}
+                  // value={contract?.contract.jobId.description}
                   readOnly
                 />
               </div>

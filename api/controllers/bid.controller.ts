@@ -58,7 +58,7 @@ export const getBidsForJob = async (req, res) => {
 
     const bids = await Bid.find({ jobId }).populate("freelancerId").populate({
       path: "jobId",
-      select: "employerId title",
+      select: "employerId title step",
     });
 
     if (!bids.length) {

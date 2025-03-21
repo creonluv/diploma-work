@@ -230,7 +230,6 @@ export const updateJobStep = async (req, res) => {
   try {
     const { jobId } = req.params;
     const { step } = req.body;
-    const userId = req.userId;
 
     if (!Number.isInteger(step) || step < 1) {
       return res.status(400).json({ message: "Invalid step value" });
@@ -239,10 +238,6 @@ export const updateJobStep = async (req, res) => {
     const job = await Job.findById(jobId);
     if (!job) {
       return res.status(404).json({ message: "Job not found" });
-    }
-
-    if (job.employerId.toString() !== userId) {
-      return res.status(403).json({ message: "Unauthorized to update step" });
     }
 
     job.step = step;

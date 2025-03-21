@@ -12,6 +12,7 @@ interface jobId {
   _id: string;
   employerId: string;
   title: string;
+  step: string;
 }
 
 export interface Bid {

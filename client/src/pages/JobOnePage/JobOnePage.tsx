@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
 import { fetchJobAsync } from "../../features/job";
@@ -10,18 +10,21 @@ import clock from "../../assets/img/icons/clock.svg";
 import calendar from "../../assets/img/icons/calendar.svg";
 import eye from "../../assets/img/icons/eye.svg";
 
-import "./JobOnePage.scss";
 import { BidCard } from "../../components/bid/Bid";
 import { Loader } from "../../components/loader";
 import { formatDistanceToNow } from "date-fns";
-import ContractLayout from "../contractLayout/ContractLayout";
+
+import "./JobOnePage.scss";
+import { getContractsAsync } from "../../features/contract";
 
 export const JobOnePage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { jobId } = useParams<{ jobId: string }>();
 
   const { job } = useAppSelector((state: RootState) => state.jobs);
   const { bids, loading } = useAppSelector((state: RootState) => state.bids);
+  const { contracts } = useAppSelector((state: RootState) => state.contract);
 
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [bidData, setBidData] = useState({
@@ -38,6 +41,36 @@ export const JobOnePage: React.FC = () => {
       console.error("Job ID is missing.");
     }
   }, [jobId, dispatch]);
+
+  useEffect(() => {
+    dispatch(getContractsAsync());
+  }, []);
+
+  useEffect(() => {
+    console.log("AAAA");
+
+    if (!contracts?.length || !jobId) return;
+
+    const idOfContract = contracts.find(
+      (contract) => contract.jobId === jobId
+    )?._id;
+
+    console.log(idOfContract);
+
+    if (jobId === job?._id && idOfContract) {
+      switch (job?.step) {
+        case 2:
+          navigate(`/contracts/${idOfContract}/details`);
+          break;
+        case 3:
+          navigate(`/contracts/${idOfContract}/payments`);
+          break;
+        case 4:
+          navigate(`/contracts/${idOfContract}/work`);
+          break;
+      }
+    }
+  }, [contracts, jobId, job]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -86,141 +119,137 @@ export const JobOnePage: React.FC = () => {
 
   return (
     <section className="jobonepage">
-      <ContractLayout />
+      <div className="jobonepage__body">
+        <div className="jobonepage__left">
+          <div className="jobonepage__background">
+            <h4 className="text-bold">About this job</h4>
+            <p>{job?.description}</p>
+          </div>
 
-      <div className="jobonepage__container">
-        <div className="jobonepage__body">
-          <div className="jobonepage__left">
-            <div className="jobonepage__background">
-              <h4 className="text-bold">About this job</h4>
-              <p>{job?.description}</p>
+          <div className="jobonepage__background">
+            <h4 className="text-bold">Bids</h4>
+
+            {!bids?.length && <p>No bids!</p>}
+
+            <div className="jobonepage__bids">
+              {loading ? (
+                <Loader />
+              ) : (
+                bids?.map((bid) => <BidCard key={bid._id} bid={bid} />)
+              )}
             </div>
 
-            <div className="jobonepage__background">
-              <h4 className="text-bold">Bids</h4>
+            <button
+              onClick={() => setIsFormOpen(!isFormOpen)}
+              className="bid-button"
+            >
+              Place a Bid
+            </button>
 
-              {!bids?.length && <p>No bids!</p>}
-
-              <div className="jobonepage__bids">
-                {loading ? (
-                  <Loader />
-                ) : (
-                  bids?.map((bid) => <BidCard key={bid._id} bid={bid} />)
-                )}
-              </div>
-
-              <button
-                onClick={() => setIsFormOpen(!isFormOpen)}
-                className="bid-button"
-              >
-                Place a Bid
-              </button>
-
-              {isFormOpen && (
-                <form onSubmit={handleSubmit} className="jobonepage__bid-form">
-                  <textarea
-                    name="proposal"
-                    value={bidData.proposal}
+            {isFormOpen && (
+              <form onSubmit={handleSubmit} className="jobonepage__bid-form">
+                <textarea
+                  name="proposal"
+                  value={bidData.proposal}
+                  onChange={handleChange}
+                  placeholder="Your proposal"
+                  className="form__input input"
+                  required
+                />
+                <div className="jobonepage__bid-form--block">
+                  <input
+                    type="number"
+                    name="bidAmount"
+                    value={bidData.bidAmount}
                     onChange={handleChange}
-                    placeholder="Your proposal"
+                    placeholder="Bid Amount (USD)"
                     className="form__input input"
                     required
                   />
-                  <div className="jobonepage__bid-form--block">
-                    <input
-                      type="number"
-                      name="bidAmount"
-                      value={bidData.bidAmount}
-                      onChange={handleChange}
-                      placeholder="Bid Amount (USD)"
-                      className="form__input input"
-                      required
-                    />
-                    <input
-                      type="number"
-                      name="estimatedTime"
-                      value={bidData.estimatedTime}
-                      onChange={handleChange}
-                      placeholder="Estimated Time (days)"
-                      className="form__input input"
-                      required
-                    />
-                  </div>
-                  <button
-                    className="button button_lg button_default"
-                    type="submit"
-                  >
-                    Submit Bid
-                  </button>
-                </form>
-              )}
+                  <input
+                    type="number"
+                    name="estimatedTime"
+                    value={bidData.estimatedTime}
+                    onChange={handleChange}
+                    placeholder="Estimated Time (days)"
+                    className="form__input input"
+                    required
+                  />
+                </div>
+                <button
+                  className="button button_lg button_default"
+                  type="submit"
+                >
+                  Submit Bid
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+
+        <div className="jobonepage__right">
+          <div className="jobonepage__background">
+            <h4 className="text-bold">Customer</h4>
+            <div className="jobonepage__user">
+              <img
+                className="jobonepage__avatar"
+                src={`http://localhost:8800/api${job?.employerId.profileId.profileImage}`}
+                alt={job?.employerId.profileId.userId}
+              />
+              <div className="jobonepage__user-info">
+                <h4 className="text-bold">{job?.employerId.username}</h4>
+                <div className="jobonepage__rating">
+                  <p className="text-light">
+                    {job?.employerId.profileId.location}
+                  </p>
+                  <img src={shiny} alt="rating" />
+                  <p className="text-light">
+                    {job?.employerId.profileId.userRating.toFixed(1)}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="jobonepage__right">
-            <div className="jobonepage__background">
-              <h4 className="text-bold">Customer</h4>
-              <div className="jobonepage__user">
-                <img
-                  className="jobonepage__avatar"
-                  src={`http://localhost:8800/api${job?.employerId.profileId.profileImage}`}
-                  alt={job?.employerId.profileId.userId}
-                />
-                <div className="jobonepage__user-info">
-                  <h4 className="text-bold">{job?.employerId.username}</h4>
-                  <div className="jobonepage__rating">
-                    <p className="text-light">
-                      {job?.employerId.profileId.location}
-                    </p>
-                    <img src={shiny} alt="rating" />
-                    <p className="text-light">
-                      {job?.employerId.profileId.userRating.toFixed(1)}
-                    </p>
-                  </div>
-                </div>
+          <div className="jobonepage__background">
+            <h4 className="text-bold">Project published</h4>
+
+            <div className="jobonepage__points">
+              <div className="jobonepage__point">
+                <img className="jobonepage__logo" src={clock} alt="rating" />
+                <p className="text-light">
+                  {job?.createdAt
+                    ? formatDistanceToNow(new Date(job.createdAt))
+                    : "Date unavailable"}{" "}
+                  ago
+                </p>
               </div>
-            </div>
-
-            <div className="jobonepage__background">
-              <h4 className="text-bold">Project published</h4>
-
-              <div className="jobonepage__points">
-                <div className="jobonepage__point">
-                  <img className="jobonepage__logo" src={clock} alt="rating" />
-                  <p className="text-light">
-                    {job?.createdAt
-                      ? formatDistanceToNow(new Date(job.createdAt))
-                      : "Date unavailable"}{" "}
-                    ago
-                  </p>
-                </div>
-
-                <div className="jobonepage__point">
-                  <img className="jobonepage__logo" src={eye} alt="rating" />
-                  <p className="text-light">{job?.views}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="jobonepage__background">
-              <h4 className="text-bold">Before closing</h4>
 
               <div className="jobonepage__point">
-                <img className="jobonepage__logo" src={calendar} alt="rating" />
-                <p className="text-light">{job?.daysLeft} days</p>
+                <img className="jobonepage__logo" src={eye} alt="rating" />
+                <p className="text-light">{job?.views}</p>
               </div>
             </div>
+          </div>
 
-            <div className="jobonepage__background">
-              <h4 className="text-bold">Tags</h4>
+          <div className="jobonepage__background">
+            <h4 className="text-bold">Before closing</h4>
 
-              <div className="jobonepage__tags">
-                {job?.tags.map((tag) => (
-                  <div className="jobonepage__tag" key={tag.name}>
-                    ◦ {tag.name}
-                  </div>
-                ))}
-              </div>
+            <div className="jobonepage__point">
+              <img className="jobonepage__logo" src={calendar} alt="rating" />
+              <p className="text-light">{job?.daysLeft} days</p>
+            </div>
+          </div>
+
+          <div className="jobonepage__background">
+            <h4 className="text-bold">Tags</h4>
+
+            <div className="jobonepage__tags">
+              {job?.tags.map((tag) => (
+                <div className="jobonepage__tag" key={tag.name}>
+                  ◦ {tag.name}
+                </div>
+              ))}
             </div>
           </div>
         </div>

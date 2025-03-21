@@ -54,3 +54,20 @@ export const getMessages = async (req, res, next) => {
     next(err);
   }
 };
+
+export const markMessagesAsRead = async (req, res, next) => {
+  try {
+    await Message.updateMany(
+      {
+        conversationId: req.params.id,
+        isRead: false,
+        userId: { $ne: req.userId },
+      },
+      { $set: { isRead: true } }
+    );
+
+    res.status(200).send({ message: "Messages marked as read" });
+  } catch (err) {
+    next(err);
+  }
+};

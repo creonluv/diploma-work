@@ -20,12 +20,13 @@ import { PayPage } from "./pages/payPage";
 import { OrdersPage } from "./pages/ordersPage/OrdersPage";
 import { MessagesPage } from "./pages/messagesPage/MessagesPage";
 import { ChatPage } from "./pages/chatPage/ChatPage";
-import { SignContact } from "./pages/signContract/SignContact";
 import { AddJobPage } from "./pages/addJobPage/AddJobPage";
 import { JobOnePage } from "./pages/JobOnePage/JobOnePage";
 import { JobsCatalogPage } from "./pages/jobsCatalogPage/JobsCatalogPage";
 import { ContractDetailsPage } from "./pages/сontractDetailsPage/ContractDetailsPage";
 import ContractLayout from "./pages/contractLayout/ContractLayout";
+import { PayPageContract } from "./pages/сontractPaymentPage/ContractPaymentsPage";
+import { ContractWorkPage } from "./pages/contractWorkPage/ContractWorkPage";
 
 const gigRoutes = [
   { path: "", element: <GigPage /> },
@@ -39,16 +40,10 @@ const messageRoutes = [
   { path: ":chatId", element: <ChatPage /> },
 ];
 
-const jobRoutes = [
-  { path: "add", element: <AddJobPage /> },
-  { path: ":jobId", element: <JobOnePage /> },
-  { path: "", element: <JobsCatalogPage /> },
-];
-
 const contractRoutes = [
   { path: ":contractId/details", element: <ContractDetailsPage /> },
-  // { path: ":contractId/payments", element: <ContractPayments /> },
-  // { path: ":contractId/work", element: <ContractWork /> },
+  { path: ":contractId/payments", element: <PayPageContract /> },
+  { path: ":contractId/work", element: <ContractWorkPage /> },
   // { path: ":contractId/reviews", element: <ContractReviews /> },
 ];
 
@@ -58,7 +53,6 @@ const protectedRoutes = [
   { path: "pay/contract/:contractId", element: <PayPage /> },
   { path: "success", element: <Success /> },
   { path: "orders", element: <OrdersPage /> },
-  { path: "contract", element: <SignContact /> },
 ];
 
 export const Root = () => {
@@ -101,13 +95,11 @@ export const Root = () => {
                   </Route>
 
                   <Route path="jobs">
-                    {jobRoutes.map((route) => (
-                      <Route
-                        key={route.path}
-                        path={route.path}
-                        element={route.element}
-                      />
-                    ))}
+                    <Route index element={<JobsCatalogPage />} />
+                    <Route path="add" element={<AddJobPage />} />
+                    <Route path=":jobId" element={<ContractLayout />}>
+                      <Route index element={<JobOnePage />} />
+                    </Route>
                   </Route>
 
                   <Route path="contracts" element={<ContractLayout />}>

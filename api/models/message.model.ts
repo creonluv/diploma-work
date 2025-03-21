@@ -15,12 +15,16 @@ const MessageSchema = new Schema(
     },
     desc: {
       type: String,
-      required: true,
+    },
+    fileUrl: {
+      type: String,
+    },
+    isRead: {
+      type: Boolean,
+      default: false,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 export default mongoose.model("Message", MessageSchema);

@@ -26,13 +26,16 @@ export const PayPage: React.FC = () => {
 
     const makeRequest = async () => {
       setIsLoading(true);
+
       try {
         let res;
+
         if (gigId) {
           res = await createOrderGig(gigId);
         } else if (contractId) {
           res = await createOrder(contractId);
         }
+
         if (res?.clientSecret) {
           setClientSecret(res.clientSecret);
         }

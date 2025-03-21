@@ -34,11 +34,13 @@ export interface MessageChat {
   conversationId: string;
   userId: UserChat;
   desc: string;
+  isRead: boolean;
+  fileUrl: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface NewMessage {
-  conversationId: string | undefined;
+  conversationId: string | undefined | null;
   desc: string;
 }

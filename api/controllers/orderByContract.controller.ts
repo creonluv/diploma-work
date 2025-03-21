@@ -68,7 +68,6 @@ export const confirmOrCancelPayment = async (req, res, next) => {
       await stripe.paymentIntents.capture(order.payment_intent);
 
       order.paymentStatus = "paid";
-      order.status = "completed";
     } else if (action === "cancel") {
       await stripe.paymentIntents.cancel(order.payment_intent);
 
@@ -97,6 +96,21 @@ export const getOrdersByContract = async (req, res, next) => {
     }
 
     res.status(200).json(orders);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getOrderById = async (req, res, next) => {
+  const { orderId } = req.params;
+
+  try {
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json(order);
   } catch (error) {
     next(error);
   }

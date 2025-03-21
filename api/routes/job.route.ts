@@ -19,6 +19,6 @@ router.get("/:jobId", verifyToken, getJobById);
 router.put("/:jobId", verifyToken, updateJob);
 router.delete("/:jobId", verifyToken, deleteJob);
 router.patch("/:jobId/close", verifyToken, closeJob);
-router.patch("/:jobId/step", verifyToken, updateJobStep);
+router.patch("/:jobId/step", updateJobStep);
 
 export default router;

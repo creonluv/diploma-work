@@ -53,6 +53,8 @@ export const MessagesPage: React.FC = () => {
     }
   };
 
+  console.log(user?.isSeller);
+
   return (
     <section className="messages">
       <div className="messages__container">

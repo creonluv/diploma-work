@@ -10,8 +10,9 @@ export const JobCard: React.FC<JobCardProps> = ({ job }) => {
   return (
     <Link to={`/jobs/${job._id}`} className="jobcard">
       <div className="jobcard__body">
-        <div className="jobcard__title">
+        <div className="jobcard__titles">
           <h4 className="gigcard__title text-bold">{job.title}</h4>
+          <h4 className="gigcard__price text-bold">${job.budget}</h4>
         </div>
 
         <div className="jobcard__desc">

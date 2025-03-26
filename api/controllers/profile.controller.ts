@@ -61,8 +61,7 @@ export const updateProfile = async (req, res) => {
     const userIdFromToken = req.userId;
     const updates = req.body;
 
-    console.log(id);
-    console.log(userIdFromToken);
+    console.log(updates);
 
     if (userIdFromToken !== id) {
       return res.status(403).json({
@@ -84,6 +83,7 @@ export const updateProfile = async (req, res) => {
       await User.findByIdAndUpdate(id, {
         username: updates.username || undefined,
         email: updates.email || undefined,
+        phone: updates.phone || undefined,
       });
     }
 

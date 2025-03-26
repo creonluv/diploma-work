@@ -22,7 +22,7 @@ export const createContract = async (req, res) => {
     if (!user || !user.isSeller) {
       return res
         .status(403)
-        .json({ message: "Only sellers can create contracts" });
+        .json({ message: "Only sellers can creat contracts" });
     }
 
     await bidModel.updateMany(
@@ -55,7 +55,7 @@ export const createContract = async (req, res) => {
     if (!freelancer || !freelancer.email) {
       return res
         .status(400)
-        .json({ message: "Freelancer not found or email missing" });
+        .json({ message: "Freelancer not found or email ming" });
     }
 
     const transporter = nodemailer.createTransport({
@@ -167,7 +167,7 @@ export const signContract = async (req, res) => {
 
     await contract.save();
 
-    res.status(200).json({ message: "Contract signed successfully", contract });
+    res.status(200).json({ message: "Contact signed successfully", contract });
   } catch (error: any) {
     res
       .status(500)

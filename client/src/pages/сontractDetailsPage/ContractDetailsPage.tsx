@@ -45,9 +45,24 @@ export const ContractDetailsPage: React.FC = () => {
     fetchUser();
   }, []);
 
-  const signContract = async () => {
-    console.log(contract);
+  useEffect(() => {
+    const signContractEffect = async () => {
+      if (contract?.contract.status === "signed") {
+        try {
+          await dispatch(
+            updateJobStepAsync({ id: contract.contract.jobId._id, step: 3 })
+          );
+          navigate(`/contracts/${contractId}/payments`);
+        } catch (error) {
+          console.error("Error updating job step:", error);
+        }
+      }
+    };
 
+    signContractEffect();
+  }, [contract, contractId, dispatch, navigate]);
+
+  const signContract = async () => {
     try {
       const contractText = JSON.stringify(contract);
 
@@ -59,16 +74,22 @@ export const ContractDetailsPage: React.FC = () => {
 
       await dispatch(signContractAsync({ data, contractId }));
 
-      if (!contract?.contract.jobId) {
-        console.error("jobId._id is undefined");
-        return;
-      }
+      // await dispatch(getContractAsync(contractId));
 
-      await dispatch(
-        updateJobStepAsync({ id: contract?.contract.jobId, step: 3 })
-      ).unwrap();
+      // if (!contract?.contract.jobId) {
+      //   console.error("jobId._id is undefined");
+      //   return;
+      // }
 
-      navigate(`/contracts/${contractId}/payments`);
+      // console.log(contract.contract.status);
+
+      // if (contract.contract.status === "signed") {
+      //   await dispatch(
+      //     updateJobStepAsync({ id: contract?.contract.jobId._id, step: 3 })
+      //   );
+
+      //   navigate(`/contracts/${contractId}/payments`);
+      // }
     } catch (error) {
       console.error("Error signing contract:", error);
     }
@@ -91,7 +112,7 @@ export const ContractDetailsPage: React.FC = () => {
                   id="jobTitle"
                   className="form__input input"
                   name="jobTitle"
-                  // value={contract?.contract.jobId.title}
+                  value={contract?.contract.jobId.title}
                   readOnly
                 />
               </div>
@@ -105,7 +126,7 @@ export const ContractDetailsPage: React.FC = () => {
                   id="jobDescription"
                   className="form__input input"
                   name="jobDescription"
-                  // value={contract?.contract.jobId.description}
+                  value={contract?.contract.jobId.description}
                   readOnly
                 />
               </div>

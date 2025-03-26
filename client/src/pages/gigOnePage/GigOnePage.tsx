@@ -30,8 +30,6 @@ export const GigOnePage: React.FC = () => {
     fetchGig();
   }, []);
 
-  console.dir(gig);
-
   return (
     <section className="gigonepage">
       <div className="gigonepage__container">

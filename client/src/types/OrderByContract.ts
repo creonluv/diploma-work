@@ -1,3 +1,5 @@
+import { ReviewType } from "./Review";
+
 type OrderStatus = "in-progress" | "completed" | "cancelled";
 type PaymentStatus = "pending" | "paid" | "failed";
 
@@ -14,6 +16,7 @@ export interface OrderByContract {
   endDate: string | null;
   reviewId: string | null;
   _id: string;
+  reviews: ReviewStatus;
 }
 
 export interface OrderByContractResponse {
@@ -24,4 +27,9 @@ export interface OrderByContractResponse {
 export interface OrderAction {
   orderId: string;
   action: "confirm" | "cancel";
+}
+
+export interface ReviewStatus {
+  freelancer: ReviewType;
+  employer: ReviewType;
 }

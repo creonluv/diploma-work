@@ -16,6 +16,8 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({
   );
   const [loading, setLoading] = useState<boolean>(false);
 
+  console.log(initialImage);
+
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -33,11 +35,6 @@ const ProfileAvatar: React.FC<ProfileAvatarProps> = ({
 
       const formData = new FormData();
       formData.append("profileImage", file);
-
-      formData.forEach((value, key) => {
-        console.log(`hui`);
-        console.log(`${key}:`, value);
-      });
 
       try {
         if (!userId) {

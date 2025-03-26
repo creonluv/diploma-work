@@ -8,6 +8,7 @@ interface ReviewProps {
 }
 
 export const Review: React.FC<ReviewProps> = ({ review }) => {
+  console.log(review);
   return (
     <div className="review">
       <div className="review__body">
@@ -31,14 +32,14 @@ export const Review: React.FC<ReviewProps> = ({ review }) => {
 
         <div className="review__rating">
           <div className="review__rate">
-            {Array(review.star)
+            {Array(review?.star)
               .fill(null)
               .map((_, i) => (
                 <img className="review__star" src={star} alt="rating" key={i} />
               ))}
-            <p className="text-light">{review.star}</p>
+            <p className="text-light">{review?.star}</p>
           </div>
-          <p className="text-light">{review.review}</p>
+          <p className="text-light">{review?.review}</p>
         </div>
       </div>
     </div>

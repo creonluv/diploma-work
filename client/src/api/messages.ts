@@ -3,10 +3,13 @@ import {
   MessageChat,
   MessageId,
   NewMessage,
+  PayloadConversation,
 } from "../types/Messages";
 import { client } from "../utils/fetchClient";
 
-export const createConversation = (data: any): Promise<Conversation> => {
+export const createConversation = (
+  data: PayloadConversation
+): Promise<Conversation> => {
   return client.post(`/conversation/`, data);
 };
 

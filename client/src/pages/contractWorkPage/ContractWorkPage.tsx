@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { RootState } from "../../app/store";
 import { createConversation, getMessages } from "../../api/messages";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getContractAsync } from "../../features/contract";
 import { Chat } from "../../components/chat/Chat";
@@ -13,9 +13,12 @@ import {
   fetchOrdersByContractAsync,
 } from "../../features/orderByContract";
 import { OrderAction } from "../../types/OrderByContract";
+import { updateJobStepAsync } from "../../features/job";
+import { Loader } from "../../components/loader";
 
 export const ContractWorkPage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [messages, setMessages] = useState<Conversation[] | undefined>();
@@ -27,6 +30,7 @@ export const ContractWorkPage: React.FC = () => {
   );
 
   const userId = localStorage.getItem("userId");
+  const isSeller = localStorage.getItem("isSeller");
 
   if (!contractId) {
     return <p>Contract not found</p>;
@@ -56,18 +60,37 @@ export const ContractWorkPage: React.FC = () => {
   }, [contractId, userId]);
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const messages = await getMessages();
+    if (!contract) {
+      return;
+    }
 
-        setMessages(messages);
+    const chatManagement = async () => {
+      try {
+        const conversations = await getMessages();
+        setMessages(conversations);
+
+        const chatId = idOfChat(
+          contract.contract.freelancerId._id,
+          contract.contract.employerId._id
+        );
+
+        if (!chatId) {
+          const to =
+            contract.contract.freelancerId._id === userId
+              ? contract.contract.employerId._id
+              : contract.contract.freelancerId._id;
+
+          await createConversation({
+            to,
+          });
+        }
       } catch (error) {
         console.error("Error fetching messages:", error);
       }
     };
 
-    fetchMessages();
-  }, [loading]);
+    chatManagement();
+  }, [contract]);
 
   useEffect(() => {
     dispatch(fetchOrdersByContractAsync(contractId));
@@ -88,7 +111,7 @@ export const ContractWorkPage: React.FC = () => {
         (message.sellerId?._id === userId2 && message.buyerId?._id === userId1)
     );
 
-    return res ? res._id : null; // Переконуємось, що повертається рядок або null
+    return res ? res._id : null;
   };
 
   const chatId = idOfChat(
@@ -101,15 +124,27 @@ export const ContractWorkPage: React.FC = () => {
       return;
     }
 
+    if (!contract?.contract.jobId) {
+      console.error("jobId._id is undefined");
+      return;
+    }
+
     const data: OrderAction = {
       orderId: orders[0]._id,
       action: "confirm",
     };
 
-    console.log(data);
-
     dispatch(confirmOrCancelPaymentAsync(data));
+    dispatch(updateJobStepAsync({ id: contract?.contract.jobId._id, step: 5 }));
+
+    navigate(`/contracts/${contractId}/reviews`);
   };
+
+  if (loading) {
+    return <Loader />;
+  }
+
+  console.log(isSeller);
 
   return (
     <section className="contractWorkPage">
@@ -165,22 +200,24 @@ export const ContractWorkPage: React.FC = () => {
                 id="jobDescription"
                 className="form__input input"
                 name="jobDescription"
-                value={`$${contract?.contract.status}`}
+                value={`${contract?.contract.status}`}
                 readOnly
               />
             </div>
           </div>
 
-          <div className="contractWorkPage__background">
-            <h4 className="text-bold">Confirm payment</h4>
-            <button
-              className="button button_lg button_default button_full-size"
-              onClick={confirmPayment}
-              type="submit"
-            >
-              <span>Confirm</span>
-            </button>
-          </div>
+          {isSeller === "true" ? (
+            <div className="contractWorkPage__background">
+              <h4 className="text-bold">Confirm payment</h4>
+              <button
+                className="button button_lg button_default button_full-size"
+                onClick={confirmPayment}
+                type="submit"
+              >
+                <span>Confirm</span>
+              </button>
+            </div>
+          ) : null}
         </div>
       </div>
     </section>

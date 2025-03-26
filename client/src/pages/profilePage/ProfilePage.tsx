@@ -192,7 +192,7 @@ export const ProfilePage: React.FC = () => {
               <div className="profile__name-desc">
                 <div className="profile__name_top">
                   <p className="text-bold">{profile?.userId.username}</p>
-                  <p className="text-muted">{profile?.userRating}</p>
+                  <p className="text-muted">{profile?.userId.userRating}</p>
                 </div>
 
                 <p className="text-muted">{profile?.profileType}</p>
@@ -313,15 +313,6 @@ export const ProfilePage: React.FC = () => {
                 </button>
               </div>
             )}
-          </div>
-        </div>
-
-        <div className="profile__body">
-          <div className="profile__form-section">
-            <div className="profile__form-title">
-              <h4 className="text-bold">Other</h4>
-            </div>
-            <div className="profile__group">{profile?.description}</div>
           </div>
         </div>
       </div>

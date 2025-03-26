@@ -14,3 +14,7 @@ export const getReviewsForGig = (
 export const addReview = (data: ReviewData): Promise<ReviewType> => {
   return client.post(`/reviews/`, data);
 };
+
+export const addReviewToUser = (data: ReviewData): Promise<ReviewType> => {
+  return client.post(`/reviews/user`, data);
+};

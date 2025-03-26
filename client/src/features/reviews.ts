@@ -1,15 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ReviewData, ReviewType } from "../types/Review";
-import { addReview, getReviewsForGig } from "../api/review";
+import { addReview, addReviewToUser, getReviewsForGig } from "../api/review";
 
 export type ReviewsState = {
   reviewsForGig: ReviewType[] | null;
+  reviewsForUser: ReviewType[] | null;
   loading: boolean;
   error: string;
 };
 
 const initialState: ReviewsState = {
   reviewsForGig: null,
+  reviewsForUser: null,
   loading: false,
   error: "",
 };
@@ -33,6 +35,19 @@ export const addReviewToGig = createAsyncThunk(
       const review = await addReview(data);
 
       return review;
+    } catch (error) {
+      return rejectWithValue("Something went wrong!");
+    }
+  }
+);
+
+export const addReviewUser = createAsyncThunk(
+  "gigs/addReviewToUser",
+  async (data: ReviewData, { rejectWithValue }) => {
+    try {
+      const response = await addReviewToUser(data);
+
+      return response;
     } catch (error) {
       return rejectWithValue("Something went wrong!");
     }
@@ -71,6 +86,23 @@ export const ReviewsSlice = createSlice({
         }
       })
       .addCase(addReviewToGig.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+      .addCase(addReviewUser.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(addReviewUser.fulfilled, (state, action) => {
+        state.loading = false;
+
+        if (state.reviewsForUser) {
+          state.reviewsForUser.push(action.payload);
+        } else {
+          state.reviewsForUser = [action.payload];
+        }
+      })
+      .addCase(addReviewUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

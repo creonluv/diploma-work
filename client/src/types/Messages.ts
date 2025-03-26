@@ -12,6 +12,10 @@ export interface MessageId {
   id: string;
 }
 
+export interface PayloadConversation {
+  to: string;
+}
+
 export interface Conversation {
   _id: string;
   sellerId: User;

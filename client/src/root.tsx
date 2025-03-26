@@ -27,6 +27,7 @@ import { ContractDetailsPage } from "./pages/сontractDetailsPage/ContractDetail
 import ContractLayout from "./pages/contractLayout/ContractLayout";
 import { PayPageContract } from "./pages/сontractPaymentPage/ContractPaymentsPage";
 import { ContractWorkPage } from "./pages/contractWorkPage/ContractWorkPage";
+import { ContractReviewsPage } from "./pages/contractReviewsPage/ContractReviewsPage";
 
 const gigRoutes = [
   { path: "", element: <GigPage /> },
@@ -44,7 +45,7 @@ const contractRoutes = [
   { path: ":contractId/details", element: <ContractDetailsPage /> },
   { path: ":contractId/payments", element: <PayPageContract /> },
   { path: ":contractId/work", element: <ContractWorkPage /> },
-  // { path: ":contractId/reviews", element: <ContractReviews /> },
+  { path: ":contractId/reviews", element: <ContractReviewsPage /> },
 ];
 
 const protectedRoutes = [

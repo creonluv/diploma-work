@@ -68,6 +68,7 @@ export const confirmOrCancelPayment = async (req, res, next) => {
       await stripe.paymentIntents.capture(order.payment_intent);
 
       order.paymentStatus = "paid";
+      order.status = "closed";
     } else if (action === "cancel") {
       await stripe.paymentIntents.cancel(order.payment_intent);
 
@@ -87,7 +88,21 @@ export const getOrdersByContract = async (req, res, next) => {
   const { contractId } = req.params;
 
   try {
-    const orders = await Order.find({ contractId });
+    const orders = await Order.find({ contractId })
+      .populate({
+        path: "reviews.freelancer",
+        populate: {
+          path: "raterUserId",
+          select: "username email profileImage",
+        },
+      })
+      .populate({
+        path: "reviews.employer",
+        populate: {
+          path: "raterUserId",
+          select: "username email avatar profileImage",
+        },
+      });
 
     if (!orders.length) {
       return res

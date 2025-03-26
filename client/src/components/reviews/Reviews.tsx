@@ -42,6 +42,7 @@ export const Reviews: React.FC<ReviewsProps> = ({ gigId }) => {
     if (reviewInputRef.current) {
       reviewInputRef.current.value = "";
     }
+
     if (starSelectRef.current) {
       starSelectRef.current.selectedIndex = 0;
     }

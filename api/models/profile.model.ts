@@ -32,7 +32,6 @@ const profileSchema = new Schema(
       default: "",
     },
 
-    // Поля для фрілансерів
     freelancerDetails: {
       skills: [
         {
@@ -47,21 +46,12 @@ const profileSchema = new Schema(
       ],
     },
 
-    // Поля для роботодавців
     employerDetails: {
-      companyName: {
-        type: String,
-        default: "",
-      },
       projects: [
         {
           type: String,
         },
       ],
-      contactPerson: {
-        type: String,
-        default: "",
-      },
     },
   },
   {

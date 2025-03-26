@@ -81,6 +81,7 @@ export const Header = () => {
           </div>
         </div>
       </div>
+
       <div className="header__container">
         <div className="header__body">
           <div className="header__main">
@@ -100,28 +101,6 @@ export const Header = () => {
                     <img src={close} alt="menu" />
                   </button>
                   <ul className="header__menu menu-header">
-                    {profile?.profileType === "freelancer" ? (
-                      <li className="menu-header__item">
-                        <a
-                          href="gigs/by-user"
-                          className="menu-header__link"
-                          onClick={handleBurger}
-                        >
-                          All my gigs
-                        </a>
-                      </li>
-                    ) : (
-                      <li className="menu-header__item">
-                        <a
-                          href="jobs/by-user"
-                          className="menu-header__link"
-                          onClick={handleBurger}
-                        >
-                          All my jobs
-                        </a>
-                      </li>
-                    )}
-
                     <li className="menu-header__item">
                       <a
                         href="/"

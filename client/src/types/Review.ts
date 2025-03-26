@@ -10,6 +10,7 @@ export interface ReviewType {
   type: "gig" | "user";
   targetId: string;
   raterUserId: User;
+  orderId?: string;
   star: number;
   review: string;
   createdAt: string;
@@ -18,6 +19,7 @@ export interface ReviewType {
 
 export interface ReviewData {
   type: "gig" | "user";
+  orderId?: string | undefined;
   targetId: string | undefined;
   star: number;
   review: string;

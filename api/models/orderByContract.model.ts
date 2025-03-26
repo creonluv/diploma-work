@@ -49,10 +49,17 @@ const orderByContractSchema = new Schema(
       type: Date,
       default: null,
     },
-    reviewId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Review",
-      default: null,
+    reviews: {
+      freelancer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review",
+        default: null,
+      },
+      employer: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Review",
+        default: null,
+      },
     },
   },
   {

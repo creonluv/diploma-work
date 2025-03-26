@@ -47,15 +47,11 @@ export const JobOnePage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log("AAAA");
-
     if (!contracts?.length || !jobId) return;
 
     const idOfContract = contracts.find(
-      (contract) => contract.jobId === jobId
+      (contract) => (contract.jobId as unknown as string) === jobId
     )?._id;
-
-    console.log(idOfContract);
 
     if (jobId === job?._id && idOfContract) {
       switch (job?.step) {
@@ -67,6 +63,9 @@ export const JobOnePage: React.FC = () => {
           break;
         case 4:
           navigate(`/contracts/${idOfContract}/work`);
+          break;
+        case 5:
+          navigate(`/contracts/${idOfContract}/reviews`);
           break;
       }
     }
@@ -204,7 +203,7 @@ export const JobOnePage: React.FC = () => {
                   </p>
                   <img src={shiny} alt="rating" />
                   <p className="text-light">
-                    {job?.employerId.profileId.userRating.toFixed(1)}
+                    {job?.employerId.profileId.userRating}
                   </p>
                 </div>
               </div>

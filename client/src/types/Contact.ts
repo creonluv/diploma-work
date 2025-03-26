@@ -17,7 +17,7 @@ export interface SignContractInput {
 }
 
 export interface Contract {
-  jobId: string;
+  jobId: Job;
   freelancerId: User;
   employerId: User;
   bidId: string;

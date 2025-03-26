@@ -2,6 +2,7 @@ import { validationResult } from "express-validator";
 import Review from "../models/review.model";
 import Gig from "../models/gig.model";
 import User from "../models/user.model";
+import Order from "../models/orderByContract.model";
 
 export const createReview = async (req, res, next) => {
   const errors = validationResult(req);
@@ -104,6 +105,73 @@ export const deleteReview = async (req, res, next) => {
 
     await Review.findByIdAndDelete(req.params.id);
     res.status(200).json("Review deleted.");
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateUserRating = async (userId) => {
+  try {
+    const reviews = await Review.find({ targetId: userId });
+    console.log(`Found ${reviews.length} reviews for user ${userId}`);
+
+    if (reviews.length === 0) {
+      console.log("No reviews found. User rating not updated.");
+      return;
+    }
+
+    const totalRating = reviews.reduce((sum, review) => sum + review.star, 0);
+    const averageRating = totalRating / reviews.length;
+    console.log(`Calculated average rating: ${averageRating}`);
+
+    await User.findByIdAndUpdate(userId, {
+      userRating: averageRating.toFixed(2),
+    });
+    console.log(`Updated rating for user ${userId}: ${averageRating}`);
+  } catch (err) {
+    console.error("Error updating user rating:", err);
+  }
+};
+
+export const createReviewForOrder = async (req, res, next) => {
+  const { targetId, orderId, ...reviewData } = req.body;
+  const userId = req.userId;
+
+  try {
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found!" });
+    }
+
+    if (
+      (order.freelancerId.toString() === userId && order.reviews?.freelancer) ||
+      (order.employerId.toString() === userId && order.reviews?.employer)
+    ) {
+      return res
+        .status(400)
+        .json({ message: "You have already left a review!" });
+    }
+
+    const newReview = new Review({
+      ...reviewData,
+      raterUserId: userId,
+      targetId: targetId,
+    });
+
+    await newReview.save();
+
+    if (order.freelancerId.toString() === userId && order.reviews) {
+      order.reviews.freelancer = newReview._id;
+    } else if (order.employerId.toString() === userId && order.reviews) {
+      order.reviews.employer = newReview._id;
+    }
+
+    await order.save();
+
+    await updateUserRating(targetId);
+
+    res.status(201).json(newReview);
   } catch (err) {
     next(err);
   }

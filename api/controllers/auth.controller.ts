@@ -1,5 +1,6 @@
 import { validationResult } from "express-validator";
 import { Request, Response, NextFunction } from "express";
+
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
@@ -13,7 +14,10 @@ import Profile from "../models/profile.model";
 import createError from "../utils/createError";
 import OTP from "../models/otp.model";
 
-const generateTokens = (user: any) => {
+const generateTokens = (user) => {
+  console.log("jwt");
+  console.log(user);
+
   const accessToken = jwt.sign(
     {
       id: user._id,

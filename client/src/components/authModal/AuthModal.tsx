@@ -115,6 +115,13 @@ export const AuthModal = () => {
                     Add new gig
                   </Link>
                   <Link
+                    to="/gigs/by-user"
+                    className="menu-header__link"
+                    onClick={closeModal}
+                  >
+                    All my gigs
+                  </Link>
+                  <Link
                     className="list__item"
                     to="/orders"
                     onClick={closeModal}
@@ -123,9 +130,25 @@ export const AuthModal = () => {
                   </Link>
                 </>
               )}
-              <Link className="list__item" to="/jobs/add" onClick={closeModal}>
-                Add new job
-              </Link>
+
+              {profile?.profileType === "employer" && (
+                <>
+                  <Link
+                    className="list__item"
+                    to="/jobs/add"
+                    onClick={closeModal}
+                  >
+                    Add new job
+                  </Link>
+                  <Link
+                    className="list__item"
+                    to="/jobs/by-user"
+                    onClick={closeModal}
+                  >
+                    All my jobs
+                  </Link>
+                </>
+              )}
               <Link className="list__item" to="/messages" onClick={closeModal}>
                 Messages
               </Link>

@@ -1,0 +1,37 @@
+@use "../../shared/globalStyles/global" as *;
+
+.contractReviewsPage {
+  &__body {
+    @include page-grid;
+  }
+
+  &__left {
+    grid-column: 1 / -1;
+
+    @include on-tablet {
+      grid-column: 1 / 5;
+    }
+  }
+
+  &__right {
+    grid-column: 1 / -1;
+
+    @include on-tablet {
+      grid-column: 5 / -1;
+    }
+  }
+
+  &__background {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 0 auto;
+    padding: 48px;
+    border-radius: 16px;
+    background-color: var(--color-background-reverse);
+    border: 1px solid var(--color-border);
+    width: 100%;
+    height: fit-content;
+    margin-top: 16px;
+  }
+}

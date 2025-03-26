@@ -17,7 +17,6 @@ const reviewSchema = new Schema(
       required: true,
       ref: "User",
     },
-
     star: {
       type: Number,
       required: true,

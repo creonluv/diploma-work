@@ -1,31 +1,33 @@
 import { Link } from "react-router-dom";
+import Modal from "react-modal";
+
 import logo from "../../assets/img/icons/logo.svg";
 import close from "../../assets/img/icons/close.svg";
 import favicon from "../../assets/img/icons/favicon.svg";
-import { useAppDispatch } from "../../app/hooks";
 
-import "./Header.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useWindowSizeContext } from "../../context/WindowSizeContext";
 
-import cart from "../../assets/img/icons/cart.svg";
-import likes from "../../assets/img/icons/likes.svg";
+import messages from "../../assets/img/icons/Messages.svg";
 import { AuthModal } from "../authModal";
 import { useAuthContext } from "../../context/AuthContext";
-import { Profile } from "../../types/Profile";
-import { fetchProfileAsync } from "../../features/profile";
 
-export const Header = () => {
-  const dispatch = useAppDispatch();
+import "./Header.scss";
+import { NotificationModal } from "../notificationModal/NotificationModal";
 
+interface NotificationsListProps {
+  notificationsSocket: any;
+}
+
+export const Header: React.FC<NotificationsListProps> = ({
+  notificationsSocket,
+}) => {
   const [burger, setBurger] = useState(false);
-  const [profile, setProfile] = useState<Profile | undefined>();
 
   const { isAuth } = useAuthContext();
-
   const { width } = useWindowSizeContext();
 
-  const storedUserId = localStorage.getItem("userId");
+  const isSeller = localStorage.getItem("isSeller");
 
   const handleBurger = () => {
     if (width < 768) {
@@ -33,25 +35,6 @@ export const Header = () => {
       document.body.classList.toggle("_lock");
     }
   };
-
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (!storedUserId) {
-        console.warn("User ID is not available in localStorage.");
-        return;
-      }
-
-      try {
-        const result = await dispatch(fetchProfileAsync(storedUserId)).unwrap();
-
-        setProfile(result);
-      } catch (error) {
-        console.error("Error fetching user:", error);
-      }
-    };
-
-    fetchProfile();
-  }, [storedUserId]);
 
   return (
     <header className="header">
@@ -112,13 +95,13 @@ export const Header = () => {
                     </li>
 
                     <li className="menu-header__item">
-                      <a
-                        href="/"
+                      <Link
+                        to={isSeller === "true" ? "/gigs" : "/jobs"}
                         className="menu-header__link"
                         onClick={handleBurger}
                       >
                         Find new project
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </nav>
@@ -129,11 +112,14 @@ export const Header = () => {
               <div className="header__icons">
                 {isAuth && (
                   <>
-                    <Link className="header__icon" to="/">
-                      <img src={likes} alt="likes" />
-                    </Link>
-                    <Link className="header__icon" to="/">
-                      <img src={cart} alt="cart" />
+                    {/* <Link className="header__icon" to="/">
+                      <img src={notifivation} alt="likes" />
+                    </Link> */}
+                    <NotificationModal
+                      notificationsSocket={notificationsSocket}
+                    />
+                    <Link className="header__icon" to="/messages">
+                      <img src={messages} alt="cart" />
                     </Link>
                     <AuthModal />
                   </>

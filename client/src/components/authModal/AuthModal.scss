@@ -9,14 +9,17 @@
     padding: 8px;
     text-align: left;
     transition: all 0.2s ease;
+    border-radius: 6px;
+    @include hover(background-color, var(--color-background-grey));
   }
 
   @include on-tablet {
     position: absolute;
     right: 0;
     top: calc(100% + 5px);
-    gap: 10px;
-    width: 200px;
+    gap: 12px;
+    padding: 16px;
+    width: 280px;
     border-radius: 5px;
     border: 1px solid var(--color-system-grey);
     background-color: var(--color-reverse);

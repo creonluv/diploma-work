@@ -202,9 +202,7 @@ export const JobOnePage: React.FC = () => {
                     {job?.employerId.profileId.location}
                   </p>
                   <img src={shiny} alt="rating" />
-                  <p className="text-light">
-                    {job?.employerId.profileId.userRating}
-                  </p>
+                  <p className="text-light">{job?.employerId.userRating}</p>
                 </div>
               </div>
             </div>

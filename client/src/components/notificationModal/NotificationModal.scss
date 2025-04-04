@@ -1,0 +1,31 @@
+@use "../../shared/globalStyles/global" as *;
+
+.notification {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  text-align: left;
+  transition: all 0.2s ease;
+  border-radius: 6px;
+  @include hover(background-color, var(--color-background-grey));
+
+  &__avatar {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__desc {
+    color: var(--color-text-accent);
+    @include hover(text-decoration, underline);
+  }
+}

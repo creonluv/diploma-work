@@ -1,30 +1,43 @@
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { updateOrderGig } from "../../api/orderGig";
 
-import "./Success.scss";
+import "../success/Success.scss";
+import { useAppDispatch } from "../../app/hooks";
+import { updateJobStepAsync } from "../../features/job";
 
-export const Success: React.FC = () => {
+export const SuccessContactPage: React.FC = () => {
   const { search } = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const queryParams = new URLSearchParams(location.search);
+
+  const contractId = queryParams.get("contractId");
+  const jobId = queryParams.get("jobId") as string;
 
   const params = new URLSearchParams(search);
   const payment_intent = params.get("payment_intent");
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
     const makeRequest = async () => {
       try {
         if (!payment_intent) return;
 
-        await updateOrderGig({ payment_intent });
+        await dispatch(updateJobStepAsync({ id: jobId, step: 4 })).unwrap();
 
-        navigate("/orders");
+        timeoutId = setTimeout(() => {
+          navigate(`/contracts/${contractId}/work`);
+        }, 2000);
       } catch (err) {
         console.log(err);
       }
     };
 
     makeRequest();
+
+    return () => clearTimeout(timeoutId);
   }, [payment_intent]);
 
   return (

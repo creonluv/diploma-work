@@ -12,8 +12,6 @@ export const verifyToken = (req, res, next) => {
       return res.status(403).json({ error_type: "TOKEN_NOT_VALID" });
     }
 
-    console.log(payload);
-
     req.userId = payload.id;
     req.isSeller = payload.isSeller;
 

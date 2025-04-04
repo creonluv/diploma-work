@@ -43,7 +43,9 @@ export const GigPage: React.FC = () => {
         <div className="gig__body">
           <GigsHeader
             gigs={gigs}
-            category={`Explore all ${categories[cat]} gigs!`}
+            category={`Explore all ${
+              categories[cat] ? categories[cat] : ""
+            } gigs!`}
           />
 
           <div className="gig__gigs">

@@ -116,7 +116,7 @@ export const AuthModal = () => {
                   </Link>
                   <Link
                     to="/gigs/by-user"
-                    className="menu-header__link"
+                    className="list__item"
                     onClick={closeModal}
                   >
                     All my gigs
@@ -149,9 +149,6 @@ export const AuthModal = () => {
                   </Link>
                 </>
               )}
-              <Link className="list__item" to="/messages" onClick={closeModal}>
-                Messages
-              </Link>
               <button className="list__item" onClick={handleLogout}>
                 Logout
               </button>

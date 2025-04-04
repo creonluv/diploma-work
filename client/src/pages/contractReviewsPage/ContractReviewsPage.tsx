@@ -38,7 +38,8 @@ export const ContractReviewsPage = () => {
       return;
     }
 
-    const to = isSeller ? orders[0].freelancerId : orders[0]?.employerId;
+    const to =
+      isSeller === "true" ? orders[0].freelancerId : orders[0]?.employerId;
 
     const formData = new FormData(e.currentTarget);
     const data: ReviewData = {

@@ -22,3 +22,9 @@ export const getOrdersByContract = (
 ): Promise<OrderByContract[]> => {
   return client.get(`/order-by-contract/${contractId}`);
 };
+
+export const getOrderByPaymentIntent = (
+  paymentIntentId: string
+): Promise<OrderByContract> => {
+  return client.get(`/order-by-contract/payment-intent/${paymentIntentId}`);
+};

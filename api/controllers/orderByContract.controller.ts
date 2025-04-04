@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import Contract from "../models/contract.model";
 import Order from "../models/orderByContract.model";
+import profileModel from "../models/profile.model";
 
 const stripe = new Stripe(
   "sk_test_51Qne3fBHuhS2Mrw2zWHB2I54HNZar0oNUzTH27ZkJjpMEpGDz49YBEDs44o4r6wUzYSGowLHbAWTWtHntVfCi77Y00lL3Hup3e"
@@ -64,11 +65,34 @@ export const confirmOrCancelPayment = async (req, res, next) => {
       return next(new Error("Order not found"));
     }
 
+    const contract = await Contract.findById(order.contractId);
+    if (!contract) {
+      return next(new Error("Contract not found"));
+    }
+
     if (action === "confirm") {
       await stripe.paymentIntents.capture(order.payment_intent);
 
       order.paymentStatus = "paid";
       order.status = "closed";
+
+      await profileModel.findOneAndUpdate(
+        { userId: contract.freelancerId },
+        {
+          $push: {
+            "freelancerDetails.portfolio": contract.jobId.toString(),
+          },
+        }
+      );
+
+      await profileModel.findOneAndUpdate(
+        { userId: contract.employerId },
+        {
+          $push: {
+            "employerDetails.projects": contract.jobId.toString(),
+          },
+        }
+      );
     } else if (action === "cancel") {
       await stripe.paymentIntents.cancel(order.payment_intent);
 
@@ -121,6 +145,22 @@ export const getOrderById = async (req, res, next) => {
 
   try {
     const order = await Order.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    res.status(200).json(order);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getOrderByPaymentIntent = async (req, res, next) => {
+  const { paymentIntentId } = req.params;
+
+  try {
+    const order = await Order.findOne({ payment_intent: paymentIntentId });
+
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }

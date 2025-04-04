@@ -7,6 +7,7 @@ import {
 import {
   confirmOrCancelPayment,
   createOrder,
+  getOrderByPaymentIntent,
   getOrdersByContract,
 } from "../api/orderByContact";
 
@@ -63,6 +64,20 @@ export const fetchOrdersByContractAsync = createAsyncThunk<
   return data;
 });
 
+export const fetchOrderByPaymentIntentAsync = createAsyncThunk<
+  OrderByContract,
+  string
+>(
+  "orders/fetchOrderByPaymentIntent",
+  async (paymentIntentId: string, { rejectWithValue }) => {
+    try {
+      return await getOrderByPaymentIntent(paymentIntentId);
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "Order not found");
+    }
+  }
+);
+
 const ordersSlice = createSlice({
   name: "orders",
   initialState,
@@ -115,6 +130,21 @@ const ordersSlice = createSlice({
       .addCase(fetchOrdersByContractAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Unable to receive order";
+      })
+      .addCase(fetchOrderByPaymentIntentAsync.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(
+        fetchOrderByPaymentIntentAsync.fulfilled,
+        (state, action: PayloadAction<OrderByContract>) => {
+          state.order = action.payload;
+          state.loading = false;
+        }
+      )
+      .addCase(fetchOrderByPaymentIntentAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch order";
       });
   },
 });

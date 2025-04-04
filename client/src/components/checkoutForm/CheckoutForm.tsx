@@ -11,14 +11,28 @@ import {
 } from "@stripe/stripe-js";
 
 import "./CheckoutForm.scss";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useNavigate } from "react-router-dom";
+import { fetchOrderByPaymentIntentAsync } from "../../features/orderByContract";
+import { updateJobStepAsync } from "../../features/job";
+import { RootState } from "../../app/store";
 
-export const CheckoutForm: React.FC = () => {
+interface CheckoutFormProps {
+  contractPaid?: boolean;
+}
+
+export const CheckoutForm: React.FC<CheckoutFormProps> = ({ contractPaid }) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const stripe = useStripe();
   const elements = useElements();
 
   const [_, setEmail] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { order } = useAppSelector((state: RootState) => state.orderByContract);
 
   useEffect(() => {
     if (!stripe) {
@@ -33,28 +47,55 @@ export const CheckoutForm: React.FC = () => {
       return;
     }
 
-    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
-      if (!paymentIntent) {
-        setMessage("Payment intent not found.");
-        return;
-      }
+    const updateJobStepAndNavigateAsync = async () => {
+      try {
+        const order = await dispatch(
+          fetchOrderByPaymentIntentAsync(clientSecret)
+        ).unwrap();
 
-      switch (paymentIntent.status) {
-        case "succeeded":
-          setMessage("Payment succeeded!");
-          break;
-        case "processing":
-          setMessage("Your payment is processing.");
-          break;
-        case "requires_payment_method":
-          setMessage("Your payment was not successful, please try again.");
-          break;
-        default:
-          setMessage("Something went wrong.");
-          break;
+        await dispatch(
+          updateJobStepAsync({ id: order.jobId, step: 4 })
+        ).unwrap();
+      } catch (err) {
+        console.log(err);
       }
-    });
-  }, [stripe]);
+    };
+
+    const checkPaymentStatus = async () => {
+      try {
+        const { paymentIntent } = await stripe.retrievePaymentIntent(
+          clientSecret
+        );
+
+        if (!paymentIntent) {
+          setMessage("Payment intent not found.");
+          return;
+        }
+
+        console.log(paymentIntent.status);
+
+        switch (paymentIntent.status) {
+          case "succeeded":
+            setMessage("Payment succeeded!");
+            break;
+          case "processing":
+            setMessage("Your payment is processing.");
+            break;
+          case "requires_payment_method":
+            setMessage("Your payment was not successful, please try again.");
+            break;
+          default:
+            setMessage("Something went wrong.");
+            break;
+        }
+      } catch (err) {
+        console.error("Error retrieving payment intent:", err);
+      }
+    };
+
+    updateJobStepAndNavigateAsync();
+    checkPaymentStatus();
+  }, [stripe, dispatch, navigate]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,7 +109,10 @@ export const CheckoutForm: React.FC = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: "http://localhost:5173/success",
+        return_url:
+          contractPaid === true
+            ? `http://localhost:5173/contract-success?contractId=${order?.contractId}&jobId=${order?.jobId}`
+            : "http://localhost:5173/success",
       },
     });
 

@@ -61,8 +61,6 @@ export const updateProfile = async (req, res) => {
     const userIdFromToken = req.userId;
     const updates = req.body;
 
-    console.log(updates);
-
     if (userIdFromToken !== id) {
       return res.status(403).json({
         message: "You can only update your own profile",

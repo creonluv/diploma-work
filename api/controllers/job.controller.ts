@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 import User from "../models/user.model";
 import Job from "../models/job.model";
 import { validationResult } from "express-validator";
+import profileModel from "../models/profile.model";
+import Notification from "../models/notification.model";
+import { io } from "../server";
 
 export const createJob = async (req, res) => {
   const errors = validationResult(req);
@@ -45,6 +48,47 @@ export const createJob = async (req, res) => {
     });
 
     await newJob.save();
+
+    const freelancers = await profileModel.find({
+      "freelancerDetails.skills": { $in: tags },
+    });
+
+    const topFreelancers = freelancers.filter((freelancer) => {
+      const matchingTags = freelancer?.freelancerDetails?.skills.filter(
+        (skill) => tags.includes(skill.toString())
+      );
+
+      let matchPercentage;
+
+      if (matchingTags) {
+        matchPercentage = (matchingTags.length / tags.length) * 100;
+      }
+
+      return matchPercentage >= 40;
+    });
+
+    await Notification.insertMany(
+      topFreelancers.map((freelancer) => ({
+        userId: freelancer.userId,
+        message: `${user.username} added:`,
+        jobId: newJob._id,
+        sellerId: user._id,
+      }))
+    );
+
+    const newJobNotification = async (freelancers) => {
+      freelancers.forEach((freelancer) => {
+        console.log(`🔔 Sending notification to user ${freelancer.userId}`);
+
+        io.to("global_chat").emit("notification", {
+          message: `New job for you: ${newJob.title}`,
+          jobId: newJob._id,
+        });
+      });
+    };
+
+    await newJobNotification(topFreelancers);
+
     const savedJob = await Job.findById(newJob._id).populate("tags");
 
     res.status(201).json(savedJob);
@@ -61,6 +105,7 @@ export const getAllJobs = async (req, res, next) => {
     ...(q.cat && { cat: q.cat }),
     ...(q.tags && { tags: { $in: q.tags.split(",") } }),
     ...(q.minBids && { bids: { $size: { $lte: Number(q.minBids) } } }),
+    status: "open",
   };
 
   const allowedSortFields = ["budget", "createdAt", "views", "deadline"];

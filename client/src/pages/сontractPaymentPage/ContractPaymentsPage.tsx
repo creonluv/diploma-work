@@ -2,7 +2,7 @@ import "./ContractPaymentsPage.scss";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { CheckoutForm } from "../../components/checkoutForm/CheckoutForm";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { RootState } from "../../app/store";
@@ -12,6 +12,7 @@ import { updateJobStepAsync } from "../../features/job";
 
 export const PayPageContract: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [clientSecret, setClientSecret] = useState<string>("");
 
@@ -43,10 +44,6 @@ export const PayPageContract: React.FC = () => {
           if (res.clientSecret) {
             setClientSecret(res.clientSecret);
           }
-
-          await dispatch(
-            updateJobStepAsync({ id: res.newOrder.jobId, step: 4 })
-          ).unwrap();
         }
       } catch (err) {
         console.log(err);
@@ -83,7 +80,7 @@ export const PayPageContract: React.FC = () => {
         )}
         {clientSecret && (
           <Elements options={options} stripe={stripePromise}>
-            <CheckoutForm />
+            <CheckoutForm contractPaid={true} />
           </Elements>
         )}
       </div>

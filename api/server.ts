@@ -1,4 +1,6 @@
 import express, { ErrorRequestHandler } from "express";
+import { Server } from "socket.io";
+import http from "http";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import swaggerSpec from "./swaggerConfig";
@@ -16,6 +18,8 @@ import jobRoutes from "./routes/job.route";
 import bidRoutes from "./routes/bid.route";
 import contactRoutes from "./routes/contract.route";
 import ordersByContractRoutes from "./routes/orderByContract.route";
+import notification from "./routes/notification.route";
+
 import "./utils/cronJobs";
 
 import cookieParser from "cookie-parser";
@@ -25,9 +29,37 @@ dotenv.config();
 mongoose.set("strictQuery", true);
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8800;
 
-console.log(process.env.MONGO);
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"],
+  },
+});
+io.on("connection", (socket) => {
+  console.log("User connected");
+
+  socket.on("joinRoom", (roomId) => {
+    socket.join(roomId);
+    console.log(`User joined room ${roomId}`);
+
+    io.to(roomId).emit(
+      "roomUsers",
+      Array.from(io.sockets.adapter.rooms.get(roomId) || [])
+    );
+  });
+
+  socket.on("getRoomUsers", (roomId) => {
+    const usersInRoom = Array.from(io.sockets.adapter.rooms.get(roomId) || []);
+    socket.emit("roomUsers", usersInRoom);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+});
 
 app.use(express.json());
 app.use(cookieParser());
@@ -63,6 +95,7 @@ app.use("/api/job", jobRoutes);
 app.use("/api/bid", bidRoutes);
 app.use("/api/contract", contactRoutes);
 app.use("/api/order-by-contract", ordersByContractRoutes);
+app.use("/api/notification", notification);
 
 const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
   const errorStatus = err.status || 500;
@@ -79,7 +112,9 @@ const errorHandler: ErrorRequestHandler = (err, _, res, next) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   connect();
   console.log("Backend server is running!");
 });
+
+export { io };

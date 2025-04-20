@@ -1,4 +1,4 @@
-import { useState, ReactNode, useEffect } from "react";
+import { useState, ReactNode, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import { useAppDispatch } from "../../app/hooks";
@@ -26,6 +26,7 @@ export const AuthModal = () => {
   const { width } = useWindowSizeContext();
 
   const storedUserId = localStorage.getItem("userId");
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -44,7 +45,7 @@ export const AuthModal = () => {
     };
 
     fetchProfile();
-  }, [storedUserId]);
+  }, [dispatch, storedUserId]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -62,12 +63,30 @@ export const AuthModal = () => {
     }
   }
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isModalOpen &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        closeModal();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isModalOpen]);
+
   const ModalOrContent: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (width < 768) {
       return (
         <Modal
           isOpen={isModalOpen}
           onRequestClose={closeModal}
+          shouldCloseOnOverlayClick={true}
           style={{
             overlay: { backgroundColor: "rgba(0,0,0,0.5)", zIndex: 1000 },
             content: {
@@ -99,11 +118,21 @@ export const AuthModal = () => {
         <img src={account} alt="account" />
       </button>
       <ModalOrContent>
-        <div className={`list ${isModalOpen ? "" : "_hidden"}`}>
+        <div
+          ref={containerRef}
+          className={`list ${isModalOpen ? "" : "_hidden"}`}
+        >
           {isAuth ? (
             <>
               <Link className="list__item" to="/profile" onClick={closeModal}>
                 Profile
+              </Link>
+              <Link
+                className="list__item"
+                to="/current-jobs"
+                onClick={closeModal}
+              >
+                Jobs
               </Link>
               {profile?.profileType === "freelancer" && (
                 <>

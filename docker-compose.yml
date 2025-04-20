@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo
+    restart: always
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  api:
+    build: ./api
+    container_name: api
+    ports:
+      - "8800:8800"
+    depends_on:
+      - mongo
+    env_file:
+      - ./api/.env
+    volumes:
+      - ./api:/app
+    # environment:
+    #   MONGO: mongodb://mongo:27017/freelance-platform
+    command: npm start
+
+  client:
+    build: ./client
+    container_name: client
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    volumes:
+      - ./client:/app
+    environment:
+      - VITE_API_URL=http://api:8800
+    command: npm run dev
+
+volumes:
+  mongo-data:

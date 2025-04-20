@@ -6,6 +6,7 @@ import {
   deleteGig,
   getGig,
   getGigs,
+  getTopGigs,
   getUserGigs,
   updateGig,
   uploadGigImages,
@@ -15,6 +16,7 @@ import { gigValidationRules } from "../validators/gigValidationRules";
 const router = express.Router();
 
 router.post("/", gigValidationRules, createGig);
+router.get("/top", getTopGigs);
 router.post("/:gigId/files", uploadGigImages, addGigFiles);
 router.patch("/:id", verifyToken, updateGig);
 router.get("/user", verifyToken, getUserGigs);

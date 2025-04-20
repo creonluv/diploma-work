@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import Modal from "react-modal";
 
 import logo from "../../assets/img/icons/logo.svg";
 import close from "../../assets/img/icons/close.svg";
@@ -16,7 +15,7 @@ import "./Header.scss";
 import { NotificationModal } from "../notificationModal/NotificationModal";
 
 interface NotificationsListProps {
-  notificationsSocket: any;
+  notificationsSocket: unknown;
 }
 
 export const Header: React.FC<NotificationsListProps> = ({
@@ -112,9 +111,6 @@ export const Header: React.FC<NotificationsListProps> = ({
               <div className="header__icons">
                 {isAuth && (
                   <>
-                    {/* <Link className="header__icon" to="/">
-                      <img src={notifivation} alt="likes" />
-                    </Link> */}
                     <NotificationModal
                       notificationsSocket={notificationsSocket}
                     />

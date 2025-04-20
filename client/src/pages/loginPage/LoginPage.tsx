@@ -33,6 +33,7 @@ export const LoginPage: React.FC = () => {
       signin(userData._id);
       localStorage.setItem("userId", userData._id);
       localStorage.setItem("isSeller", userData.isSeller.toString());
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       alert("Error!");
     }
@@ -42,7 +43,7 @@ export const LoginPage: React.FC = () => {
     if (isAuth) {
       navigate("/");
     }
-  }, [isAuth]);
+  }, [isAuth, navigate]);
 
   return (
     <section className="authorization">

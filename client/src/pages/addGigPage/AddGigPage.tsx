@@ -155,7 +155,7 @@ export const AddGigPage: React.FC = () => {
     try {
       await addPhotosToGig(idOfGig, formData);
 
-      navigate("/gigs-by-user");
+      navigate("/gigs/by-user");
     } catch (error) {
       console.error("Error uploading photos", error);
     }

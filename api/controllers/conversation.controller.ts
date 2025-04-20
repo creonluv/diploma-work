@@ -63,6 +63,8 @@ export const getSingleConversation = async (req, res, next) => {
 };
 
 export const updateConversation = async (req, res, next) => {
+  console.log(req.isSeller);
+
   try {
     const updatedConversation = await Conversation.findOneAndUpdate(
       { _id: req.params.id },

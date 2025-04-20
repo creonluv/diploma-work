@@ -14,6 +14,7 @@ import {
 import { getAllSkills } from "../../api/skills";
 import { Skill } from "../../types/Skill";
 import { Loader } from "../../components/loader";
+import { ProjectJob } from "../../components/projectJob/ProjectJob";
 
 export const ProfilePage: React.FC = () => {
   const [profile, setProfile] = useState<Profile | undefined>();
@@ -271,50 +272,54 @@ export const ProfilePage: React.FC = () => {
           </form>
         </div>
 
-        <div className="profile__body">
-          <div className="profile__form-section">
-            <div className="profile__form-title">
-              <h4 className="text-bold">
-                {profile?.profileType === "freelancer"
-                  ? "Skills & Portfolio"
-                  : "Employer Details"}
-              </h4>
-            </div>
-            {isLoading ? (
-              <Loader />
-            ) : (
-              <div className="profile__group">
-                {profile?.profileType === "freelancer" &&
-                profile.freelancerDetails?.skills?.length ? (
-                  <div className="profile__skills-list">
-                    {profile.freelancerDetails.skills.map((skill) => (
-                      <div key={skill._id} className="skill-item">
-                        <span>{skill.name}</span>
-                        <button
-                          type="button"
-                          onClick={() => handleDeleteSkill(skill._id)}
-                          className="remove-skill-button"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p>No skills added</p>
-                )}
-
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(true)}
-                  className="add-skill-button"
-                >
-                  Add New Skill
-                </button>
+        {profile?.profileType === "freelancer" ? (
+          <div className="profile__body">
+            <div className="profile__form-section">
+              <div className="profile__form-title">
+                <h4 className="text-bold">Skills & Portfolio</h4>
               </div>
-            )}
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <>
+                  <div className="profile__group">
+                    {profile?.profileType === "freelancer" &&
+                    profile.freelancerDetails?.skills?.length ? (
+                      <div className="profile__skills-list">
+                        {profile.freelancerDetails.skills.map((skill) => (
+                          <div key={skill._id} className="skill-item">
+                            <span>{skill.name}</span>
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteSkill(skill._id)}
+                              className="remove-skill-button"
+                            >
+                              ×
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p>No skills added</p>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => setIsModalOpen(true)}
+                      className="add-skill-button"
+                    >
+                      Add New Skill
+                    </button>
+                  </div>
+
+                  {profile?.freelancerDetails?.portfolio.map((project) => (
+                    <ProjectJob project={project} />
+                  ))}
+                </>
+              )}
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
 
       <Modal

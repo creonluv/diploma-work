@@ -13,6 +13,10 @@ export const getJob = (id: string | undefined): Promise<Job> => {
   return client.get(`/job/${id}`);
 };
 
+export const getUserJobs = (): Promise<Job[]> => {
+  return client.get(`/job/user-jobs`);
+};
+
 export const updateJob = (id: string, dataToUpdate: any): Promise<Job> => {
   return client.patch(`/job/${id}`, dataToUpdate);
 };

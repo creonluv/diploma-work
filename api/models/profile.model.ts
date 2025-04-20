@@ -41,7 +41,8 @@ const profileSchema = new Schema(
       ],
       portfolio: [
         {
-          type: String,
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Job",
         },
       ],
     },

@@ -142,13 +142,38 @@ export const getAllJobs = async (req, res, next) => {
   }
 };
 
+export const getUserJobs = async (req, res, next) => {
+  const userId = req.userId;
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: "Invalid user ID" });
+  }
+
+  try {
+    const jobs = await Job.find({ employerId: userId })
+      .populate("tags")
+      .populate({
+        path: "employerId",
+        populate: { path: "profileId" },
+      });
+
+    if (!jobs.length) {
+      return res.status(404).json({ message: "No jobs found for this user" });
+    }
+
+    res.status(200).json(jobs);
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const getJobById = async (req, res) => {
   try {
     const { jobId } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(jobId)) {
-      return res.status(400).json({ message: "Invalid job ID" });
-    }
+    // if (!mongoose.Types.ObjectId.isValid(jobId)) {
+    //   return res.status(400).json({ message: "Invalid job ID" });
+    // }
 
     const job = await Job.findById(jobId)
       .populate("tags")

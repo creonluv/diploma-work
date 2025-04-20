@@ -13,6 +13,8 @@ export const MessagesPage: React.FC = () => {
 
   const storedUserId = localStorage.getItem("userId");
 
+  console.log(messages);
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -25,21 +27,21 @@ export const MessagesPage: React.FC = () => {
     };
 
     fetchUser();
-  }, []);
+  }, [storedUserId]);
 
   useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const messages = await getMessages();
-
-        setMessages(messages);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
-
     fetchMessages();
   }, []);
+
+  const fetchMessages = async () => {
+    try {
+      const messages = await getMessages();
+
+      setMessages(messages);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
 
   const handleRead = async (id: string) => {
     const data = {
@@ -48,12 +50,11 @@ export const MessagesPage: React.FC = () => {
 
     try {
       await updateMessages(id, data);
+      await fetchMessages();
     } catch (error) {
       console.error("Error update messages:", error);
     }
   };
-
-  console.log(user?.isSeller);
 
   return (
     <section className="messages">
@@ -65,7 +66,7 @@ export const MessagesPage: React.FC = () => {
           <table>
             <thead>
               <tr>
-                <th>{user?.isSeller ? "Buyer" : "Seller"}</th>
+                <th>Interlocutor</th>
                 <th>Last Message</th>
                 <th>Date</th>
                 <th>Action</th>
@@ -91,12 +92,9 @@ export const MessagesPage: React.FC = () => {
                   </td>
                   <td>{moment(c.updatedAt).fromNow()}</td>
                   <td>
-                    {((user?.isSeller && !c.readBySeller) ||
-                      (!user?.isSeller && !c.readByBuyer)) && (
-                      <button
-                        className="button button_lg button__transparent"
-                        onClick={() => handleRead(c._id)}
-                      >
+                    {((user?.isSeller && !c.readByBuyer) ||
+                      (!user?.isSeller && !c.readBySeller)) && (
+                      <button onClick={() => handleRead(c._id)}>
                         Mark as Read
                       </button>
                     )}

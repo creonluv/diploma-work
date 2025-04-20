@@ -1,9 +1,16 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Job, JobInput, ResponseJob } from "../types/Job";
-import { createJob, getJob, getJobs, updateJobStep } from "../api/jobs";
+import {
+  createJob,
+  getJob,
+  getJobs,
+  getUserJobs,
+  updateJobStep,
+} from "../api/jobs";
 
 export type JobState = {
   jobs: Job[] | null;
+  jobsByUser: Job[] | null;
   job: Job | null;
   totalCount: number;
   totalPages: number;
@@ -15,6 +22,7 @@ export type JobState = {
 const initialState: JobState = {
   jobs: null,
   job: null,
+  jobsByUser: null,
   totalCount: 0,
   totalPages: 0,
   currentPage: 1,
@@ -64,6 +72,14 @@ export const updateJobStepAsync = createAsyncThunk(
   }
 );
 
+export const fetchUserJobsAsync = createAsyncThunk(
+  "jobs/fetchUserJobs",
+  async () => {
+    const data = await getUserJobs();
+    return data;
+  }
+);
+
 export const JobsSlice = createSlice({
   name: "jobs",
   initialState,
@@ -87,6 +103,23 @@ export const JobsSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to load jobs";
       })
+
+      .addCase(fetchUserJobsAsync.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(
+        fetchUserJobsAsync.fulfilled,
+        (state, action: PayloadAction<Job[]>) => {
+          state.jobsByUser = action.payload;
+          state.loading = false;
+        }
+      )
+      .addCase(fetchUserJobsAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to load user jobs";
+      })
+
       .addCase(fetchJobAsync.pending, (state) => {
         state.loading = true;
         state.error = "";
@@ -98,43 +131,6 @@ export const JobsSlice = createSlice({
       .addCase(fetchJobAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to load job";
-      })
-      .addCase(createJobAsync.pending, (state) => {
-        state.loading = true;
-        state.error = "";
-      })
-      .addCase(
-        createJobAsync.fulfilled,
-        (state, action: PayloadAction<Job>) => {
-          state.loading = false;
-          state.jobs = state.jobs
-            ? [...state.jobs, action.payload]
-            : [action.payload];
-        }
-      )
-      .addCase(createJobAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.error = (action.payload as string) || "Failed to create job";
-      })
-      .addCase(
-        updateJobStepAsync.fulfilled,
-        (state, action: PayloadAction<{ id: string; step: number }>) => {
-          if (state.job && state.job._id === action.payload.id) {
-            state.job.step = action.payload.step;
-          }
-
-          if (state.jobs) {
-            state.jobs = state.jobs.map((job) =>
-              job._id === action.payload.id
-                ? { ...job, step: action.payload.step }
-                : job
-            );
-          }
-        }
-      )
-
-      .addCase(updateJobStepAsync.rejected, (state, action) => {
-        state.error = (action.payload as string) || "Failed to update job step";
       });
   },
 });

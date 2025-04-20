@@ -2,6 +2,7 @@ import Stripe from "stripe";
 import Contract from "../models/contract.model";
 import Order from "../models/orderByContract.model";
 import profileModel from "../models/profile.model";
+import jobModel from "../models/job.model";
 
 const stripe = new Stripe(
   "sk_test_51Qne3fBHuhS2Mrw2zWHB2I54HNZar0oNUzTH27ZkJjpMEpGDz49YBEDs44o4r6wUzYSGowLHbAWTWtHntVfCi77Y00lL3Hup3e"
@@ -70,6 +71,11 @@ export const confirmOrCancelPayment = async (req, res, next) => {
       return next(new Error("Contract not found"));
     }
 
+    const job = await jobModel.findById(contract.jobId);
+    if (!job) {
+      return next(new Error("Job not found"));
+    }
+
     if (action === "confirm") {
       await stripe.paymentIntents.capture(order.payment_intent);
 
@@ -100,6 +106,9 @@ export const confirmOrCancelPayment = async (req, res, next) => {
       order.status = "closed";
       order.endDate = new Date();
     }
+
+    job.status = "closed";
+    await job.save();
 
     await order.save();
     res.status(200).send(order);
@@ -166,6 +175,27 @@ export const getOrderByPaymentIntent = async (req, res, next) => {
     }
 
     res.status(200).json(order);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getOrdersForUser = async (req, res, next) => {
+  const userId = req.userId;
+
+  try {
+    const orders = await Order.find({
+      $or: [{ freelancerId: userId }, { employerId: userId }],
+    })
+      .populate("jobId")
+      .populate("freelancerId")
+      .populate("employerId");
+
+    if (!orders.length) {
+      return res.status(404).json({ message: "No orders found for this user" });
+    }
+
+    res.status(200).json(orders);
   } catch (error) {
     next(error);
   }

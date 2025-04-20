@@ -101,7 +101,11 @@ export const getProfile = async (req, res) => {
 
     const profile = await Profile.findOne({ userId: id })
       .populate("userId")
-      .populate("freelancerDetails.skills");
+      .populate("freelancerDetails.skills")
+      .populate({
+        path: "freelancerDetails.portfolio",
+        select: "_id title description budget cat updatedAt",
+      });
 
     if (!profile) {
       return res.status(404).json({ message: "Profile not found" });

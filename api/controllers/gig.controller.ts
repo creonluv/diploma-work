@@ -148,12 +148,11 @@ export const getGigs = async (req, res, next) => {
   }
 
   const page = Number(q.page) || 1;
-  const limit = Number(q.limit) || 4;
+  const limit = Number(q.limit) || 6;
   const skip = (page - 1) * limit;
 
   try {
     const gigs = await Gig.find(filters)
-      .populate("userId")
       .populate({
         path: "gigReviews",
         select: "raterUserId star review",
@@ -161,8 +160,8 @@ export const getGigs = async (req, res, next) => {
       })
       .sort(sortOption)
       .skip(skip)
-      .limit(limit);
-
+      .limit(limit)
+      .populate("userId");
     const totalCount = await Gig.countDocuments(filters);
 
     res.status(200).json({
@@ -215,6 +214,24 @@ export const deleteGig = async (req, res, next) => {
     await Gig.findByIdAndDelete(req.params.id);
 
     res.status(200).json("Gig deleted.");
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getTopGigs = async (req, res, next) => {
+  try {
+    const topGigs = await Gig.find()
+      .sort({ rating: -1 })
+      .limit(8)
+      .populate("userId", "username profileImage")
+      .populate({
+        path: "gigReviews",
+        select: "raterUserId star review",
+        populate: { path: "raterUserId", select: "username" },
+      });
+
+    res.status(200).json(topGigs);
   } catch (err) {
     next(err);
   }

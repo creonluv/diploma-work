@@ -37,8 +37,10 @@ export const WindowSizeProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useWindowSizeContext = () => {
   const context = useContext(WindowSizeContext);
+
   if (!context) {
     throw new Error("useWindowSize must be used within a WindowSizeProvider");
   }
+
   return context;
 };

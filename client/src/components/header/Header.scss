@@ -89,6 +89,21 @@
     }
   }
 
+  &__icon--notification {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    color: white;
+    font-size: 11px;
+    top: 11px;
+    left: 11px;
+  }
+
   &__nav {
     display: flex;
     flex-direction: column;

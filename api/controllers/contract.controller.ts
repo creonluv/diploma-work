@@ -128,8 +128,6 @@ export const signContract = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    console.log(user);
-
     const sign = crypto.createSign("RSA-SHA256");
     sign.update(contractText);
     sign.end();

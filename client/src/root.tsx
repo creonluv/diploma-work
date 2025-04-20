@@ -1,5 +1,4 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./components/protectedRoute";
 import { MainPage } from "./pages/mainPage";
@@ -11,7 +10,7 @@ import { ResetPassword } from "./pages/resetPassword/resetPassword";
 import { ProfilePage } from "./pages/profilePage";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
-import { GigPage } from "./pages/gigPage";
+import { GigPage } from "./pages/gigCatalogPage";
 import { AddGigPage } from "./pages/addGigPage";
 import { GigsByUserPage } from "./pages/gigsByUserPage";
 import { GigOnePage } from "./pages/gigOnePage";
@@ -21,14 +20,18 @@ import { OrdersPage } from "./pages/ordersPage/OrdersPage";
 import { MessagesPage } from "./pages/messagesPage/MessagesPage";
 import { ChatPage } from "./pages/chatPage/ChatPage";
 import { AddJobPage } from "./pages/addJobPage/AddJobPage";
-import { JobOnePage } from "./pages/JobOnePage/JobOnePage";
+import { JobOnePage } from "./pages/jobOnePage/JobOnePage";
 import { JobsCatalogPage } from "./pages/jobsCatalogPage/JobsCatalogPage";
 import { ContractDetailsPage } from "./pages/сontractDetailsPage/ContractDetailsPage";
-import ContractLayout from "./pages/contractLayout/ContractLayout";
 import { PayPageContract } from "./pages/сontractPaymentPage/ContractPaymentsPage";
 import { ContractWorkPage } from "./pages/contractWorkPage/ContractWorkPage";
 import { ContractReviewsPage } from "./pages/contractReviewsPage/ContractReviewsPage";
 import { SuccessContactPage } from "./pages/successContractPage/SuccessContractPage";
+import { JobsByUserPage } from "./pages/jobsByUserPage/JobsByUserPage";
+import { CurrentJobsPage } from "./pages/currentJobsPage/CurrentJobsPage";
+
+import App from "./App";
+import ContractLayout from "./pages/contractLayout/ContractLayout";
 
 const gigRoutes = [
   { path: "", element: <GigPage /> },
@@ -56,6 +59,7 @@ const protectedRoutes = [
   { path: "success", element: <Success /> },
   { path: "contract-success", element: <SuccessContactPage /> },
   { path: "orders", element: <OrdersPage /> },
+  { path: "current-jobs", element: <CurrentJobsPage /> },
 ];
 
 export const Root = () => {
@@ -103,6 +107,7 @@ export const Root = () => {
                     <Route path=":jobId" element={<ContractLayout />}>
                       <Route index element={<JobOnePage />} />
                     </Route>
+                    <Route path="by-user" element={<JobsByUserPage />} />
                   </Route>
 
                   <Route path="contracts" element={<ContractLayout />}>

@@ -2,6 +2,7 @@ import {
   OrderAction,
   OrderByContract,
   OrderByContractResponse,
+  OrderByUser,
 } from "../types/OrderByContract";
 import { client } from "../utils/fetchClient";
 
@@ -27,4 +28,8 @@ export const getOrderByPaymentIntent = (
   paymentIntentId: string
 ): Promise<OrderByContract> => {
   return client.get(`/order-by-contract/payment-intent/${paymentIntentId}`);
+};
+
+export const getOrdersByUser = (): Promise<OrderByUser[]> => {
+  return client.get(`/order-by-contract/my`);
 };

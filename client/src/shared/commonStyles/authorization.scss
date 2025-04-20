@@ -1,8 +1,8 @@
 @use "../../shared/globalStyles/global" as *;
 
 .authorization {
-  &__container {
-    max-width: 456px;
+  &__body {
+    max-width: 544px;
     margin: 0 auto;
     padding: 48px;
     border-radius: 16px;

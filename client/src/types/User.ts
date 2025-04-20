@@ -9,7 +9,6 @@ export interface User {
   updatedAt: string;
   publicKey: string;
   userRating: number;
-  __v?: number;
   profileId: string;
   profileImage: string;
 }

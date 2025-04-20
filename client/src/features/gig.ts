@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Gig, GigInput, ResponseGig } from "../types/Gig";
 import {
@@ -7,6 +8,7 @@ import {
   getGig,
   getGigByUser,
   getGigs,
+  getTopGigs,
   updateGig,
 } from "../api/gigs";
 
@@ -14,6 +16,7 @@ export type GigState = {
   gigs: Gig[] | null;
   gig: Gig | null;
   gigsByUser: Gig[] | null;
+  gigsTop: Gig[] | null;
   totalCount: number;
   totalPages: number;
   currentPage: number;
@@ -24,6 +27,7 @@ export type GigState = {
 const initialState: GigState = {
   gigs: null,
   gig: null,
+  gigsTop: null,
   gigsByUser: null,
   totalCount: 0,
   totalPages: 0,
@@ -34,7 +38,7 @@ const initialState: GigState = {
 
 export const fetchGigs = createAsyncThunk(
   "products/fetchGigs",
-  async (filters: Record<string, string>) => {
+  async (filters: string) => {
     const data = await getGigs(filters);
     return data;
   }
@@ -44,6 +48,15 @@ export const fetchGig = createAsyncThunk(
   "products/fetchGig",
   async (id: string) => {
     const data = await getGig(id);
+
+    return data;
+  }
+);
+
+export const fetchTopGigs = createAsyncThunk(
+  "products/fetchTopGigs",
+  async () => {
+    const data = await getTopGigs();
 
     return data;
   }
@@ -150,6 +163,22 @@ export const GigsSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchGig.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to load gigs";
+      })
+
+      .addCase(fetchTopGigs.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(
+        fetchTopGigs.fulfilled,
+        (state, action: PayloadAction<Gig[]>) => {
+          state.gigsTop = action.payload;
+          state.loading = false;
+        }
+      )
+      .addCase(fetchTopGigs.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to load gigs";
       })

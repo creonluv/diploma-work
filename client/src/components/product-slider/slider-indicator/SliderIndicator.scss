@@ -1,0 +1,21 @@
+@use "../../../shared/globalStyles/global" as *;
+
+.indicator {
+  display: flex;
+  align-items: center;
+
+  &__progressBar {
+    width: 100%;
+    height: 4px;
+    background-color: var(--color-secondary-grey);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  &__progress {
+    height: 100%;
+    background-color: var(--color-primary);
+    border-radius: 2px;
+    transition: width 0.3s ease-in-out;
+  }
+}

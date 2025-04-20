@@ -44,7 +44,7 @@ export const JobOnePage: React.FC = () => {
 
   useEffect(() => {
     dispatch(getContractsAsync());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!contracts?.length || !jobId) return;
@@ -69,7 +69,7 @@ export const JobOnePage: React.FC = () => {
           break;
       }
     }
-  }, [contracts, jobId, job]);
+  }, [contracts, jobId, job, navigate]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

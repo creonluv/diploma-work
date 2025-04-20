@@ -1,16 +1,26 @@
+import { ReviewData } from "./Review";
 import { Skill } from "./Skill";
 import { User } from "./User";
 
 interface FreelancerDetails {
   skills?: Skill[];
-  portfolio: any[];
+  portfolio: PortfolioItem[];
 }
 
 interface EmployerDetails {
   companyName: string;
-  projects: any[];
+  projects: PortfolioItem[];
   contactPerson: string;
 }
+
+export type PortfolioItem = {
+  _id: string;
+  title: string;
+  description: string;
+  budget: number;
+  cat: string;
+  updatedAt: string;
+};
 
 export interface Profile {
   _id: string;
@@ -18,12 +28,12 @@ export interface Profile {
   description: string;
   location: string;
   userRating: number;
-  userReviews: any[];
+  userReviews: ReviewData[];
   freelancerDetails?: FreelancerDetails;
   employerDetails?: EmployerDetails;
   profileType: "freelancer" | "employer";
   profileImage: string;
   createdAt: string;
   updatedAt: string;
-  __v?: number;
+  rating: number;
 }

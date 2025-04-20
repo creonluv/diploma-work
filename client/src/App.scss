@@ -5,6 +5,7 @@
 
 body {
   background-color: var(--color-background);
+  overscroll-behavior: none;
 
   &._lock {
     overflow: hidden;
@@ -15,7 +16,9 @@ body {
 .wrapper {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   overflow: hidden;
+  min-height: 100vh;
 
   > main {
     flex: 1 1 auto;

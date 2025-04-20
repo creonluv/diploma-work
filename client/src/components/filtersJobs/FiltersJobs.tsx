@@ -44,7 +44,7 @@ export const FilterJobs: React.FC = () => {
     setSelectedSkills(
       allSkills.filter((skill) => newFilters.tags.includes(skill._id))
     );
-  }, [location.search, allSkills]);
+  }, [allSkills]);
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -63,6 +63,7 @@ export const FilterJobs: React.FC = () => {
     if (allSkills.length > 0) {
       applyFilters();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allSkills]);
 
   const handleInputChange = (
@@ -90,11 +91,11 @@ export const FilterJobs: React.FC = () => {
 
   const applyFilters = () => {
     const filteredFilters = Object.fromEntries(
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       Object.entries(filters).filter(([_, value]) => value !== "")
     );
 
     const queryString = getSearchWith(filteredFilters, "");
-    // setSearchParams(queryString);
     navigate(`?${queryString}`);
   };
 
@@ -130,7 +131,7 @@ export const FilterJobs: React.FC = () => {
           <option value="">Choose a category</option>
           <option value="design">Design</option>
           <option value="js">JavaScript</option>
-          <option value="webdev">Web Development</option>
+          <option value="Web Development">Web Development</option>
           <option value="frontend">Front-End Development</option>
           <option value="backend">Back-End Development</option>
           <option value="fullstack">Full-Stack Development</option>

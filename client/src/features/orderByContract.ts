@@ -3,17 +3,20 @@ import {
   OrderAction,
   OrderByContract,
   OrderByContractResponse,
+  OrderByUser,
 } from "../types/OrderByContract";
 import {
   confirmOrCancelPayment,
   createOrder,
   getOrderByPaymentIntent,
   getOrdersByContract,
+  getOrdersByUser,
 } from "../api/orderByContact";
 
 export type OrderState = {
   orders: OrderByContract[] | null;
   order: OrderByContract | null;
+  ordersByUser: OrderByUser[] | null;
   loading: boolean;
   error: string;
 };
@@ -21,6 +24,8 @@ export type OrderState = {
 const initialState: OrderState = {
   orders: null,
   order: null,
+  ordersByUser: null,
+
   loading: false,
   error: "",
 };
@@ -78,6 +83,14 @@ export const fetchOrderByPaymentIntentAsync = createAsyncThunk<
   }
 );
 
+export const fetchOrdersByUserAsync = createAsyncThunk<OrderByUser[], void>(
+  "orders/fetchOrdersByUser",
+  async () => {
+    const data = await getOrdersByUser();
+    return data;
+  }
+);
+
 const ordersSlice = createSlice({
   name: "orders",
   initialState,
@@ -131,6 +144,7 @@ const ordersSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Unable to receive order";
       })
+
       .addCase(fetchOrderByPaymentIntentAsync.pending, (state) => {
         state.loading = true;
         state.error = "";
@@ -145,6 +159,22 @@ const ordersSlice = createSlice({
       .addCase(fetchOrderByPaymentIntentAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to fetch order";
+      })
+
+      .addCase(fetchOrdersByUserAsync.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(
+        fetchOrdersByUserAsync.fulfilled,
+        (state, action: PayloadAction<OrderByUser[]>) => {
+          state.ordersByUser = action.payload;
+          state.loading = false;
+        }
+      )
+      .addCase(fetchOrdersByUserAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Unable to receive order";
       });
   },
 });

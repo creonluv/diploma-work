@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import http from "http";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import "./notificationCleanupJob";
 import swaggerSpec from "./swaggerConfig";
 import swaggerUi from "swagger-ui-express";
 import authRoute from "./routes/auth.route";
@@ -28,7 +29,7 @@ import cors from "cors";
 dotenv.config();
 mongoose.set("strictQuery", true);
 
-const app = express();
+export const app = express();
 const PORT = process.env.PORT || 8800;
 
 const server = http.createServer(app);
@@ -38,6 +39,7 @@ const io = new Server(server, {
     methods: ["GET", "POST"],
   },
 });
+
 io.on("connection", (socket) => {
   console.log("User connected");
 

@@ -1,0 +1,89 @@
+@use "../../shared/globalStyles/global" as *;
+
+$itemCount: 3;
+
+.blog {
+  &__items {
+    display: grid;
+    @include adaptiveValue("gap", 20, 12);
+
+    @include on-tablet {
+      grid-template-columns: percent(588, 1200) 1fr;
+      grid-template-rows: auto auto;
+    }
+  }
+
+  &__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    @include adaptiveValue("padding", 50, 20);
+    border: 2px solid var(--color-background-reverse);
+    border-radius: 16px;
+    background-color: var(--color-reverse);
+
+    &:first-child {
+      grid-row: 1 / 3;
+    }
+  }
+
+  &__imgItem {
+    height: 256px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 24px;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__title {
+    line-height: normal;
+    color: var(--color-text-reverse);
+  }
+
+  &__button {
+    margin-bottom: 30px;
+  }
+
+  &__line {
+    position: absolute;
+    @include adaptiveValue("bottom", 50, 20);
+    @include adaptiveValue("right", 50, 20);
+    @include adaptiveValue("width", 90, 49);
+    @include adaptiveValue("height", 80, 43);
+    height: 80px;
+    border-right: 2px solid var(--color-border-reverse);
+    border-bottom: 2px solid var(--color-border-reverse);
+    border-bottom-right-radius: 50%;
+
+    &_small {
+      height: 17px;
+      border-bottom-right-radius: 25%;
+      border-top-right-radius: 50%;
+    }
+  }
+
+  &__icons {
+    position: absolute;
+    @include adaptiveValue("top", 50, 20);
+    @include adaptiveValue("right", 50, 20);
+  }
+}
+
+.icons {
+  display: flex;
+
+  &__item {
+    @for $i from 1 through $itemCount {
+      &:nth-child(#{$i}) {
+        transform: translateX(#{($itemCount - $i) * 50%});
+        z-index: $i;
+      }
+    }
+  }
+}

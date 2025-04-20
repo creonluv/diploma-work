@@ -6,6 +6,7 @@ import { BreadСrumbs } from "./components/breadCrumbs/BreadCrumbs";
 import { useEffect, useState } from "react";
 // import { Footer } from "./components/footer/Footer";
 import { io } from "socket.io-client";
+import { Footer } from "./components/footer/Footer";
 
 const socket = io("http://localhost:8800");
 
@@ -52,7 +53,7 @@ function App() {
 
         <Outlet />
       </main>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

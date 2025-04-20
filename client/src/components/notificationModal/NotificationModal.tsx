@@ -1,31 +1,33 @@
-import { useState, ReactNode, useEffect } from "react";
+import { useState, ReactNode, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Modal from "react-modal";
 import notification from "../../assets/img/icons/Notification.svg";
 import { formatDistanceToNow } from "date-fns";
 import { useWindowSizeContext } from "../../context/WindowSizeContext";
+import { getNotifications } from "../../api/notification";
+import { INotification } from "../../types/Notifications";
 
 import "../authModal/AuthModal.scss";
 import "./NotificationModal.scss";
-import { getNotifications } from "../../api/notification";
-import { INotification } from "../../types/Notifications";
 
 const DEFAULT_SIZE = 320;
 const OFFSET_INLINE = 32;
 
 interface NotificationsListProps {
-  notificationsSocket: any;
+  notificationsSocket: unknown;
 }
 
 export const NotificationModal: React.FC<NotificationsListProps> = ({
   notificationsSocket,
 }) => {
   const [notifications, setNotifications] = useState<INotification[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setLoading] = useState<boolean>(true);
+  const [, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { width } = useWindowSizeContext();
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -46,6 +48,23 @@ export const NotificationModal: React.FC<NotificationsListProps> = ({
 
     fetchNotifications();
   }, [notificationsSocket]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isModalOpen &&
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        closeModal();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isModalOpen]);
 
   const closeModal = () => setIsModalOpen(false);
   const toggleModal = () => setIsModalOpen(!isModalOpen);
@@ -86,27 +105,17 @@ export const NotificationModal: React.FC<NotificationsListProps> = ({
     <>
       <button className="header__icon" onClick={toggleModal}>
         <img src={notification} alt="account" />
+        {notifications.length > 0 && (
+          <span className="header__icon--notification">
+            {notifications.length}
+          </span>
+        )}
       </button>
       <ModalOrContent>
-        <div className={`list ${isModalOpen ? "" : "_hidden"}`}>
-          {/* {profile?.profileType === "freelancer" && (
-            <>
-              <Link className="list__item" to="gigs/add" onClick={closeModal}>
-                Add new gig
-              </Link>
-              <Link
-                to="/gigs/by-user"
-                className="list__item"
-                onClick={closeModal}
-              >
-                All my gigs
-              </Link>
-              <Link className="list__item" to="/orders" onClick={closeModal}>
-                My gig orders
-              </Link>
-            </>
-          )} */}
-
+        <div
+          ref={containerRef}
+          className={`list ${isModalOpen ? "" : "_hidden"}`}
+        >
           {notifications.map((notification) => (
             <div className="notification" key={notification._id}>
               <div className="notification__info">

@@ -1,6 +1,7 @@
 import { validationResult } from "express-validator";
 import Review from "../models/review.model";
 import Gig from "../models/gig.model";
+import Profile from "../models/profile.model";
 import User from "../models/user.model";
 import Order from "../models/orderByContract.model";
 
@@ -168,6 +169,13 @@ export const createReviewForOrder = async (req, res, next) => {
     }
 
     await order.save();
+
+    const targetProfile = await Profile.findOne({ userId: targetId });
+
+    if (targetProfile) {
+      targetProfile.userReviews.push(newReview._id);
+      await targetProfile.save();
+    }
 
     await updateUserRating(targetId);
 

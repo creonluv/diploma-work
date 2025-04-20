@@ -1,0 +1,104 @@
+@use "../../shared/globalStyles/global" as *;
+
+.gig {
+  &__body {
+    @include page-grid;
+  }
+
+  &__top {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    grid-column: 1 / -1;
+    width: auto;
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &__background {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 0 auto;
+    padding: 48px;
+    border-radius: 16px;
+    background-color: var(--color-background-reverse);
+    border: 1px solid var(--color-border);
+    width: 100%;
+    height: fit-content;
+  }
+
+  &__info {
+    display: flex;
+    height: 32px;
+    padding: 4px;
+    background-color: var(--color-accent);
+    border-radius: 4px;
+    color: white;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__gigs {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    @include on-tablet {
+      grid-column: 4 / -1;
+    }
+  }
+
+  &__aside {
+    grid-column: 1 / -1;
+
+    @include on-tablet {
+      grid-column: 1 / 4;
+    }
+  }
+
+  &__gigsCard {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    row-gap: 30px;
+    column-gap: 20px;
+
+    @include on-tablet {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include on-desktop {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__top {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__pagination {
+    grid-column: 1 / -1;
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}

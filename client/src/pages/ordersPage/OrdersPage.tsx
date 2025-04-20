@@ -105,7 +105,7 @@ export const OrdersPage: React.FC = () => {
                 <tr>
                   <th>Image</th>
                   <th>Title</th>
-                  <th>{isSellerBool ? "SellerBuyer" : "Buyer"}</th>
+                  <th>{isSellerBool ? "Seller" : "Buyer"}</th>
                   <th>Price</th>
                   <th>Contact</th>
                 </tr>

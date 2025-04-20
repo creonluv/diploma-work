@@ -6,6 +6,7 @@ import { getAllSkills } from "../../api/skills";
 import { Skill } from "../../types/Skill";
 import Modal from "react-modal";
 import { createJobAsync } from "../../features/job";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -21,6 +22,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export const AddJobPage: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState<FormData>({
     title: "",
@@ -99,6 +101,8 @@ export const AddJobPage: React.FC = () => {
           tags: formattedTags,
         })
       );
+
+      navigate("/jobs/by-user");
     } catch (err) {
       if (err instanceof z.ZodError) {
         const newErrors: { [key: string]: string } = {};

@@ -15,8 +15,6 @@ interface ChatProps {
 }
 
 export const Chat: React.FC<ChatProps> = ({ chatId }) => {
-  console.log(chatId);
-
   const [user, setUser] = useState<User | undefined>();
   const [messages, setMessages] = useState<MessageChat[] | undefined>();
   const [message, setMessage] = useState("");

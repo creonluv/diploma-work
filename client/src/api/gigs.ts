@@ -29,6 +29,10 @@ export const getGig = (id: string | undefined): Promise<Gig> => {
   return client.get(`/gigs/${id}`);
 };
 
+export const getTopGigs = (): Promise<Gig[]> => {
+  return client.get(`/gigs/top`);
+};
+
 export const getGigByUser = (): Promise<Gig[]> => {
   return client.get(`/gigs/user`);
 };
